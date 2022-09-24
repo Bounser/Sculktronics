@@ -1,11 +1,11 @@
 
-Limits:
-
-# Limit circuits per player
-
+# Prevent users from using clocks to feed circuits.
 ClockPrevention:
   enabled: true
+  # How many ticks must pass between signals?
   ticksPerChange: 5
+
+# Colors of the different components.
 Colors:
   wire:
     basic:
@@ -45,6 +45,6 @@ Colors:
       b: 226
 
 # Name of the layout.
-Layout: "CircuitLayout"
+Layout: "Circuit"
 
 Debug: false

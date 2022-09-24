@@ -9,12 +9,12 @@ import java.awt.*;
 
 public class Diode implements EComponent {
 
-    String direction;
+    char direction;
 
     Color basic;
     Color powered;
 
-    public Diode(String direction){
+    public Diode(char direction){
         this.direction = direction;
 
         basic = Data.getInstance().getDiodeBasicColor();
@@ -48,7 +48,7 @@ public class Diode implements EComponent {
     }
 
     @Override
-    public String getDirection() {
+    public char getDirection() {
         return direction;
     }
 

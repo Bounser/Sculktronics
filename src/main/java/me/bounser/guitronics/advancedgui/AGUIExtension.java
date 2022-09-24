@@ -6,8 +6,10 @@ import me.bounser.guitronics.circuits.CircuitsManager;
 import me.bounser.guitronics.electrocomponents.ElectroComponent;
 import me.bounser.guitronics.electrocomponents.ecomponents.Delayer;
 import me.bounser.guitronics.electrocomponents.ecomponents.Diode;
+import me.bounser.guitronics.electrocomponents.ecomponents.Resistor;
 import me.bounser.guitronics.electrocomponents.ecomponents.Wire;
 import me.bounser.guitronics.tools.Data;
+import me.bounser.guitronics.tools.Miscellaneous;
 import me.leoko.advancedgui.utils.LayoutExtension;
 import me.leoko.advancedgui.utils.actions.Action;
 import me.leoko.advancedgui.utils.components.RectComponent;
@@ -37,6 +39,8 @@ public class AGUIExtension implements LayoutExtension {
 
         if(e.getInteraction().getLayout().equals(Data.getInstance().getLayout())){
 
+            e.getInteraction().getComponentTree().locate("lid").setHidden(true);
+
             if(Data.getInstance().getDebug()) e.getPlayer().sendMessage("Interaction with circuit begins.");
 
             Circuit cir = CircuitsManager.getInstance().getCircuitFromGUIInstance(e.getGuiInstance());
@@ -58,7 +62,7 @@ public class AGUIExtension implements LayoutExtension {
                             10,
                             10,
                             cir.getColor(i*j, cir.getPoweredState(i*j)),
-                            EComponentsUtils.getInstance().getRoundFromElectroComponent(electroComponent)
+                            Miscellaneous.getInstance().getRoundFromElectroComponent(electroComponent)
                             );
 
                     Action clickAction = null;
@@ -113,7 +117,9 @@ public class AGUIExtension implements LayoutExtension {
                                     case REPEATER:
                                         cir.addEComponent(finalI*finalJ, new Delayer()); break;
                                     case COMPARATOR:
-                                        cir.addEComponent(finalI*finalJ, new Diode(null)); break;
+                                        cir.addEComponent(finalI*finalJ, new Diode('N'); break;
+                                    case LIGHTNING_ROD:
+                                        cir.addEComponent(finalI*finalJ, new Resistor());
                                 }
 
                             }; break;
@@ -134,6 +140,9 @@ public class AGUIExtension implements LayoutExtension {
     public void onInteractionEnd(GuiInteractionExitEvent e) {
 
         if(e.getInteraction().getLayout().equals(Data.getInstance().getLayout())) {
+
+            e.getInteraction().getComponentTree().locate("lid").setHidden(false);
+
             Circuit cir = CircuitsManager.getInstance().getCircuitFromGUIInstance(e.getGuiInstance());
 
             cir.removeInteraction(e.getInteraction());

@@ -13,11 +13,8 @@ public class Delayer implements EComponent {
     Color powered;
 
     public Delayer(){
-        int[] bcolor = Data.getInstance().getDelayerBasicColor();
-        basic = new Color(bcolor[0], bcolor[1], bcolor[2]);
-
-        int[] pcolor = Data.getInstance().getDelayerPoweredColor();
-        powered = new Color(pcolor[0], pcolor[1], pcolor[2]);
+        basic = Data.getInstance().getDelayerBasicColor();
+        powered = Data.getInstance().getDelayerPoweredColor();
     }
 
     public void changeDelay(){
@@ -46,8 +43,8 @@ public class Delayer implements EComponent {
     }
 
     @Override
-    public String getDirection() {
-        return null;
+    public char getDirection() {
+        return 'X';
     }
 
     @Override

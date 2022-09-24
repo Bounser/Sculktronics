@@ -38,8 +38,8 @@ public class Wire implements EComponent {
     }
 
     @Override
-    public String getDirection() {
-        return null;
+    public char getDirection() {
+        return 'X';
     }
 
     @Override

@@ -136,7 +136,7 @@ public class Circuit {
         if(newRender){
             outputs.clear();
             toRender.clear();
-            CircuitRenderer.getInstance().VisualRender(this);
+            CircuitRenderer.getInstance().render(this);
             CircuitRenderer.getInstance().outputRedstone(getOutputs(), this);
         }
         if(Data.getInstance().getDebug()) Bukkit.broadcastMessage("Renders:");
@@ -206,7 +206,7 @@ public class Circuit {
 
     public void removeInteraction(Interaction interaction) { interactions.remove(interaction); }
 
-    public void changeDimensions(List<Location> LocToAdd){
+    public void changeSize(List<Location> LocToAdd){
 
         for(Location loc : LocToAdd){
 

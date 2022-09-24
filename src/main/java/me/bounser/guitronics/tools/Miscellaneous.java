@@ -18,7 +18,7 @@ public class Miscellaneous {
             case WIRE: return 0;
             case DELAYER: return 2;
             case DIODE: return 2;
-            case RESISTANCE: return 3;
+            case RESISTOR: return 3;
         }
         return 0;
     }

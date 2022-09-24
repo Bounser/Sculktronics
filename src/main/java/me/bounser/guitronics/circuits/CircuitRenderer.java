@@ -1,14 +1,11 @@
 package me.bounser.guitronics.circuits;
 
+import me.bounser.guitronics.electrocomponents.ElectroComponent;
 import me.bounser.guitronics.tools.Data;
-import me.leoko.advancedgui.utils.components.ImageComponent;
+import me.bounser.guitronics.tools.Miscellaneous;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.data.AnaloguePowerable;
-import org.bukkit.block.data.Powerable;
 import org.bukkit.block.data.type.RedstoneWire;
-import org.bukkit.material.Redstone;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -23,9 +20,9 @@ public class CircuitRenderer {
         return instance == null ? instance = new CircuitRenderer() : instance;
     }
 
-    public void VisualRender(Circuit cir){
+    public void render(Circuit cir){
 
-        HashMap design = cir.getDesign();
+        HashMap<Integer, Object> design = cir.getDesign();
 
         for(int input : cir.getInputs()){
 
@@ -36,7 +33,7 @@ public class CircuitRenderer {
 
     }
 
-    public void checkPixel(int i, HashMap design, Circuit cir){
+    public void checkPixel(int i, HashMap<Integer, Object> design, Circuit cir){
 
         for(int j : Arrays.asList(9, -9, 1, -1)){
 
@@ -44,14 +41,21 @@ public class CircuitRenderer {
 
             if(!cir.getRender().contains(x)) {
 
-                if (design.keySet().contains(x)) {
+                if (design.containsKey(x)) {
 
-                    if (x == 5 || x == 37 || x == 45 || x == 77) {
-                        cir.addOutput(x);
+                    if(cir.getElectroComponent(cir.getEComponent(x)).equals(ElectroComponent.DIODE)){
+
+                        // DIODE LOGIC - GET OFFSET OF INTEGERS (CARDINAL)
+
+                    } else {
+                        if (x == 5 || x == 37 || x == 45 || x == 77) {
+                            cir.addOutput(x);
+                        }
+
+                        cir.addToRender(j + i);
+                        checkPixel(j + i, design, cir);
                     }
 
-                    cir.addToRender(j + i);
-                    checkPixel(j + i, design, cir);
 
                 }
             }

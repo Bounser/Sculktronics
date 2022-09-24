@@ -14,7 +14,7 @@ public interface EComponent {
 
     boolean isDirectional();
 
-    String getDirection();
+    char getDirection();
 
     Color getBasicColor();
 
