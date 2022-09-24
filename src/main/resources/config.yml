@@ -1,0 +1,50 @@
+
+Limits:
+
+# Limit circuits per player
+
+ClockPrevention:
+  enabled: true
+  ticksPerChange: 5
+Colors:
+  wire:
+    basic:
+      r: 21
+      g: 66
+      b: 66
+    powered:
+      r: 9
+      g: 226
+      b: 226
+  delay:
+    basic:
+      r: 21
+      g: 66
+      b: 66
+    powered:
+      r: 9
+      g: 226
+      b: 226
+  diode:
+    basic:
+      r: 21
+      g: 66
+      b: 66
+    powered:
+      r: 9
+      g: 226
+      b: 226
+  resistance:
+    basic:
+      r: 21
+      g: 66
+      b: 66
+    powered:
+      r: 9
+      g: 226
+      b: 226
+
+# Name of the layout.
+Layout: "CircuitLayout"
+
+Debug: false

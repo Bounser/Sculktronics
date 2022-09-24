@@ -1,0 +1,8 @@
+name: GUItronics
+version: '${project.version}'
+main: me.bounser.guitronics.GUItronics
+api-version: 1.13
+depend: [ AdvancedGUI ]
+softdepend: [ PlaceholderAPI ]
+authors: [ bounser ]
+description: Add boards to do complex redstoning more compact!
