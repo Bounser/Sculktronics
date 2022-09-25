@@ -17,7 +17,7 @@ import java.util.List;
 
 public class Data {
 
-    /* Data structure:
+    /** Data structure:
 
     data.json: (Simplified)
     users:
@@ -214,17 +214,17 @@ public class Data {
         RedstoneListener.getInstance().addBase(loc.add(0,-1,0));
     }
 
-    /*
-        INPUT/OUTPUT points are numbered clockwise:
-        ONE  #    TWO   #   FOUR
-         1   |    1 2   |    1 2            N
-       4 o 2 |  6 o o 3 |  8 o o 3        W X E
-         3   |    5 4   |  7 o o 4          S
-             |          |    6 5
-             |    1     |
-             |  6 o 2   |
-             |  5 o 3   |
-             |    4     |
+    /**
+     *   INPUT/OUTPUT points are numbered clockwise:
+     *   ONE  #    TWO   #   FOUR
+     *    1   |    1 2   |    1 2            N
+     *  4 o 2 |  6 o o 3 |  8 o o 3        W X E
+     *    3   |    5 4   |  7 o o 4          S
+     *        |          |    6 5
+     *        |    1     |
+     *        |  6 o 2   |
+     *        |  5 o 3   |
+     *        |    4     |
      */
 
     public void registerInput(){
