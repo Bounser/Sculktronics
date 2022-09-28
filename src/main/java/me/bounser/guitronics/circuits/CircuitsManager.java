@@ -6,6 +6,7 @@ import me.bounser.guitronics.tools.Data;
 import me.leoko.advancedgui.utils.Direction;
 import me.leoko.advancedgui.utils.GuiInstance;
 import me.leoko.advancedgui.utils.Layout;
+import me.leoko.advancedgui.utils.interactions.Interaction;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
@@ -20,6 +21,7 @@ public class CircuitsManager {
     Data data = Data.getInstance();
 
     HashMap<Circuit, GuiInstance> circuits = new HashMap<>();
+    HashMap<Circuit, List> circuitBases;
     Layout layout = Data.getInstance().getLayout();
 
     private static CircuitsManager instance;
@@ -41,11 +43,27 @@ public class CircuitsManager {
         return null;
     }
 
+    public Circuit getCircuitFromInteraction(Interaction interaction){
+        for(Circuit cir: circuits.keySet()){
+            if(cir.getInteractions().contains(interaction)) return cir;
+        }
+        return null;
+    }
+
     public Circuit getCircuitFromBaseLocation(Location circuitBase){
         for(Circuit circuit : circuits.keySet()){
             Location base = circuit.getLocation().add(0,-1,0);
             if(data.getDebug()) Bukkit.broadcastMessage("distance: " + base.distance(circuitBase) + base + circuitBase);
             if(base.distance(circuitBase) == 0) return circuit;
+        }
+        return null;
+    }
+
+    public Circuit getCircuitFromOwner(String uuid){
+        for(Circuit cir : circuits.keySet()){
+            if(cir.getOwneruuid().equals(uuid)){
+                return cir;
+            }
         }
         return null;
     }

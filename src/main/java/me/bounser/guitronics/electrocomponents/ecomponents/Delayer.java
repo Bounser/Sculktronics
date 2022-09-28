@@ -9,16 +9,28 @@ import java.awt.*;
 
 public class Delayer implements EComponent {
 
+    // Delay of the delayer in ticks.
+    int delay;
+
     Color basic;
     Color powered;
 
-    public Delayer(){
+    public Delayer(int delay){
         basic = Data.getInstance().getDelayerBasicColor();
         powered = Data.getInstance().getDelayerPoweredColor();
+
+        this.delay = delay;
     }
 
     public void changeDelay(){
 
+        if(delay == 6){
+            delay = 4;
+        } else if(delay == 4){
+            delay = 2;
+        } else if(delay == 2){
+            delay = 6;
+        }
 
     }
 

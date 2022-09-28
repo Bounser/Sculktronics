@@ -3,6 +3,7 @@ package me.bounser.guitronics.tools;
 import de.leonhard.storage.Json;
 import me.bounser.guitronics.GUItronics;
 import me.bounser.guitronics.circuits.Circuit;
+import me.bounser.guitronics.circuits.CircuitsManager;
 import me.bounser.guitronics.electrocomponents.ElectroComponent;
 import me.bounser.guitronics.listeners.RedstoneListener;
 import me.leoko.advancedgui.manager.LayoutManager;
@@ -12,6 +13,7 @@ import org.bukkit.Location;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -40,7 +42,6 @@ public class Data {
 
      */
 
-    List<Location> circuitBases;
     List<Location> circuits;
 
     Color wireBasic = getWireBasicColor();
@@ -71,7 +72,6 @@ public class Data {
     }
 
     public Data(){
-        circuitBases = getAllCircuitBases();
         circuits = getAllCircuitLocations();
     }
 
@@ -239,20 +239,31 @@ public class Data {
 
     public List<String> getUsersUUID(){ return json.getStringList("users"); }
 
-    public Location getLocation(String uuid){
-        return new Location(Bukkit.getWorld(json.getString(uuid+".loc.world")),
-                json.getDouble(uuid + ".loc.x"),
-                json.getDouble(uuid + ".loc.y"),
-                json.getDouble(uuid + ".loc.z")); }
+    public List<Location> getLocation(String uuid){
+
+        List<Location> locations = new ArrayList<>();
+
+        for(int i = 1; i<=4; i++){
+
+            locations.add(new Location(Bukkit.getWorld(json.getString(uuid+".loc.world")),
+                    json.getDouble(uuid + ".loc.x"),
+                    json.getDouble(uuid + ".loc.y"),
+                    json.getDouble(uuid + ".loc.z")));
+
+       }
+        return locations;
+    }
 
     public HashMap<Integer, Object> getDesign(String uuid){
         return (HashMap<Integer, Object>) json.getMap(uuid + ".design");
     }
 
-    private List<Location> getAllCircuitBases(){
-        List<Location> circuits = new ArrayList<>();
+    private HashMap<Circuit, List<Location>> getAllCircuitBases(){
+
+        HashMap circuits = new HashMap<>();
+
         for(String uuid : json.getStringList("users")){
-            circuits.add(getLocation(uuid).add(0,-1,0));
+            circuits.put(CircuitsManager.getInstance().getCircuitFromOwner(uuid), getLocation(uuid).add(0,-1,0));
         }
         return circuits;
     }
@@ -271,9 +282,6 @@ public class Data {
         return surroundings;
     }*/
 
-    public List<Location> getCircuitBases(){ return circuitBases; }
-
-    public void addCircuitBases(Location loc){ if(!circuitBases.contains(loc)) circuitBases.add(loc); }
 
     public List<Location> getCircuitsLoc(){ return circuits; }
 

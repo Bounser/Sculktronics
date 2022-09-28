@@ -1,5 +1,6 @@
 package me.bounser.guitronics.tools;
 
+import me.bounser.guitronics.circuits.Circuit;
 import me.bounser.guitronics.electrocomponents.ElectroComponent;
 import org.bukkit.Location;
 
@@ -21,6 +22,11 @@ public class Miscellaneous {
             case RESISTOR: return 3;
         }
         return 0;
+    }
+
+    public int[] getNumberOfPixels(Circuit circuit){
+
+        circuit.get
     }
 
     public char getOffset(Location loc1, Location loc2){

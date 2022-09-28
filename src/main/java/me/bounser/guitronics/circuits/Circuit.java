@@ -128,6 +128,8 @@ public class Circuit {
 
     public void addOutput(int output){ outputs.add(output);}
 
+    public void removeOutput(Object output){ inputs.remove(output); updateRender(true); }
+
     public void updateRender(boolean newRender){
 
         if(Data.getInstance().getDebug()) Bukkit.broadcastMessage("Tries to render.");
@@ -220,6 +222,13 @@ public class Circuit {
         }
 
     }
+
+    public void expand(int direction){
+
+
+    }
+
+    public List<Interaction> getInteractions(){ return interactions; }
 
     public void setOverloaded(){ overloaded = true; }
 
