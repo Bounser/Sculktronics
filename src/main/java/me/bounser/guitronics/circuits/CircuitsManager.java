@@ -74,10 +74,10 @@ public class CircuitsManager {
         if(!(circuits.size() == 0)){
             for(String uuid : data.getUsersUUID()){
 
-                HashMap Location loc = data.getLocation(uuid);
-                circuits.put(new Circuit(loc, uuid, data.getDesign(uuid)),
-                        AGUIInstances.getInstance().placeGUI(loc, Direction.FLOOR_EAST, layout));
-                RedstoneListener.getInstance().addBase(loc.add(0,-1,0));
+                HashMap locations = data.getLocations(uuid);
+                circuits.put(new Circuit(locations, uuid, data.getDesign(uuid)),
+                        AGUIInstances.getInstance().placeGUI(locations, Direction.FLOOR_EAST, layout));
+                RedstoneListener.getInstance().addBase(locations.add(0,-1,0));
 
             }
             return true;

@@ -241,17 +241,19 @@ public class Data {
 
     public List<String> getUsersUUID(){ return json.getStringList("users"); }
 
-    public List<Location> getLocation(String uuid){
+    public int getNumberCircuitsOfUser(String uuid){ return json.getInt(uuid + ".num"); }
+
+    public List<Location> getLocations(String uuid){
 
         List<Location> locations = new ArrayList<>();
 
-        for(int i = 1; i<=4; i++){
-
-            locations.add(new Location(Bukkit.getWorld(json.getString(uuid+".loc.world")),
-                    json.getDouble(uuid + ".loc.x"),
-                    json.getDouble(uuid + ".loc.y"),
-                    json.getDouble(uuid + ".loc.z")));
-
+        for(int i = 1; i<=getNumberCircuitsOfUser(uuid); i++){
+            for(int j = 1; j<=4; j++){
+                locations.add(new Location(Bukkit.getWorld(json.getString(uuid+"." + j + ".loc.world")),
+                        json.getDouble(uuid + "." + j + ".loc.x"),
+                        json.getDouble(uuid + "." + j + ".loc.y"),
+                        json.getDouble(uuid + "." + j + ".loc.z")));
+            }
        }
         return locations;
     }
@@ -272,7 +274,7 @@ public class Data {
     private List<Location> getAllCircuitLocations(){
         List<Location> circuits = new ArrayList<>();
         for(String uuid : json.getStringList("users")){
-            circuits.add(getLocation(uuid));
+            circuits.addAll(getLocations(uuid));
         }
         return circuits;
     }
