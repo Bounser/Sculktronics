@@ -1,25 +1,30 @@
-package me.bounser.guitronics.electrocomponents.ecomponents;
+package me.bounser.guitronics.components.electrocomponents;
 
-import me.bounser.guitronics.electrocomponents.EComponent;
-import me.bounser.guitronics.electrocomponents.ElectroComponent;
+import me.bounser.guitronics.circuits.Circuit;
+import me.bounser.guitronics.components.ElectroComponent;
+import me.bounser.guitronics.components.EComponent;
 import me.bounser.guitronics.tools.Data;
 import me.leoko.advancedgui.utils.interactions.Interaction;
 
 import java.awt.*;
 
-public class Wire implements EComponent {
+public class Wire implements ElectroComponent {
+
+    Circuit circuit;
 
     Color basic;
     Color powered;
 
-    public Wire(){
+    public Wire(Circuit circuit){
         basic = Data.getInstance().getWireBasicColor();
         powered = Data.getInstance().getWirePoweredColor();
+
+        this.circuit = circuit;
     }
 
     @Override
-    public ElectroComponent getEComponent() {
-        return ElectroComponent.WIRE;
+    public EComponent getEComponent() {
+        return EComponent.WIRE;
     }
 
     @Override
@@ -38,8 +43,8 @@ public class Wire implements EComponent {
     }
 
     @Override
-    public char getDirection() {
-        return 'X';
+    public int getDirection() {
+        return -1;
     }
 
     @Override

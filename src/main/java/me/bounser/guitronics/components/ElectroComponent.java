@@ -1,12 +1,12 @@
-package me.bounser.guitronics.electrocomponents;
+package me.bounser.guitronics.components;
 
 import me.leoko.advancedgui.utils.interactions.Interaction;
 
 import java.awt.*;
 
-public interface EComponent {
+public interface ElectroComponent {
 
-    ElectroComponent getEComponent();
+    EComponent getEComponent();
 
     boolean isPowered();
 
@@ -14,7 +14,7 @@ public interface EComponent {
 
     boolean isDirectional();
 
-    char getDirection();
+    int getDirection();
 
     Color getBasicColor();
 

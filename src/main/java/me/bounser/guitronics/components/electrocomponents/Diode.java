@@ -1,43 +1,48 @@
-package me.bounser.guitronics.electrocomponents.ecomponents;
+package me.bounser.guitronics.components.electrocomponents;
 
-import me.bounser.guitronics.electrocomponents.EComponent;
-import me.bounser.guitronics.electrocomponents.ElectroComponent;
+import me.bounser.guitronics.circuits.Circuit;
+import me.bounser.guitronics.components.ElectroComponent;
+import me.bounser.guitronics.components.EComponent;
 import me.bounser.guitronics.tools.Data;
 import me.leoko.advancedgui.utils.interactions.Interaction;
 
 import java.awt.*;
 
-public class Diode implements EComponent {
+public class Diode implements ElectroComponent {
 
-    char direction;
+    int direction;
+
+    Circuit circuit;
 
     Color basic;
     Color powered;
 
-    public Diode(char direction){
+    public Diode(Circuit circuit, int direction){
         this.direction = direction;
 
         basic = Data.getInstance().getDiodeBasicColor();
         powered = Data.getInstance().getDiodePoweredColor();
+
+        this.circuit = circuit;
     }
 
     public void rotate(){
 
-        if (direction == 'N'){
-            direction = 'E';
-        } else if (direction == 'E'){
-            direction = 'S';
-        } else if (direction == 'S'){
-            direction = 'W';
-        } else if (direction == 'W'){
-            direction = 'N';
+        if (direction == 0){
+            direction = 1;
+        } else if (direction == 1){
+            direction = 2;
+        } else if (direction == 2){
+            direction = 3;
+        } else if (direction == 3){
+            direction = 0;
         }
 
     }
 
     @Override
-    public ElectroComponent getEComponent() {
-        return ElectroComponent.DIODE;
+    public EComponent getEComponent() {
+        return EComponent.DIODE;
     }
 
     @Override
@@ -56,7 +61,7 @@ public class Diode implements EComponent {
     }
 
     @Override
-    public char getDirection() {
+    public int getDirection() {
         return direction;
     }
 

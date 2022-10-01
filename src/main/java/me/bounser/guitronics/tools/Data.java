@@ -4,7 +4,6 @@ import de.leonhard.storage.Json;
 import me.bounser.guitronics.GUItronics;
 import me.bounser.guitronics.circuits.Circuit;
 import me.bounser.guitronics.circuits.CircuitsManager;
-import me.bounser.guitronics.electrocomponents.ElectroComponent;
 import me.bounser.guitronics.listeners.RedstoneListener;
 import me.leoko.advancedgui.manager.LayoutManager;
 import me.leoko.advancedgui.utils.Layout;
@@ -13,43 +12,46 @@ import org.bukkit.Location;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 public class Data {
 
     /** Data structure:
-
-    data.json: (Simplified)
-    users:
-      - "UUID1"
-      - "UUID2"
-      ...
-    UUID1:
-      loc:
-        1:
-          world: "world"
-          x:
-          y:
-          z:
-        2:
-        ...
-      design:
-        1: COMPONENT
-        2: COMPONENT
-        ...
-
+     *
+     *      data.json: (Simplified)
+     *       users:
+     *       - "UUID1"
+     *       - "UUID2"
+     *        ...
+     *    UUID1:
+     *        num: 2
+     *        1:
+     *          loc:
+     *           1:
+     *             world: "world"
+     *             x:
+     *             y:
+     *             z:
+     *             ...
+     *          design:
+     *            1: COMPONENT
+     *            2: COMPONENT
+     *             ...
+     *       2:
+     *      ...
+     *
      */
-
-    List<Location> circuits;
 
     Color wireBasic = getWireBasicColor();
     Color wirePowered = getWirePoweredColor();
+
     Color delayerBasic = getDelayerBasicColor();
     Color delayerPowered = getDelayerPoweredColor();
+
     Color diodeBasic = getDiodeBasicColor();
     Color diodePowered = getDiodePoweredColor();
+
     Color resistorBasic = getResistorBasicColor();
     Color resistorPowered = getResistorPoweredColor();
 
@@ -72,7 +74,7 @@ public class Data {
     }
 
     public Data(){
-        circuits = getAllCircuitLocations();
+
     }
 
     public Layout getLayout(){ return LayoutManager.getInstance().getLayout(main.getConfig().getString("Layout")); }
@@ -217,14 +219,14 @@ public class Data {
     /**
      *   INPUT/OUTPUT points are numbered clockwise:
      *   ONE  #    TWO   #   FOUR
-     *    1   |    1 2   |    1 2            N
-     *  4 o 2 |  6 o o 3 |  8 o o 3        W X E
-     *    3   |    5 4   |  7 o o 4          S
-     *        |          |    6 5
-     *        |    1     |
-     *        |  6 o 2   |
-     *        |  5 o 3   |
-     *        |    4     |
+     *    0   |    0 1   |    0 1            N
+     *  3 o 1 |  5 o o 2 |  7 o o 2        W X E
+     *    2   |    4 3   |  6 o o 3          S
+     *        |          |    5 4
+     *        |    0     |
+     *        |  5 o 1   |
+     *        |  4 o 2   |
+     *        |    3     |
      */
 
     public void registerInput(){

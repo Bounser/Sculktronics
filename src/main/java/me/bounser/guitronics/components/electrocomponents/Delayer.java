@@ -1,25 +1,29 @@
-package me.bounser.guitronics.electrocomponents.ecomponents;
+package me.bounser.guitronics.components.electrocomponents;
 
-import me.bounser.guitronics.electrocomponents.EComponent;
-import me.bounser.guitronics.electrocomponents.ElectroComponent;
+import me.bounser.guitronics.circuits.Circuit;
+import me.bounser.guitronics.components.ElectroComponent;
+import me.bounser.guitronics.components.EComponent;
 import me.bounser.guitronics.tools.Data;
 import me.leoko.advancedgui.utils.interactions.Interaction;
 
 import java.awt.*;
 
-public class Delayer implements EComponent {
+public class Delayer implements ElectroComponent {
 
     // Delay of the delayer in ticks.
     int delay;
 
+    Circuit circuit;
+
     Color basic;
     Color powered;
 
-    public Delayer(int delay){
+    public Delayer(Circuit circuit, int delay){
         basic = Data.getInstance().getDelayerBasicColor();
         powered = Data.getInstance().getDelayerPoweredColor();
 
         this.delay = delay;
+        this.circuit = circuit;
     }
 
     public void changeDelay(){
@@ -35,8 +39,8 @@ public class Delayer implements EComponent {
     }
 
     @Override
-    public ElectroComponent getEComponent() {
-        return ElectroComponent.DELAYER;
+    public EComponent getEComponent() {
+        return EComponent.DELAYER;
     }
 
     @Override
@@ -55,8 +59,8 @@ public class Delayer implements EComponent {
     }
 
     @Override
-    public char getDirection() {
-        return 'X';
+    public int getDirection() {
+        return -1;
     }
 
     @Override

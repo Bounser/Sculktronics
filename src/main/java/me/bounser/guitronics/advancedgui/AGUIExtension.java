@@ -3,11 +3,11 @@ package me.bounser.guitronics.advancedgui;
 import me.bounser.guitronics.GUItronics;
 import me.bounser.guitronics.circuits.Circuit;
 import me.bounser.guitronics.circuits.CircuitsManager;
-import me.bounser.guitronics.electrocomponents.ElectroComponent;
-import me.bounser.guitronics.electrocomponents.ecomponents.Delayer;
-import me.bounser.guitronics.electrocomponents.ecomponents.Diode;
-import me.bounser.guitronics.electrocomponents.ecomponents.Resistor;
-import me.bounser.guitronics.electrocomponents.ecomponents.Wire;
+import me.bounser.guitronics.components.EComponent;
+import me.bounser.guitronics.components.electrocomponents.Delayer;
+import me.bounser.guitronics.components.electrocomponents.Diode;
+import me.bounser.guitronics.components.electrocomponents.Resistor;
+import me.bounser.guitronics.components.electrocomponents.Wire;
 import me.bounser.guitronics.tools.Data;
 import me.bounser.guitronics.tools.Miscellaneous;
 import me.leoko.advancedgui.utils.LayoutExtension;
@@ -21,11 +21,6 @@ import org.bukkit.event.EventHandler;
 public class AGUIExtension implements LayoutExtension {
 
     Data data = Data.getInstance();
-
-    /**
-     *  When the interaction is created, the rects are created with a click action which states the response depending
-     *  on the type of component (If any). Then it updates the circuit if there is any substantial change.
-     */
 
     // LAYOUTS: Circuit1x1 Circuit2x1 Circuit2x2
 
@@ -68,6 +63,11 @@ public class AGUIExtension implements LayoutExtension {
 
     }
 
+    /**
+     *  When the interaction is created, the rects are created with a click action which states the response depending
+     *  on the type of component (If any). Then it updates (Visually) the circuit if there is any substantial change.
+     */
+
     @EventHandler
     public void onInteractionStart(GuiInteractionBeginEvent e) {
 
@@ -103,7 +103,7 @@ public class AGUIExtension implements LayoutExtension {
             for(int i = 1; i<x; i++){
                 for(int j = 1; j<y; j++){
 
-                    ElectroComponent electroComponent = cir.getElectroComponent(cir.getEComponent(i * j));
+                    EComponent EComponent = cir.getEComponent(cir.getElectroComponent(i * j));
 
                     RectComponent pixel = new RectComponent(
                             i + j + "",
@@ -115,7 +115,7 @@ public class AGUIExtension implements LayoutExtension {
                             10,
                             10,
                             cir.getColor(i*j, cir.getPoweredState(i*j)),
-                            Miscellaneous.getInstance().getRoundFromElectroComponent(electroComponent)
+                            Miscellaneous.getInstance().getRoundFromEComponent(EComponent)
                             );
 
                     Action clickAction = null;
@@ -123,7 +123,7 @@ public class AGUIExtension implements LayoutExtension {
                     int finalJ = j;
                     int finalI = i;
 
-                    switch(electroComponent){
+                    switch(EComponent){
                         case WIRE:
                             clickAction = (interaction, player, primaryTrigger) -> {
 
@@ -136,7 +136,7 @@ public class AGUIExtension implements LayoutExtension {
 
                                 if(player.isSneaking()){
 
-                                    Delayer delayer = (Delayer) cir.getEComponent(finalI*finalJ);
+                                    Delayer delayer = (Delayer) cir.getElectroComponent(finalI*finalJ);
                                     delayer.changeDelay();
 
                                 } else {
@@ -151,7 +151,7 @@ public class AGUIExtension implements LayoutExtension {
 
                                 if(player.isSneaking()){
 
-                                    Diode diode = (Diode) cir.getEComponent(finalI*finalJ);
+                                    Diode diode = (Diode) cir.getElectroComponent(finalI*finalJ);
                                     diode.rotate();
 
                                 } else {
@@ -166,13 +166,13 @@ public class AGUIExtension implements LayoutExtension {
 
                                 switch(player.getInventory().getItemInMainHand().getType()){
                                     case ECHO_SHARD:
-                                        cir.addEComponent(finalI*finalJ, new Wire()); break;
+                                        cir.addElectroComponent(finalI*finalJ, new Wire(cir)); break;
                                     case REPEATER:
-                                        cir.addEComponent(finalI*finalJ, new Delayer(5)); break;
+                                        cir.addElectroComponent(finalI*finalJ, new Delayer(cir, 5)); break;
                                     case COMPARATOR:
-                                        cir.addEComponent(finalI*finalJ, new Diode('N')); break;
+                                        cir.addElectroComponent(finalI*finalJ, new Diode(cir, 0)); break;
                                     case LIGHTNING_ROD:
-                                        cir.addEComponent(finalI*finalJ, new Resistor());
+                                        cir.addElectroComponent(finalI*finalJ, new Resistor(cir));
                                 }
 
                             }; break;

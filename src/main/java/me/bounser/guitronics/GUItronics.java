@@ -12,6 +12,17 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class GUItronics extends JavaPlugin {
 
+    /** Notes:
+     *
+     *  Directions are determined by integers starting with 0 and going clockwise.
+     *  (North = 0, East = 1...) -1 means no direction.
+     *
+     *  Inputs/Outputs follow the same structure.
+     *
+     *
+     *
+     */
+
     private static GUItronics main;
     public static GUItronics getInstance(){ return main; }
 

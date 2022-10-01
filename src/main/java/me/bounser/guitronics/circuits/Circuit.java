@@ -1,11 +1,11 @@
 package me.bounser.guitronics.circuits;
 
-import me.bounser.guitronics.electrocomponents.EComponent;
-import me.bounser.guitronics.electrocomponents.ElectroComponent;
-import me.bounser.guitronics.electrocomponents.ecomponents.Delayer;
-import me.bounser.guitronics.electrocomponents.ecomponents.Diode;
-import me.bounser.guitronics.electrocomponents.ecomponents.Resistor;
-import me.bounser.guitronics.electrocomponents.ecomponents.Wire;
+import me.bounser.guitronics.components.ElectroComponent;
+import me.bounser.guitronics.components.EComponent;
+import me.bounser.guitronics.components.electrocomponents.Delayer;
+import me.bounser.guitronics.components.electrocomponents.Diode;
+import me.bounser.guitronics.components.electrocomponents.Resistor;
+import me.bounser.guitronics.components.electrocomponents.Wire;
 import me.bounser.guitronics.tools.Data;
 import me.leoko.advancedgui.utils.components.RectComponent;
 import me.leoko.advancedgui.utils.interactions.Interaction;
@@ -65,7 +65,7 @@ public class Circuit {
 
     public Color getColor(Object pos, boolean powered){
 
-        switch(getElectroComponent(design.get(pos))){
+        switch(getEComponent(design.get(pos))){
             case WIRE:
                 Wire wire = (Wire) design.get(pos);
                 if(powered) return wire.getPoweredColor();
@@ -82,7 +82,7 @@ public class Circuit {
         return null;
     }
 
-    public ElectroComponent getElectroComponent(Object EComponent){
+    public EComponent getEComponent(Object EComponent){
 
         if(EComponent instanceof Wire){
             return ((Wire) EComponent).getEComponent();
@@ -98,7 +98,7 @@ public class Circuit {
 
     public boolean getPoweredState(Object pos){
 
-        switch(getElectroComponent(design.get(pos))){
+        switch(getEComponent(design.get(pos))){
             case WIRE:
                 Wire wire = (Wire) design.get(pos);
                 return wire.isPowered();
@@ -112,11 +112,11 @@ public class Circuit {
         return false;
     }
 
-    public EComponent getEComponent(int pos){ return (EComponent) design.get(pos); }
+    public ElectroComponent getElectroComponent(int pos){ return (ElectroComponent) design.get(pos); }
 
     // adders / removers
 
-    public void addEComponent(int pos, Object eComponent){ design.put(pos, eComponent); }
+    public void addElectroComponent(int pos, Object ElectroComponent){ design.put(pos, ElectroComponent); }
 
     public void removeEComponent(Object pos){ if(design.containsKey(pos)) design.remove(pos); }
 
@@ -179,7 +179,7 @@ public class Circuit {
 
     public void updateRect(Object electroComponent, Interaction i, int id, Boolean powered){
 
-        switch(getElectroComponent(electroComponent)){
+        switch(getEComponent(electroComponent)){
 
             case WIRE: Wire wire = (Wire) electroComponent;
                 RectComponent blockw = i.getComponentTree().locate(id + "a", RectComponent.class);
@@ -208,23 +208,51 @@ public class Circuit {
 
     public void removeInteraction(Interaction interaction) { interactions.remove(interaction); }
 
-    public void changeSize(List<Location> LocToAdd){
+    public void addLocation(Location location){
 
-        for(Location loc : LocToAdd){
-
-            if(locations.size() == 1 && LocToAdd.size() == 1){
-                locations.put(2, LocToAdd.get(0));
-            }
-            if(locations.size() == 2 && LocToAdd.size() == 2){
-                locations.put(3, LocToAdd.get(0));
-                locations.put(4, LocToAdd.get(1));
-            }
+        if(locations.size() < 5){
+            locations.put(locations.size() + 1, location);
         }
 
     }
 
-    public void expand(int direction){
+    // Direction: INT corresponding to clockwise change.
 
+    public void expand(int direction){
+        switch (direction){
+
+            case 1:
+                if(locations.size() == 1){
+                    addLocation(locations.get(0).add(1,0,0));
+                }
+                if(locations.size() == 2){
+
+                }
+            case 2:
+                if(locations.size() == 1){
+
+                }
+                if(locations.size() == 2){
+
+                }
+            case 3:
+                if(locations.size() == 1){
+
+                }
+                if(locations.size() == 2){
+
+                }
+            case 4:
+                if(locations.size() == 1){
+
+                }
+                if(locations.size() == 2){
+
+                }
+
+
+
+        }
 
     }
 

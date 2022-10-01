@@ -7,7 +7,6 @@ import me.leoko.advancedgui.utils.Direction;
 import me.leoko.advancedgui.utils.GuiInstance;
 import me.leoko.advancedgui.utils.Layout;
 import me.leoko.advancedgui.utils.interactions.Interaction;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
 import java.awt.*;
@@ -52,9 +51,9 @@ public class CircuitsManager {
 
     public Circuit getCircuitFromBaseLocation(Location circuitBase){
         for(Circuit circuit : circuits.keySet()){
-            Location base = circuit.getLocation().add(0,-1,0);
-            if(data.getDebug()) Bukkit.broadcastMessage("distance: " + base.distance(circuitBase) + base + circuitBase);
-            if(base.distance(circuitBase) == 0) return circuit;
+            for(Location loc : circuit.getLocation().values()){
+                if(loc.equals(circuitBase)) return circuit;
+            }
         }
         return null;
     }

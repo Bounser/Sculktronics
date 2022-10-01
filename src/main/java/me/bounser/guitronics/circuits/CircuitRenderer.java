@@ -1,8 +1,7 @@
 package me.bounser.guitronics.circuits;
 
-import me.bounser.guitronics.electrocomponents.ElectroComponent;
+import me.bounser.guitronics.components.EComponent;
 import me.bounser.guitronics.tools.Data;
-import me.bounser.guitronics.tools.Miscellaneous;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.data.type.RedstoneWire;
@@ -43,7 +42,7 @@ public class CircuitRenderer {
 
                 if (design.containsKey(x)) {
 
-                    if(cir.getElectroComponent(cir.getEComponent(x)).equals(ElectroComponent.DIODE)){
+                    if(cir.getEComponent(cir.getElectroComponent(x)).equals(EComponent.DIODE)){
 
                         // DIODE LOGIC - GET OFFSET OF INTEGERS (CARDINAL)
 
