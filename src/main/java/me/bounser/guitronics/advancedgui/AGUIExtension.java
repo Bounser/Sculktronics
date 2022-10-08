@@ -83,29 +83,40 @@ public class AGUIExtension implements LayoutExtension {
 
         // If the interaction is with a circuit, it will set its corresponding design and update the render.
 
+        if(!e.getInteraction().getLayout().getName().contains("Circuit")) return;
+
+        Circuit cir = CircuitsManager.getInstance().getCircuitFromGUIInstance(e.getGuiInstance());
+
+        int size = cir.getSize();
+
         if(e.getInteraction().getLayout().getName().contains(Data.getInstance().getLayout().getName())){
 
             int x = 0;
             int y = 0;
 
-            if(e.getInteraction().getLayout().getName().contains("1")){
-                x = 9;
-                y = 9;
-            }
-            if(e.getInteraction().getLayout().getName().contains("2")){
-                x = 22;
-                y = 9;
-            }
-            if(e.getInteraction().getLayout().getName().contains("3")){
-                x = 22;
-                y = 22;
+            switch(size){
+                case 0:
+                    x = 9;
+                    y = 9;
+                    break;
+                case 1:
+                    x = 22;
+                    y = 9;
+                    break;
+                case 2:
+                    x = 9;
+                    y = 22;
+                    break;
+                case 3:
+                    x = 22;
+                    y = 22;
+                    break;
             }
 
             e.getInteraction().getComponentTree().locate("lid").setHidden(true);
 
             if(Data.getInstance().getDebug()) e.getPlayer().sendMessage("Interaction with circuit begins.");
 
-            Circuit cir = CircuitsManager.getInstance().getCircuitFromGUIInstance(e.getGuiInstance());
             cir.addInteraction(e.getInteraction());
 
             // Mapping all the rects.
@@ -120,10 +131,10 @@ public class AGUIExtension implements LayoutExtension {
                             null,
                             false,
                             e.getInteraction(),
-                            9 + j*10,
-                            9 + i*10,
-                            10,
-                            10,
+                            10 + j*10,
+                            10 + i*10,
+                            9,
+                            9,
                             cir.getColor(i*j, cir.getPoweredState(i*j)),
                             Miscellaneous.getInstance().getRoundFromEComponent(EComponent)
                             );
