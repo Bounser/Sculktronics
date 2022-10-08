@@ -10,6 +10,7 @@ import me.bounser.guitronics.components.electrocomponents.Resistor;
 import me.bounser.guitronics.components.electrocomponents.Wire;
 import me.bounser.guitronics.tools.Data;
 import me.bounser.guitronics.tools.Miscellaneous;
+import me.leoko.advancedgui.utils.Layout;
 import me.leoko.advancedgui.utils.LayoutExtension;
 import me.leoko.advancedgui.utils.actions.Action;
 import me.leoko.advancedgui.utils.components.RectComponent;
@@ -18,22 +19,30 @@ import me.leoko.advancedgui.utils.events.GuiInteractionExitEvent;
 import me.leoko.advancedgui.utils.events.LayoutLoadEvent;
 import org.bukkit.event.EventHandler;
 
+import java.util.List;
+
 public class AGUIExtension implements LayoutExtension {
 
     Data data = Data.getInstance();
 
-    // LAYOUTS: Circuit1x1 Circuit2x1 Circuit2x2
+    List<Layout> layoutList;
 
-    @EventHandler
+    @Override
     public void onLayoutLoad(LayoutLoadEvent e){
 
         switch(e.getLayout().getName()){
-            case "Circuit1": GUItronics.getInstance().getLogger().info("Layout 1 found!"); break;
-            case "Circuit2": GUItronics.getInstance().getLogger().info("Layout 2 found!"); break;
-            case "Circuit4": GUItronics.getInstance().getLogger().info("Layout 3 found!"); break;
+            case "Circuit1":
+                GUItronics.getInstance().getLogger().info("Layout 1 found!");
+                layoutList.add(e.getLayout()); break;
+            case "Circuit2":
+                GUItronics.getInstance().getLogger().info("Layout 2 found!");
+                layoutList.add(e.getLayout()); break;
+            case "Circuit4":
+                GUItronics.getInstance().getLogger().info("Layout 3 found!");
+                layoutList.add(e.getLayout()); break;
         }
 
-        if(e.getLayout().getName().contains("Circuit")){
+        if(e.getLayout().getName().contains("Circuit")) {
 
             e.getLayout().getTemplateComponentTree().locate("u10").setClickAction((interaction, player, primaryTrigger) -> {
 
@@ -62,6 +71,7 @@ public class AGUIExtension implements LayoutExtension {
         }
 
     }
+
 
     /**
      *  When the interaction is created, the rects are created with a click action which states the response depending

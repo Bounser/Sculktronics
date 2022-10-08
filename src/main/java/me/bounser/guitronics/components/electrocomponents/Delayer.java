@@ -38,6 +38,10 @@ public class Delayer implements ElectroComponent {
 
     }
 
+    public int getDelay(){
+        return delay;
+    }
+
     @Override
     public EComponent getEComponent() {
         return EComponent.DELAYER;

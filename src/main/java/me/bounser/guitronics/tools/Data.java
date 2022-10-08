@@ -28,12 +28,11 @@ public class Data {
      *        num: 2
      *        1:
      *          loc:
-     *           1:
      *             world: "world"
      *             x:
      *             y:
      *             z:
-     *             ...
+     *          size: 1
      *          design:
      *            1: COMPONENT
      *            2: COMPONENT
@@ -73,11 +72,7 @@ public class Data {
         return instance;
     }
 
-    public Data(){
-
-    }
-
-    public Layout getLayout(){ return LayoutManager.getInstance().getLayout(main.getConfig().getString("Layout")); }
+    public Layout getLayout(int i){ return LayoutManager.getInstance().getLayout(main.getConfig().getString("Layouts." + i)); }
 
     public boolean getDebug(){ return main.getConfig().getBoolean("Debug"); }
 
@@ -262,33 +257,13 @@ public class Data {
         return (HashMap<Integer, Object>) json.getMap(uuid + ".design");
     }
 
-    private HashMap<Circuit, List<Location>> getAllCircuitBases(){
+    public HashMap<Circuit, List<Location>> getAllCircuitLocations(){
 
-        HashMap circuits = new HashMap<>();
+        HashMap<Circuit, List<Location>> circuits = new HashMap<>();
 
         for(String uuid : json.getStringList("users")){
-            circuits.put(CircuitsManager.getInstance().getCircuitFromOwner(uuid), getLocation(uuid).add(0,-1,0));
+            circuits.put(CircuitsManager.getInstance().getCircuitFromOwner(uuid), getLocations(uuid));
         }
         return circuits;
     }
-    private List<Location> getAllCircuitLocations(){
-        List<Location> circuits = new ArrayList<>();
-        for(String uuid : json.getStringList("users")){
-            circuits.addAll(getLocations(uuid));
-        }
-        return circuits;
-    }
-    /*private List<Location> getAllSurroundings(){
-        List<Location> surroundings = new ArrayList<>();
-        for(Object uuid : json.getList("users")){
-            surroundings.add((Location) json.get(uuid + ".surroundings"));
-        }
-        return surroundings;
-    }*/
-
-
-    public List<Location> getCircuitsLoc(){ return circuits; }
-
-    public void addCircuitLoc(Location loc){ if(!circuits.contains(loc)) circuits.add(loc); }
-
 }

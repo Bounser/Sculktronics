@@ -28,9 +28,9 @@ public class CircuitsManager {
         return instance == null ? instance = new CircuitsManager() : instance;
     }
 
-    public void createCircuit(HashMap loc, String owneruuid){
+    public void createCircuit(Location loc, String owneruuid){
 
-        circuits.put(new Circuit(loc, owneruuid, null, null, null), AGUIInstances.getInstance().placeGUI(loc, Direction.FLOOR_EAST, layout));
+        circuits.put(new Circuit(loc, 1, owneruuid, null, null, null), AGUIInstances.getInstance().placeGUI(loc, Direction.FLOOR_EAST, layout));
         Data.getInstance().registerCircuit(loc, owneruuid);
 
     }

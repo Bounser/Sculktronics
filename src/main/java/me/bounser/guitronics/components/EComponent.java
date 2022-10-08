@@ -5,4 +5,5 @@ public enum EComponent {
     DIODE,
     DELAYER,
     RESISTOR,
+    INVERTER
 }

@@ -44,7 +44,11 @@ Colors:
       g: 226
       b: 226
 
-# Name of the layout.
-Layout: "Circuit"
+# Names of the layouts.
+Layouts:
+  1: "Circuit1"
+  2: "Circuit2"
+  3: "Circuit3"
+  4: "Circuit4"
 
 Debug: false

@@ -21,8 +21,14 @@ import java.util.List;
 public class Circuit {
 
     // Persistent info:
-    // Locations of the different bases. Possible combinations: 1 | 1 2 | 1 2 3 4
-    HashMap<Integer, Location> locations;
+    // Location of the main base, located at the north-west.
+    Location location;
+    /* Sizes of the circuit. 0 = 1x1 1 = 1x2 2 = 2x1 3 = 2x2
+    *                                       N
+    *      Size 2: oo  Size 3:  o         W X E
+    *                           o           S
+    */
+    int size;
     // UUID of the owner.
     String owneruuid;
     // This is the design of the circuit. Here is stored all the information related to all things the player modified.
@@ -40,9 +46,10 @@ public class Circuit {
     // State of the circuit.
     Boolean overloaded = false;
 
-    public Circuit(HashMap<Integer, Location> loc, String uuid, HashMap<Integer, Object> design, List<Integer> inputs, List<Integer> outputs){
-        locations = loc;
+    public Circuit(Location loc, int size, String uuid, HashMap<Integer, Object> design, List<Integer> inputs, List<Integer> outputs){
+        location = loc;
         owneruuid = uuid;
+        this.size = size;
         if(design == null){
             this.design = new HashMap<Integer, Object>();
         } else {
@@ -51,7 +58,9 @@ public class Circuit {
     }
 
     // Getters
-    public HashMap<Integer, Location> getLocation(){ return locations; }
+    public Location getLocation(){ return location; }
+
+    public int getSize(){ return size; }
 
     public String getOwneruuid(){ return owneruuid; }
 
@@ -108,7 +117,10 @@ public class Circuit {
             case DIODE:
                 Diode diode = (Diode) design.get(pos);
                 return diode.isPowered();
-        }
+            case RESISTOR:
+                Resistor resistor = (Resistor) design.get(pos);
+                return resistor.isPowered();
+         }
         return false;
     }
 
@@ -220,37 +232,14 @@ public class Circuit {
 
     public void expand(int direction){
         switch (direction){
-
+            case 0:
+                location = location.add(1,0,0); break;
             case 1:
-                if(locations.size() == 1){
-                    addLocation(locations.get(0).add(1,0,0));
-                }
-                if(locations.size() == 2){
-
-                }
+                break;
             case 2:
-                if(locations.size() == 1){
-
-                }
-                if(locations.size() == 2){
-
-                }
+                break;
             case 3:
-                if(locations.size() == 1){
-
-                }
-                if(locations.size() == 2){
-
-                }
-            case 4:
-                if(locations.size() == 1){
-
-                }
-                if(locations.size() == 2){
-
-                }
-
-
+                location = location.add(0,0,1); break;
 
         }
 
