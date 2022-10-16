@@ -3,11 +3,17 @@ package me.bounser.guitronics.circuits;
 import me.bounser.guitronics.advancedgui.AGUIInstances;
 import me.bounser.guitronics.listeners.RedstoneListener;
 import me.bounser.guitronics.tools.Data;
+import me.leoko.advancedgui.manager.GuiWallManager;
+import me.leoko.advancedgui.manager.LayoutManager;
 import me.leoko.advancedgui.utils.Direction;
 import me.leoko.advancedgui.utils.GuiInstance;
 import me.leoko.advancedgui.utils.Layout;
 import me.leoko.advancedgui.utils.interactions.Interaction;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.type.Repeater;
 
 import java.awt.*;
 import java.util.Map.Entry;
@@ -21,7 +27,8 @@ public class CircuitsManager {
 
     HashMap<Circuit, GuiInstance> circuits = new HashMap<>();
     HashMap<Circuit, List> circuitBases;
-    Layout layout = Data.getInstance().getLayout();
+
+    Layout layout = LayoutManager.getInstance().getLayout(data.getLayoutName());
 
     private static CircuitsManager instance;
     public static CircuitsManager getInstance(){
@@ -30,7 +37,7 @@ public class CircuitsManager {
 
     public void createCircuit(Location loc, String owneruuid){
 
-        circuits.put(new Circuit(loc, 1, owneruuid, null, null, null), AGUIInstances.getInstance().placeGUI(loc, Direction.FLOOR_EAST, layout));
+        circuits.put(new Circuit(loc, 1, owneruuid, null, null, null), AGUIInstances.getInstance().placeGUI(loc, Direction.FLOOR_EAST, layout, null, true));
         Data.getInstance().registerCircuit(loc, owneruuid);
 
     }
@@ -77,11 +84,74 @@ public class CircuitsManager {
                 HashMap locations = data.getLocations(uuid);
                 circuits.put(new Circuit(locations, uuid, data.getDesign(uuid)),
                         AGUIInstances.getInstance().placeGUI(locations, Direction.FLOOR_EAST, layout));
-                RedstoneListener.getInstance().addBase(locations.add(0,-1,0));
 
             }
             return true;
         }
         return false;
     }
+
+    public List getAllCircuits(){
+        return (List) circuits.keySet();
+    }
+
+    public void updatePuts(Circuit circuit){
+
+        // BASIC CIRCUIT SCHEM.
+
+        if(circuit.getSize() == 0){
+            for(int i = 0; i<=4; i++){
+                switch(i){
+                    case 0:
+                        Block block0 = circuit.getLocation().add(0,0,-1).getBlock();
+                        if(block0.getType().equals(Material.REPEATER)){
+                            Repeater repeater = (Repeater) block0;
+                            if(repeater.getFacing().equals(BlockFace.SOUTH)){
+                                circuit.addInput(0);
+                            } else if(repeater.getFacing().equals(BlockFace.NORTH)){
+                                circuit.addOutput(0);
+                            }
+                        }
+                        break;
+                    case 1:
+                        Block block1 = circuit.getLocation().add(1,0,0).getBlock();
+                        if(block1.getType().equals(Material.REPEATER)){
+                            Repeater repeater = (Repeater) block1;
+                            if(repeater.getFacing().equals(BlockFace.WEST)){
+                                circuit.addInput(0);
+                            } else if(repeater.getFacing().equals(BlockFace.EAST)){
+                                circuit.addOutput(0);
+                            }
+                        }
+                        break;
+                    case 2:
+                        Block block2 = circuit.getLocation().add(0,0,1).getBlock();
+                        if(block2.getType().equals(Material.REPEATER)){
+                            Repeater repeater = (Repeater) block2;
+                            if(repeater.getFacing().equals(BlockFace.NORTH)){
+                                circuit.addInput(0);
+                            } else if(repeater.getFacing().equals(BlockFace.SOUTH)){
+                                circuit.addOutput(0);
+                            }
+                        }
+                        break;
+                    case 3:
+                        Block block3 = circuit.getLocation().add(-1,0,0).getBlock();
+                        if(block3.getType().equals(Material.REPEATER)){
+                            Repeater repeater = (Repeater) block3;
+                            if(repeater.getFacing().equals(BlockFace.EAST)){
+                                circuit.addInput(0);
+                            } else if(repeater.getFacing().equals(BlockFace.WEST)){
+                                circuit.addOutput(0);
+                            }
+                        }
+                        break;
+                }
+            }
+
+        }
+
+
+    }
+
 }

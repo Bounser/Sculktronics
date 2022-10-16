@@ -72,7 +72,7 @@ public class Data {
         return instance;
     }
 
-    public Layout getLayout(int i){ return LayoutManager.getInstance().getLayout(main.getConfig().getString("Layouts." + i)); }
+    public String getLayoutName(){ return main.getConfig().getString("Layout"); }
 
     public boolean getDebug(){ return main.getConfig().getBoolean("Debug"); }
 

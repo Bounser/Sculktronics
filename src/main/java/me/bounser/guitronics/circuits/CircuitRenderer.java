@@ -2,6 +2,7 @@ package me.bounser.guitronics.circuits;
 
 import me.bounser.guitronics.components.EComponent;
 import me.bounser.guitronics.tools.Data;
+import me.leoko.advancedgui.utils.interactions.Interaction;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.data.type.RedstoneWire;
@@ -17,6 +18,20 @@ public class CircuitRenderer {
     private static CircuitRenderer  instance;
     public static CircuitRenderer  getInstance(){
         return instance == null ? instance = new CircuitRenderer() : instance;
+    }
+
+    public void renderPuts(Circuit cir){
+
+        for(Interaction interaction : cir.getInteractions()){
+            for(int input : cir.getInputs()){
+                interaction.getComponentTree().locate(input + "t");
+            }
+            for(int output : cir.getOutputs()){
+                interaction.getComponentTree().locate(output + "t");
+            }
+        }
+
+
     }
 
     public void render(Circuit cir){

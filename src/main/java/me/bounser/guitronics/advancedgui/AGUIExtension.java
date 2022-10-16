@@ -89,7 +89,7 @@ public class AGUIExtension implements LayoutExtension {
 
         int size = cir.getSize();
 
-        if(e.getInteraction().getLayout().getName().contains(Data.getInstance().getLayout().getName())){
+        if(e.getInteraction().getLayout().getName().contains(Data.getInstance().getLayoutName())){
 
             int x = 0;
             int y = 0;
@@ -213,7 +213,7 @@ public class AGUIExtension implements LayoutExtension {
     @EventHandler
     public void onInteractionEnd(GuiInteractionExitEvent e) {
 
-        if(e.getInteraction().getLayout().equals(Data.getInstance().getLayout())) {
+        if(e.getInteraction().getLayout().getName().contains(Data.getInstance().getLayoutName())) {
 
             e.getInteraction().getComponentTree().locate("lid").setHidden(false);
 

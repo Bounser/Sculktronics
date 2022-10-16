@@ -134,11 +134,17 @@ public class Circuit {
 
     public void addToRender(int powered){ toRender.add(powered); }
 
-    public void addInput(int input){ if(!inputs.contains(input)) inputs.add(input); updateRender(true); }
+    public void addInput(int input){
+        if(!inputs.contains(input)) inputs.add(input);
+        CircuitRenderer.getInstance().renderPuts(this);
+    }
 
     public void removeInput(Object input){ inputs.remove(input); updateRender(true); }
 
-    public void addOutput(int output){ outputs.add(output);}
+    public void addOutput(int output){
+        if(!outputs.contains(output)) outputs.add(output);
+        CircuitRenderer.getInstance().renderPuts(this);
+    }
 
     public void removeOutput(Object output){ inputs.remove(output); updateRender(true); }
 

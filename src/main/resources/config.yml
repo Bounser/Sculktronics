@@ -44,11 +44,8 @@ Colors:
       g: 226
       b: 226
 
-# Names of the layouts.
-Layouts:
-  1: "Circuit1"
-  2: "Circuit2"
-  3: "Circuit3"
-  4: "Circuit4"
+
+# DO NOT CHANGE ANYTHING DOWN IF YOU DON'T KNOW WHAT YOU ARE DOING.
+Layout: Circuit
 
 Debug: false

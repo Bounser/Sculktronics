@@ -22,9 +22,13 @@ public class BlockListener implements Listener {
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent e){
 
+        // General block logic
+
         if(e.getBlock().getBlockData().getMaterial().equals(Material.SCULK_CATALYST) &&
                 e.getItemInHand().getItemMeta().getLore() != null &&
                 e.getItemInHand().getItemMeta().getLore().contains("circuit")){
+
+            // Check for near circuits
 
             for(List<Location> listLocation : data.getAllCircuitLocations().values()){
 
@@ -41,21 +45,19 @@ public class BlockListener implements Listener {
             Location locbase = e.getBlock().getLocation();
             Location loc = e.getBlock().getLocation().add(0,1,0);
 
-            CircuitsManager.getInstance().createCircuit(e.getBlock().getLocation().add(0,1,0), e.getPlayer().getUniqueId().toString());
+            // Create new circuit
+
+            CircuitsManager.getInstance().createCircuit(e.getBlock().getLocation(), e.getPlayer().getUniqueId().toString());
             return;
         }
 
         if(e.getBlock().getBlockData().getMaterial().equals(Material.REPEATER)){
 
-            for(Location loc : data.getCircuitsLoc()){
-                if(loc.distance(e.getBlock().getLocation()) == 1 && loc.getY() == e.getBlock().getY()){
+            for(Circuit cir : CircuitsManager.getInstance().getAllCircuits()){
 
-                    Circuit cir = CircuitsManager.getInstance().getCircuitFromBaseLocation(loc);
-
-                    Repeater repeater = (Repeater) e.getBlock().getBlockData();
-
-                }
             }
+
+            CircuitsManager.getInstance().updatePuts();
 
         }
 
@@ -70,8 +72,6 @@ public class BlockListener implements Listener {
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e){
-        if(data.getCircuitsLoc().contains(e.getBlock().getLocation())){
-            e.setCancelled(true);
-        }
+
     }
 }
