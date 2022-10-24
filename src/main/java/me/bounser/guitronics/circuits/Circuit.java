@@ -11,6 +11,7 @@ import me.leoko.advancedgui.utils.components.RectComponent;
 import me.leoko.advancedgui.utils.interactions.Interaction;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -21,11 +22,11 @@ import java.util.List;
 public class Circuit {
 
     // Persistent info:
-    // Location of the main base, located at the north-west.
+    // Location of the main base, located at the north-west block within the cicuit base.
     Location location;
     /* Sizes of the circuit. 0 = 1x1 1 = 1x2 2 = 2x1 3 = 2x2
     *                                       N
-    *      Size 2: oo  Size 3:  o         W X E
+    *      Size 1: oo  Size 2:  o         W X E
     *                           o           S
     */
     int size;
@@ -46,7 +47,7 @@ public class Circuit {
     // State of the circuit.
     Boolean overloaded = false;
 
-    public Circuit(Location loc, int size, String uuid, HashMap<Integer, Object> design, List<Integer> inputs, List<Integer> outputs){
+    public Circuit(Location loc, int size, String uuid, HashMap<Integer, Object> design){
         location = loc;
         owneruuid = uuid;
         this.size = size;
@@ -122,6 +123,27 @@ public class Circuit {
                 return resistor.isPowered();
          }
         return false;
+    }
+
+    public List<Location> getLocations(){
+
+        List<Location> locations = new ArrayList();
+
+        locations.add(location);
+
+        if(size == 1){
+            locations.add(location.add(1,0,0));
+        }
+        if(size == 2){
+            locations.add(location.add(0,0,1));
+        }
+        if(size == 3){
+            locations.add(location.add(1,0,0));
+            locations.add(location.add(0,0,1));
+            locations.add(location.add(1,0,1));
+        }
+
+        return locations;
     }
 
     public ElectroComponent getElectroComponent(int pos){ return (ElectroComponent) design.get(pos); }
@@ -226,29 +248,36 @@ public class Circuit {
 
     public void removeInteraction(Interaction interaction) { interactions.remove(interaction); }
 
-    public void addLocation(Location location){
-
-        if(locations.size() < 5){
-            locations.put(locations.size() + 1, location);
-        }
-
-    }
-
     // Direction: INT corresponding to clockwise change.
 
     public void expand(int direction){
-        switch (direction){
-            case 0:
-                location = location.add(1,0,0); break;
-            case 1:
-                break;
-            case 2:
-                break;
-            case 3:
-                location = location.add(0,0,1); break;
+        if(size == 0){
+            switch (direction){
+                case 0:
+                    location = location.add(0,0,-1); break;
+                case 3:
+                    location = location.add(-1,0,0); break;
 
+                case 1:
+                    location.add(1,0,0).getBlock().setType(Material.SCULK_CATALYST); break;
+                case 2:
+                    location.add(0,0,1).getBlock().setType(Material.SCULK_CATALYST); break;
+
+            }
+        } else if(size == 1){
+            if(direction == 0) { location = location.add(0, 0, -1); }
+
+            location.add(0,0,1).getBlock().setType(Material.SCULK_CATALYST);
+            location.add(1,0,1).getBlock().setType(Material.SCULK_CATALYST);
+
+        } else if(size == 2){
+            if(direction == 3) { location = location.add(-1, 0, 0); }
+
+            location.add(0,0,1).getBlock().setType(Material.SCULK_CATALYST);
+            location.add(1,0,1).getBlock().setType(Material.SCULK_CATALYST);
         }
 
+        CircuitsManager.getInstance().updateCircuit(this);
     }
 
     public List<Interaction> getInteractions(){ return interactions; }

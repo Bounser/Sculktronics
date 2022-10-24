@@ -5,6 +5,8 @@ import me.bounser.guitronics.circuits.CircuitsManager;
 import me.bounser.guitronics.tools.Data;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.type.Repeater;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -42,32 +44,112 @@ public class BlockListener implements Listener {
 
             }
 
-            Location locbase = e.getBlock().getLocation();
-            Location loc = e.getBlock().getLocation().add(0,1,0);
-
             // Create new circuit
 
             CircuitsManager.getInstance().createCircuit(e.getBlock().getLocation(), e.getPlayer().getUniqueId().toString());
             return;
         }
 
-        if(e.getBlock().getBlockData().getMaterial().equals(Material.REPEATER)){
-
-            for(Circuit cir : CircuitsManager.getInstance().getAllCircuits()){
-
-            }
-
-            CircuitsManager.getInstance().updatePuts();
-
-        }
-
     }
 
     public void checkCircuitPuts(Circuit circuit){
 
-        HashMap<Integer, Location> locations = circuit.getLocation();
+        HashMap<Location, Integer> locations = new HashMap<>();
 
+        locations.put(circuit.getLocation().add(0,0,-1), 0);
 
+        if(circuit.getSize() == 0){
+            locations.put(circuit.getLocation().add(1,0,0), 1);
+            locations.put(circuit.getLocation().add(0,0,-1), 2);
+            locations.put(circuit.getLocation().add(-1,0,0), 3);
+        }
+        if(circuit.getSize() == 1){
+            locations.put(circuit.getLocation().add(1,0,-1), 1);
+            locations.put(circuit.getLocation().add(2,0,0), 2);
+            locations.put(circuit.getLocation().add(1,0,1), 3);
+            locations.put(circuit.getLocation().add(0,0,1), 4);
+            locations.put(circuit.getLocation().add(-1,0,0), 5);
+        }
+        if(circuit.getSize() == 2){
+            locations.put(circuit.getLocation().add(1,0,0), 1);
+            locations.put(circuit.getLocation().add(1,0,1), 2);
+            locations.put(circuit.getLocation().add(0,0,2), 3);
+            locations.put(circuit.getLocation().add(-1,0,1), 4);
+            locations.put(circuit.getLocation().add(-1,0,0), 5);
+        }
+        if(circuit.getSize() == 3){
+            locations.put(circuit.getLocation().add(1,0,-1), 1);
+            locations.put(circuit.getLocation().add(2,0,0), 2);
+            locations.put(circuit.getLocation().add(2,0,-1), 3);
+            locations.put(circuit.getLocation().add(1,0,-2), 4);
+            locations.put(circuit.getLocation().add(0,0,-2), 5);
+            locations.put(circuit.getLocation().add(-1,0,1), 6);
+            locations.put(circuit.getLocation().add(-1,0,0), 7);
+        }
+
+        // FOR CIRCUITS SIZED FROM 1-3
+
+        for(Location loc : locations.keySet()){
+
+            Block block = loc.getBlock();
+            Block blockC = getNearestLoc(loc, circuit.getLocations()).getBlock();
+
+            if(block.getType().equals(Material.REPEATER)){
+                Repeater repeater = (Repeater) block;
+
+                if(blockC.getFace(block) == BlockFace.EAST){
+
+                    if(repeater.getFacing() == BlockFace.EAST){
+                        circuit.addInput(locations.get(loc));
+                    } else if(repeater.getFacing() == BlockFace.WEST){
+                        circuit.addOutput(locations.get(loc));
+                    }
+
+                }
+
+                if(blockC.getFace(block) == BlockFace.WEST){
+
+                    if(repeater.getFacing() == BlockFace.WEST){
+                        circuit.addInput(locations.get(loc));
+                    } else if(repeater.getFacing() == BlockFace.EAST){
+                        circuit.addOutput(locations.get(loc));
+                    }
+
+                }
+
+                if(blockC.getFace(block) == BlockFace.NORTH){
+
+                    if(repeater.getFacing() == BlockFace.NORTH){
+                        circuit.addInput(locations.get(loc));
+                    } else if(repeater.getFacing() == BlockFace.SOUTH){
+                        circuit.addOutput(locations.get(loc));
+                    }
+
+                }
+
+                if(blockC.getFace(block) == BlockFace.SOUTH){
+
+                    if(repeater.getFacing() == BlockFace.SOUTH){
+                        circuit.addInput(locations.get(loc));
+                    } else if(repeater.getFacing() == BlockFace.NORTH){
+                        circuit.addOutput(locations.get(loc));
+                    }
+
+                }
+            }
+        }
+    }
+
+    public Location getNearestLoc(Location loc, List<Location> locs){
+
+        // Indeed, although the name might be misleading, it returns the block with distance 1.
+
+        for(Location l : locs){
+            if(l.distance(loc) == 1){
+                return l;
+            }
+        }
+        return null;
     }
 
     @EventHandler

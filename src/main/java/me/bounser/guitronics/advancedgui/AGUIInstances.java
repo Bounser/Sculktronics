@@ -3,6 +3,7 @@ package me.bounser.guitronics.advancedgui;
 import me.bounser.guitronics.circuits.Circuit;
 import me.bounser.guitronics.tools.Data;
 import me.leoko.advancedgui.manager.GuiWallManager;
+import me.leoko.advancedgui.manager.LayoutManager;
 import me.leoko.advancedgui.utils.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -23,27 +24,42 @@ public class AGUIInstances {
         return instance == null ? instance = new AGUIInstances() : instance;
     }
 
+    Data data = Data.getInstance();
+
+    Layout layout0 = LayoutManager.getInstance().getLayout(data.getLayoutName(0));
+    Layout layout1 = LayoutManager.getInstance().getLayout(data.getLayoutName(1));
+    Layout layout2 = LayoutManager.getInstance().getLayout(data.getLayoutName(2));
+    Layout layout3 = LayoutManager.getInstance().getLayout(data.getLayoutName(3));
+
     // Places the AdvancedGUI GUI and returns its GUIinstance.
-    public GuiInstance placeGUI(Location location, Direction dir, Layout layout, Circuit cir, Boolean remove){
+    public GuiInstance placeGUI(Location location, Direction dir, Circuit cir, Boolean remove){
 
         GuiWallManager gwm = GuiWallManager.getInstance();
 
         List<Location> locations = new ArrayList<Location>();
         locations.add(location);
 
-        switch(cir.getSize()){
+        Layout layout = layout0;
 
-            case 1:
-                locations.add(location.add(1,0,0)); break;
-            case 2:
-                locations.add(location.add(0,0,1)); break;
-            case 3:
-                locations.add(location.add(1,0,0));
-                locations.add(location.add(0,0,1));
-                locations.add(location.add(1,0,1));
+        if (cir != null) {
+            switch(cir.getSize()){
 
+                case 1:
+                    locations.add(location.add(1,0,0));
+                    layout = layout1;
+                    break;
+                case 2:
+                    locations.add(location.add(0,0,1));
+                    layout = layout2;
+                    break;
+                case 3:
+                    locations.add(location.add(1,0,0));
+                    locations.add(location.add(0,0,1));
+                    locations.add(location.add(1,0,1));
+                    layout = layout3;
+                    break;
+            }
         }
-
 
         for(Location loc : locations){
             if(Data.getInstance().getDebug()) Bukkit.broadcastMessage("Placing GUI... " + (gwm.getActiveInstance(loc) == null ? "null" : "true"));

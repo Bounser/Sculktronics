@@ -19,7 +19,7 @@ public class Data {
 
     /** Data structure:
      *
-     *      data.json: (Simplified)
+     *  data.json: (Simplified)
      *       users:
      *       - "UUID1"
      *       - "UUID2"
@@ -54,6 +54,11 @@ public class Data {
     Color resistorBasic = getResistorBasicColor();
     Color resistorPowered = getResistorPoweredColor();
 
+    Layout layout0;
+    Layout layout1;
+    Layout layout2;
+    Layout layout3;
+
     private static Data instance;
     private static GUItronics main;
     public static Json json;
@@ -72,7 +77,11 @@ public class Data {
         return instance;
     }
 
-    public String getLayoutName(){ return main.getConfig().getString("Layout"); }
+    public String getLayoutName(int size){ return main.getConfig().getString("Layout." + size); }
+
+    public int getSize(int n, String uuid){ return main.getConfig().getInt(uuid + "." + n + ".size"); }
+
+    public int getNum(String uuid){ return main.getConfig().getInt(uuid + ".num");}
 
     public boolean getDebug(){ return main.getConfig().getBoolean("Debug"); }
 
@@ -238,19 +247,11 @@ public class Data {
 
     public int getNumberCircuitsOfUser(String uuid){ return json.getInt(uuid + ".num"); }
 
-    public List<Location> getLocations(String uuid){
-
-        List<Location> locations = new ArrayList<>();
-
-        for(int i = 1; i<=getNumberCircuitsOfUser(uuid); i++){
-            for(int j = 1; j<=4; j++){
-                locations.add(new Location(Bukkit.getWorld(json.getString(uuid+"." + j + ".loc.world")),
-                        json.getDouble(uuid + "." + j + ".loc.x"),
-                        json.getDouble(uuid + "." + j + ".loc.y"),
-                        json.getDouble(uuid + "." + j + ".loc.z")));
-            }
-       }
-        return locations;
+    public Location getLocation(int num, String uuid){
+        return new Location(Bukkit.getWorld(json.getString(uuid+"." + num + ".loc.world")),
+                json.getDouble(uuid + "." + num + ".loc.x"),
+                json.getDouble(uuid + "." + num + ".loc.y"),
+                json.getDouble(uuid + "." + num + ".loc.z"));
     }
 
     public HashMap<Integer, Object> getDesign(String uuid){

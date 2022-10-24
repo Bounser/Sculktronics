@@ -1,6 +1,7 @@
 package me.bounser.guitronics.circuits;
 
 import me.bounser.guitronics.advancedgui.AGUIInstances;
+import me.bounser.guitronics.components.ElectroComponent;
 import me.bounser.guitronics.listeners.RedstoneListener;
 import me.bounser.guitronics.tools.Data;
 import me.leoko.advancedgui.manager.GuiWallManager;
@@ -28,8 +29,6 @@ public class CircuitsManager {
     HashMap<Circuit, GuiInstance> circuits = new HashMap<>();
     HashMap<Circuit, List> circuitBases;
 
-    Layout layout = LayoutManager.getInstance().getLayout(data.getLayoutName());
-
     private static CircuitsManager instance;
     public static CircuitsManager getInstance(){
         return instance == null ? instance = new CircuitsManager() : instance;
@@ -37,8 +36,14 @@ public class CircuitsManager {
 
     public void createCircuit(Location loc, String owneruuid){
 
-        circuits.put(new Circuit(loc, 1, owneruuid, null, null, null), AGUIInstances.getInstance().placeGUI(loc, Direction.FLOOR_EAST, layout, null, true));
+        circuits.put(new Circuit(loc, 0, owneruuid, new HashMap<Integer, Object>()), AGUIInstances.getInstance().placeGUI(loc, Direction.FLOOR_NORTH,null, true));
         Data.getInstance().registerCircuit(loc, owneruuid);
+
+    }
+
+    public void updateCircuit(Circuit cir){
+
+        circuits.replace(cir, AGUIInstances.getInstance().placeGUI(cir.getLocation(), Direction.FLOOR_NORTH, cir, true));
 
     }
 
@@ -56,15 +61,6 @@ public class CircuitsManager {
         return null;
     }
 
-    public Circuit getCircuitFromBaseLocation(Location circuitBase){
-        for(Circuit circuit : circuits.keySet()){
-            for(Location loc : circuit.getLocation().values()){
-                if(loc.equals(circuitBase)) return circuit;
-            }
-        }
-        return null;
-    }
-
     public Circuit getCircuitFromOwner(String uuid){
         for(Circuit cir : circuits.keySet()){
             if(cir.getOwneruuid().equals(uuid)){
@@ -78,13 +74,14 @@ public class CircuitsManager {
 
         Data data = Data.getInstance();
 
-        if(!(circuits.size() == 0)){
+        if(circuits.size() != 0){
             for(String uuid : data.getUsersUUID()){
+                for(int i = 1; i <= data.getNum(uuid); i++){
 
-                HashMap locations = data.getLocations(uuid);
-                circuits.put(new Circuit(locations, uuid, data.getDesign(uuid)),
-                        AGUIInstances.getInstance().placeGUI(locations, Direction.FLOOR_EAST, layout));
+                    Circuit cir = new Circuit(data.getLocation(i, uuid), data.getSize(i, uuid), uuid, data.getDesign(uuid));
+                    circuits.put(cir, AGUIInstances.getInstance().placeGUI(data.getLocation(i, uuid), Direction.FLOOR_EAST, cir, true));
 
+                }
             }
             return true;
         }
