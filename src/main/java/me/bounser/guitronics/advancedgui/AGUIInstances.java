@@ -38,6 +38,7 @@ public class AGUIInstances {
         locations.add(location);
 
         Layout layout = layout0;
+        if(Data.getInstance().getDebug()) Bukkit.broadcastMessage("Layout selected... " + layout);
 
         if (cir != null) {
             switch(cir.getSize()){
@@ -63,7 +64,7 @@ public class AGUIInstances {
             if(Data.getInstance().getDebug()) Bukkit.broadcastMessage("Placing GUI... " + (gwm.getActiveInstance(loc) == null ? "null" : "true"));
             if(!loc.getChunk().isLoaded()) loc.getChunk().load();
 
-            if(remove) gwm.getActiveInstance(loc).dispose();
+            if(remove && gwm.getActiveInstance(loc) != null) gwm.getActiveInstance(loc).dispose();
 
             for(Entity entity : loc.getWorld().getNearbyEntities(loc, 0.5, 0.5, 0.5)){
                 if(entity instanceof ItemFrame){
@@ -77,19 +78,10 @@ public class AGUIInstances {
             itemFrame.setFacingDirection(BlockFace.UP, true);
         }
 
-        if(gwm.getActiveInstance(locations.get(0)) == null){
+        GuiWallInstance guiInstance = new GuiWallInstance(gwm.getNextId(), layout, 3, new GuiLocation(locations.get(0), dir));
+        gwm.registerInstance(guiInstance, true);
 
-            if(Data.getInstance().getDebug()) Bukkit.broadcastMessage("There was already an instance there");
-            return gwm.getActiveInstance(locations.get(0));
-
-        } else {
-
-            GuiWallInstance guiInstance = new GuiWallInstance(gwm.getNextId(), layout, 3, new GuiLocation(locations.get(0), dir));
-            gwm.registerInstance(guiInstance, true);
-
-            if(Data.getInstance().getDebug()) Bukkit.broadcastMessage("GUI Placed with instance: " + guiInstance);
-            return guiInstance;
-        }
+        if(Data.getInstance().getDebug()) Bukkit.broadcastMessage("GUI Placed with instance: " + guiInstance);
+        return guiInstance;
     }
-
 }

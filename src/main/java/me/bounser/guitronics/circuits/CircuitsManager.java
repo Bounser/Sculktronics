@@ -8,7 +8,7 @@ import me.leoko.advancedgui.utils.GuiInstance;
 import me.leoko.advancedgui.utils.interactions.Interaction;
 import org.bukkit.Location;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Map.Entry;
 import java.util.HashMap;
 
@@ -37,8 +37,8 @@ public class CircuitsManager {
     }
 
     public Circuit getCircuitFromGUIInstance(GuiInstance guiinstance){
-        for(Entry<Circuit, GuiInstance> e: circuits.entrySet()){
-            if(e.getValue() == guiinstance) return e.getKey();
+        for(Circuit cir : circuits.keySet()){
+            if(circuits.get(cir) == guiinstance) return cir;
         }
         return null;
     }
@@ -68,7 +68,7 @@ public class CircuitsManager {
         return false;
     }
 
-    public List<Circuit> getAllCircuits(){ return (List<Circuit>) circuits.keySet(); }
+    public Collection<Circuit> getAllCircuits(){ return circuits.keySet(); }
 
     public HashMap<Circuit, Location> getCircuitLocs(){
 

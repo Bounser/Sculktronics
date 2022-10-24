@@ -45,7 +45,11 @@ Colors:
       b: 226
 
 
-# DO NOT CHANGE ANYTHING DOWN IF YOU DON'T KNOW WHAT YOU ARE DOING.
-Layout: Circuit
+# DO NOT CHANGE ANYTHING DOWN HERE IF YOU DON'T KNOW WHAT YOU ARE DOING.
+Layout:
+  0: Circuit0
+  1: Circuit1
+  2: Circuit2
+  3: Circuit3
 
 Debug: false

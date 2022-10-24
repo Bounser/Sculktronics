@@ -40,7 +40,7 @@ public class BlockListener implements Listener {
 
             // Create new circuit
 
-            CircuitsManager.getInstance().createCircuit(e.getBlock().getLocation(), e.getPlayer().getUniqueId().toString());
+            CircuitsManager.getInstance().createCircuit(e.getBlock().getLocation().add(0,1,0), e.getPlayer().getUniqueId().toString());
         }
 
         if(e.getBlock().getBlockData().getMaterial().equals(Material.REPEATER)){

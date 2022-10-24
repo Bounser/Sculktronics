@@ -2,10 +2,7 @@ package me.bounser.guitronics.circuits;
 
 import me.bounser.guitronics.components.ElectroComponent;
 import me.bounser.guitronics.components.EComponent;
-import me.bounser.guitronics.components.electrocomponents.Delayer;
-import me.bounser.guitronics.components.electrocomponents.Diode;
-import me.bounser.guitronics.components.electrocomponents.Resistor;
-import me.bounser.guitronics.components.electrocomponents.Wire;
+import me.bounser.guitronics.components.electrocomponents.*;
 import me.bounser.guitronics.tools.Data;
 import me.leoko.advancedgui.utils.components.RectComponent;
 import me.leoko.advancedgui.utils.interactions.Interaction;
@@ -78,7 +75,7 @@ public class Circuit {
 
     public List<Location> getLocations(){
 
-        List<Location> locations = new ArrayList();
+        List<Location> locations = new ArrayList<>();
 
         locations.add(location);
 
@@ -167,22 +164,29 @@ public class Circuit {
         return null;
     }
 
-    public EComponent getEComponent(Object EComponent){
+    public EComponent getEComponent(Object ElectroComponent){
 
-        if(EComponent instanceof Wire){
-            return ((Wire) EComponent).getEComponent();
+        if(ElectroComponent instanceof Wire){
+            return ((Wire) ElectroComponent).getEComponent();
         }
-        if(EComponent instanceof Delayer){
-            return ((Delayer) EComponent).getEComponent();
+        if(ElectroComponent instanceof Delayer){
+            return ((Delayer) ElectroComponent).getEComponent();
         }
-        if(EComponent instanceof Diode){
-            return ((Diode) EComponent).getEComponent();
+        if(ElectroComponent instanceof Diode){
+            return ((Diode) ElectroComponent).getEComponent();
+        }
+        if(ElectroComponent instanceof Inverter){
+            return ((Inverter) ElectroComponent).getEComponent();
+        }
+        if(ElectroComponent instanceof Resistor){
+            return ((Resistor) ElectroComponent).getEComponent();
         }
         return null;
     }
 
     public boolean getPoweredState(Object pos){
 
+        if(getEComponent(design.get(pos)) == null) return false;
         switch(getEComponent(design.get(pos))){
             case WIRE:
                 Wire wire = (Wire) design.get(pos);
@@ -193,6 +197,9 @@ public class Circuit {
             case DIODE:
                 Diode diode = (Diode) design.get(pos);
                 return diode.isPowered();
+            case INVERTER:
+                Inverter inverter = (Inverter) design.get(pos);
+                return inverter.isPowered();
             case RESISTOR:
                 Resistor resistor = (Resistor) design.get(pos);
                 return resistor.isPowered();
