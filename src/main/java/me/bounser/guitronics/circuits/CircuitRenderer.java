@@ -1,12 +1,14 @@
 package me.bounser.guitronics.circuits;
 
 import me.bounser.guitronics.components.EComponent;
+import me.bounser.guitronics.components.electrocomponents.Diode;
 import me.bounser.guitronics.tools.Data;
 import me.leoko.advancedgui.utils.interactions.Interaction;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.data.type.RedstoneWire;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -49,7 +51,23 @@ public class CircuitRenderer {
 
     public void checkPixel(int i, HashMap<Integer, Object> design, Circuit cir){
 
-        for(int j : Arrays.asList(9, -9, 1, -1)){
+        List<Integer> nearPoints = new ArrayList<>();
+
+        switch(cir.getSize()){
+            case 0:
+            case 2:
+                nearPoints.add(9);
+                nearPoints.add(-9);
+                break;
+            case 1:
+            case 3:
+                nearPoints.add(21);
+                nearPoints.add(-21);
+        }
+        nearPoints.add(1);
+        nearPoints.add(-1);
+
+        for(int j : nearPoints){
 
             int x = j+i;
 
@@ -61,16 +79,46 @@ public class CircuitRenderer {
 
                         // DIODE LOGIC - GET OFFSET OF INTEGERS (CARDINAL)
 
-                    } else {
-                        if (x == 5 || x == 37 || x == 45 || x == 77) {
-                            cir.addOutput(x);
+                        Diode diode = (Diode) cir.getElectroComponent(x);
+                        if(diode.getDirection() == 0 && j < -1){
+                            checkPixel(j*2 +i, design, cir);
+                        }
+                        if(diode.getDirection() == 1 && j == -1){
+                            checkPixel(j*2 +i, design, cir);
+                        }
+                        if(diode.getDirection() == 2 && j < 1){
+                            checkPixel(j*2 +i, design, cir);
+                        }
+                        if(diode.getDirection() == 3 && j == 1){
+                            checkPixel(j*2 +i, design, cir);
                         }
 
-                        cir.addToRender(j + i);
-                        checkPixel(j + i, design, cir);
+                    } else if (cir.getEComponent(cir.getElectroComponent(x)).equals(EComponent.INVERTER)) {
+
+                        // INVERTER LOGIC - GET OFFSET OF INTEGERS (CARDINAL)
+
+                        Diode diode = (Diode) cir.getElectroComponent(x);
+                        if(diode.getDirection() == 0 && j < -1){
+                            checkPixel(j*2 +i, design, cir);
+                        }
+                        if(diode.getDirection() == 1 && j == -1){
+                            checkPixel(j*2 +i, design, cir);
+                        }
+                        if(diode.getDirection() == 2 && j < 1){
+                            checkPixel(j*2 +i, design, cir);
+                        }
+                        if(diode.getDirection() == 3 && j == 1){
+                            checkPixel(j*2 +i, design, cir);
+                        }
+
+                    }else {
+                            if (x == 5 || x == 37 || x == 45 || x == 77) {
+                                cir.addOutput(x);
+                            }
+
+                            cir.addToRender(j + i);
+                            checkPixel(j + i, design, cir);
                     }
-
-
                 }
             }
         }
@@ -99,8 +147,6 @@ public class CircuitRenderer {
                 rw.setPower(15);
                 base.getBlock().setBlockData(rw);
             }
-
         }
     }
-
 }

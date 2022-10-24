@@ -10,6 +10,8 @@ public interface ElectroComponent {
 
     boolean isPowered();
 
+    void setPowered(boolean powered);
+
     int getSecondsDelay();
 
     boolean isDirectional();
@@ -22,7 +24,7 @@ public interface ElectroComponent {
 
     boolean hasIcon();
 
-    void placeIcon(int x, int y, Interaction interaction);
+    void placeIcon(int x, int y);
 
     void remove();
 

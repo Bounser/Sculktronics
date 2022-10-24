@@ -38,7 +38,6 @@ public class RedstoneListener implements Listener {
                 if(circuit.getPutsLocations().containsKey(e.getBlock().getLocation())){
 
                     cir = circuit;
-
                 }
             }
 
@@ -58,11 +57,11 @@ public class RedstoneListener implements Listener {
                     public void run() {
 
                         activeCooldownCircuits.remove(finalCir);
+                        finalCir.unsetOverloaded();
 
                     }
                 }.runTaskLater(GUItronics.getInstance(), data.getTicksPerChange());
             }
-
         }
     }
 }

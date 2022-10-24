@@ -260,8 +260,29 @@ public class Circuit {
 
     public void updatePuts(){
 
+        for(int i = 0 ; i<=7; i++){
 
+            for(Interaction interaction : interactions){
+                if( interaction.getComponentTree().locate(i + "f") != null)
+                    interaction.getComponentTree().locate(i + "f").setHidden(true);
+                if( interaction.getComponentTree().locate(i + "t") != null)
+                    interaction.getComponentTree().locate(i + "t").setHidden(true);
+            }
+        }
+        for(int i : inputs){
+            for(Interaction interaction : interactions){
 
+                interaction.getComponentTree().locate(i + "t").setHidden(false);
+
+            }
+        }
+        for(int i : outputs){
+            for(Interaction interaction : interactions){
+
+                interaction.getComponentTree().locate(i + "f").setHidden(false);
+
+            }
+        }
     }
 
     public void setDesign(boolean updateRender){
@@ -311,7 +332,7 @@ public class Circuit {
 
     public void removeInteraction(Interaction interaction) { interactions.remove(interaction); }
 
-    // Direction: INT corresponding to clockwise change.
+    // Direction: INT corresponding to clockwise change (Direction). (0-3)
 
     public void expand(int direction){
         if(size == 0){

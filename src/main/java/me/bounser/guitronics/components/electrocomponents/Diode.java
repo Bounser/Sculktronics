@@ -6,7 +6,6 @@ import me.bounser.guitronics.components.EComponent;
 import me.bounser.guitronics.tools.Data;
 import me.leoko.advancedgui.utils.components.RectComponent;
 import me.leoko.advancedgui.utils.interactions.Interaction;
-import org.w3c.dom.css.Rect;
 
 import java.awt.*;
 import java.util.List;
@@ -17,18 +16,22 @@ public class Diode implements ElectroComponent {
 
     Circuit circuit;
 
-    Color basic;
-    Color powered;
+    Color basicColor;
+    Color poweredColor;
+
+    boolean powered;
 
     List<RectComponent> icon;
 
-    public Diode(Circuit circuit, int direction){
+    public Diode(Circuit circuit, int[] pos, int direction){
         this.direction = direction;
 
-        basic = Data.getInstance().getDiodeBasicColor();
-        powered = Data.getInstance().getDiodePoweredColor();
+        basicColor = Data.getInstance().getDiodeBasicColor();
+        poweredColor = Data.getInstance().getDiodePoweredColor();
 
         this.circuit = circuit;
+
+        placeIcon(pos[0], pos[1]);
     }
 
     public void rotate(){
@@ -56,6 +59,9 @@ public class Diode implements ElectroComponent {
     }
 
     @Override
+    public void setPowered(boolean setpowered) { powered = setpowered; }
+
+    @Override
     public int getSecondsDelay() {
         return 0;
     }
@@ -71,10 +77,10 @@ public class Diode implements ElectroComponent {
     }
 
     @Override
-    public Color getBasicColor() { return basic; }
+    public Color getBasicColor() { return basicColor; }
 
     @Override
-    public Color getPoweredColor() { return powered; }
+    public Color getPoweredColor() { return poweredColor; }
 
     @Override
     public boolean hasIcon() {
@@ -82,22 +88,41 @@ public class Diode implements ElectroComponent {
     }
 
     @Override
-    public void placeIcon(int x, int y, Interaction interaction) {
+    public void placeIcon(int x, int y) {
 
         Color black = new Color(0,0,0);
 
-        icon.add(new RectComponent("IconI", null, false, interaction, x + 2, y + 5, 2, 4, black));
-        icon.add(new RectComponent("IconI", null, false, interaction, x + 2, y + 4, 5, 2, black));
-        icon.add(new RectComponent("IconI", null, false, interaction, x + 6, y + 1, 2, 5, black));
+        for(Interaction interaction : circuit.getInteractions())
+        switch(direction){
 
+            case 0:
+                icon.add(new RectComponent("IconD1", null, false, interaction, x + 4, y + 1, 2, 8, black));
+                icon.add(new RectComponent("IconD2", null, false, interaction, x + 2, y + 3, 6, 2, black));
+                icon.add(new RectComponent("IconD3", null, false, interaction, x + 3, y + 2, 4, 2, black));
+                break;
+            case 1:
+                icon.add(new RectComponent("IconD1", null, false, interaction, x + 1, y + 4, 8, 2, black));
+                icon.add(new RectComponent("IconD2", null, false, interaction, x + 5, y + 2, 2, 6, black));
+                icon.add(new RectComponent("IconD3", null, false, interaction, x + 6, y + 3, 2, 4, black));
+                break;
+            case 2:
+                icon.add(new RectComponent("IconD1", null, false, interaction, x + 4, y + 1, 2, 8, black));
+                icon.add(new RectComponent("IconD2", null, false, interaction, x + 2, y + 5, 6, 2, black));
+                icon.add(new RectComponent("IconD3", null, false, interaction, x + 3, y + 6, 4, 2, black));
+                break;
+            case 3:
+                icon.add(new RectComponent("IconD1", null, false, interaction, x + 1, y + 4, 8, 2, black));
+                icon.add(new RectComponent("IconD2", null, false, interaction, x + 3, y + 2, 2, 6, black));
+                icon.add(new RectComponent("IconD3", null, false, interaction, x + 2, y + 3, 2, 4, black));
+                break;
+
+        }
     }
 
     @Override
     public void remove() {
-
         for(RectComponent rect : icon){
             rect.dispose();
         }
-
     }
 }

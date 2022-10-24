@@ -10,20 +10,23 @@ import java.awt.*;
 
 public class Delayer implements ElectroComponent {
 
+    Circuit circuit;
+    int pos;
     // Delay of the delayer in ticks.
     int delay;
 
-    Circuit circuit;
+    Color basicColor;
+    Color poweredColor;
 
-    Color basic;
-    Color powered;
+    boolean powered;
 
-    public Delayer(Circuit circuit, int delay){
-        basic = Data.getInstance().getDelayerBasicColor();
-        powered = Data.getInstance().getDelayerPoweredColor();
+    public Delayer(Circuit circuit, int[] pos, int delay){
+        basicColor = Data.getInstance().getDelayerBasicColor();
+        poweredColor = Data.getInstance().getDelayerPoweredColor();
 
         this.delay = delay;
         this.circuit = circuit;
+
     }
 
     public void changeDelay(){
@@ -49,8 +52,11 @@ public class Delayer implements ElectroComponent {
 
     @Override
     public boolean isPowered() {
-        return false;
+        return powered;
     }
+
+    @Override
+    public void setPowered(boolean setpowered) { powered = setpowered; }
 
     @Override
     public int getSecondsDelay() {
@@ -69,12 +75,12 @@ public class Delayer implements ElectroComponent {
 
     @Override
     public Color getBasicColor() {
-        return basic;
+        return basicColor;
     }
 
     @Override
     public Color getPoweredColor() {
-        return powered;
+        return poweredColor;
     }
 
     @Override
@@ -83,7 +89,7 @@ public class Delayer implements ElectroComponent {
     }
 
     @Override
-    public void placeIcon(int x, int y, Interaction interaction) {
+    public void placeIcon(int x, int y) {
 
 
 

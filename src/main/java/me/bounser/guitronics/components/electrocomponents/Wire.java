@@ -4,7 +4,6 @@ import me.bounser.guitronics.circuits.Circuit;
 import me.bounser.guitronics.components.ElectroComponent;
 import me.bounser.guitronics.components.EComponent;
 import me.bounser.guitronics.tools.Data;
-import me.leoko.advancedgui.utils.interactions.Interaction;
 
 import java.awt.*;
 
@@ -12,12 +11,14 @@ public class Wire implements ElectroComponent {
 
     Circuit circuit;
 
-    Color basic;
-    Color powered;
+    Color basicColor;
+    Color poweredColor;
+
+    boolean powered;
 
     public Wire(Circuit circuit){
-        basic = Data.getInstance().getWireBasicColor();
-        powered = Data.getInstance().getWirePoweredColor();
+        basicColor = Data.getInstance().getWireBasicColor();
+        poweredColor = Data.getInstance().getWirePoweredColor();
 
         this.circuit = circuit;
     }
@@ -31,6 +32,9 @@ public class Wire implements ElectroComponent {
     public boolean isPowered() {
         return false;
     }
+
+    @Override
+    public void setPowered(boolean setpowered) { powered = setpowered; }
 
     @Override
     public int getSecondsDelay() {
@@ -48,11 +52,11 @@ public class Wire implements ElectroComponent {
     }
 
     @Override
-    public Color getBasicColor() { return basic; }
+    public Color getBasicColor() { return basicColor; }
 
     @Override
     public Color getPoweredColor() {
-        return powered;
+        return poweredColor;
     }
 
     @Override
@@ -61,7 +65,12 @@ public class Wire implements ElectroComponent {
     }
 
     @Override
-    public void placeIcon(int x, int y, Interaction interaction) {
+    public void placeIcon(int x, int y) {
+
+    }
+
+    @Override
+    public void remove() {
 
     }
 

@@ -4,10 +4,7 @@ import me.bounser.guitronics.GUItronics;
 import me.bounser.guitronics.circuits.Circuit;
 import me.bounser.guitronics.circuits.CircuitsManager;
 import me.bounser.guitronics.components.EComponent;
-import me.bounser.guitronics.components.electrocomponents.Delayer;
-import me.bounser.guitronics.components.electrocomponents.Diode;
-import me.bounser.guitronics.components.electrocomponents.Resistor;
-import me.bounser.guitronics.components.electrocomponents.Wire;
+import me.bounser.guitronics.components.electrocomponents.*;
 import me.bounser.guitronics.tools.Data;
 import me.leoko.advancedgui.utils.Layout;
 import me.leoko.advancedgui.utils.LayoutExtension;
@@ -144,56 +141,57 @@ public class AGUIExtension implements LayoutExtension {
                     switch(EComponent){
 
                         case WIRE:
+                            clickAction = (interaction, player, primaryTrigger) -> {
+                                cir.removeEComponent(finalI*finalJ);
+                            }; break;
                         case RESISTOR:
                             clickAction = (interaction, player, primaryTrigger) -> {
-
+                                Resistor resistor = (Resistor) cir.getElectroComponent(finalI*finalJ);
+                                resistor.remove();
                                 cir.removeEComponent(finalI*finalJ);
-
                             }; break;
 
                         case DELAYER:
                             clickAction = (interaction, player, primaryTrigger) -> {
-
+                                Delayer delayer = (Delayer) cir.getElectroComponent(finalI*finalJ);
                                 if(player.isSneaking()){
-
-                                    Delayer delayer = (Delayer) cir.getElectroComponent(finalI*finalJ);
                                     delayer.changeDelay();
-
                                 } else {
-
+                                    delayer.remove();
                                     cir.removeEComponent(finalI*finalJ);
-
                                 }
-
                             }; break;
 
                         case DIODE:
                             clickAction = (interaction, player, primaryTrigger) -> {
 
+                                Diode diode = (Diode) cir.getElectroComponent(finalI*finalJ);
                                 if(player.isSneaking()){
-
-                                    Diode diode = (Diode) cir.getElectroComponent(finalI*finalJ);
                                     diode.rotate();
-
                                 } else {
-
+                                    diode.remove();
                                     cir.removeEComponent(finalI*finalJ);
                                 }
-
                             }; break;
 
                         default:
                             clickAction = (interaction, player, primaryTrigger) -> {
 
+                                int[] pos = new int[2];
+                                pos[0] = finalI;
+                                pos[1] = finalJ;
+
                                 switch(player.getInventory().getItemInMainHand().getType()){
                                     case ECHO_SHARD:
                                         cir.addElectroComponent(finalI*finalJ, new Wire(cir)); break;
                                     case REPEATER:
-                                        cir.addElectroComponent(finalI*finalJ, new Delayer(cir, 5)); break;
+                                        cir.addElectroComponent(finalI*finalJ, new Delayer(cir,pos, 5)); break;
                                     case COMPARATOR:
-                                        cir.addElectroComponent(finalI*finalJ, new Diode(cir, 0)); break;
+                                        cir.addElectroComponent(finalI*finalJ, new Diode(cir, pos, 0)); break;
+                                    case REDSTONE_TORCH:
+                                        cir.addElectroComponent(finalI*finalJ, new Inverter(cir, pos, 0)); break;
                                     case LIGHTNING_ROD:
-                                        cir.addElectroComponent(finalI*finalJ, new Resistor(cir));
+                                        cir.addElectroComponent(finalI*finalJ, new Resistor(cir, pos));
                                 }
 
                             }; break;
@@ -222,7 +220,5 @@ public class AGUIExtension implements LayoutExtension {
 
             cir.removeInteraction(e.getInteraction());
         }
-
     }
-
 }
