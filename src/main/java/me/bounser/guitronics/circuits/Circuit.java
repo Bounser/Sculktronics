@@ -24,18 +24,32 @@ public class Circuit {
     // Persistent info:
     // Location of the main base, located at the north-west block within the cicuit base.
     Location location;
-    /* Sizes of the circuit. 0 = 1x1 1 = 1x2 2 = 2x1 3 = 2x2
-    *                                       N
-    *      Size 1: oo  Size 2:  o         W X E
-    *                           o           S
-    */
+    /** Sizes of the circuit. 0 = 1x1 1 = 1x2 2 = 2x1 3 = 2x2
+     *                                       N
+     *      Size 1: oo  Size 2:  o         W X E
+     *                           o           S
+     */
     int size;
+
+    int num;
     // UUID of the owner.
     String owneruuid;
     // This is the design of the circuit. Here is stored all the information related to all things the player modified.
     HashMap<Integer, Object> design;
 
-    // All inputs/outputs. Correspond to physical blocks and pixels within the circuit. More info in Data.java
+    // All inputs/outputs. Correspond to physical blocks and pixels within the circuit.
+    /**
+     *   INPUT/OUTPUT points are numbered clockwise:
+     *   ONE  #    TWO   #   FOUR
+     *    0   |    0 1   |    0 1            N
+     *  3 o 1 |  5 o o 2 |  7 o o 2        W X E
+     *    2   |    4 3   |  6 o o 3          S
+     *        |          |    5 4
+     *        |    0     |
+     *        |  5 o 1   |
+     *        |  4 o 2   |
+     *        |    3     |
+     */
     List<Integer> inputs = new ArrayList<>();
     List<Integer> outputs = new ArrayList<>();
     // Temp info.
@@ -47,12 +61,13 @@ public class Circuit {
     // State of the circuit.
     Boolean overloaded = false;
 
-    public Circuit(Location loc, int size, String uuid, HashMap<Integer, Object> design){
+    public Circuit(Location loc, int size, String uuid, HashMap<Integer, Object> design, int number){
         location = loc;
         owneruuid = uuid;
         this.size = size;
+        num = number;
         if(design == null){
-            this.design = new HashMap<Integer, Object>();
+            this.design = new HashMap<>();
         } else {
             this.design = design;
         }
@@ -61,7 +76,67 @@ public class Circuit {
     // Getters
     public Location getLocation(){ return location; }
 
+    public List<Location> getLocations(){
+
+        List<Location> locations = new ArrayList();
+
+        locations.add(location);
+
+        if(size == 1){
+            locations.add(location.add(1,0,0));
+        }
+        if(size == 2){
+            locations.add(location.add(0,0,1));
+        }
+        if(size == 3){
+            locations.add(location.add(1,0,0));
+            locations.add(location.add(0,0,1));
+            locations.add(location.add(1,0,1));
+        }
+
+        return locations;
+    }
+
+    public HashMap<Location, Integer> getPutsLocations(){
+
+        HashMap<Location, Integer> locs = new HashMap<>();
+
+        locs.put(location.add(0,0,-1), 0);
+
+        if(size == 0){
+            locs.put(location.add(1,0,0), 1);
+            locs.put(location.add(0,0,-1), 2);
+            locs.put(location.add(-1,0,0), 3);
+        }
+        if(size == 1){
+            locs.put(location.add(1,0,-1), 1);
+            locs.put(location.add(2,0,0), 2);
+            locs.put(location.add(1,0,1), 3);
+            locs.put(location.add(0,0,1), 4);
+            locs.put(location.add(-1,0,0), 5);
+        }
+        if(size == 2){
+            locs.put(location.add(1,0,0), 1);
+            locs.put(location.add(1,0,1), 2);
+            locs.put(location.add(0,0,2), 3);
+            locs.put(location.add(-1,0,1), 4);
+            locs.put(location.add(-1,0,0), 5);
+        }
+        if(size == 3){
+            locs.put(location.add(1,0,-1), 1);
+            locs.put(location.add(2,0,0), 2);
+            locs.put(location.add(2,0,-1), 3);
+            locs.put(location.add(1,0,-2), 4);
+            locs.put(location.add(0,0,-2), 5);
+            locs.put(location.add(-1,0,1), 6);
+            locs.put(location.add(-1,0,0), 7);
+        }
+        return locs;
+    }
+
     public int getSize(){ return size; }
+
+    public int getNum(){ return num; }
 
     public String getOwneruuid(){ return owneruuid; }
 
@@ -125,27 +200,6 @@ public class Circuit {
         return false;
     }
 
-    public List<Location> getLocations(){
-
-        List<Location> locations = new ArrayList();
-
-        locations.add(location);
-
-        if(size == 1){
-            locations.add(location.add(1,0,0));
-        }
-        if(size == 2){
-            locations.add(location.add(0,0,1));
-        }
-        if(size == 3){
-            locations.add(location.add(1,0,0));
-            locations.add(location.add(0,0,1));
-            locations.add(location.add(1,0,1));
-        }
-
-        return locations;
-    }
-
     public ElectroComponent getElectroComponent(int pos){ return (ElectroComponent) design.get(pos); }
 
     // adders / removers
@@ -161,14 +215,17 @@ public class Circuit {
         CircuitRenderer.getInstance().renderPuts(this);
     }
 
-    public void removeInput(Object input){ inputs.remove(input); updateRender(true); }
-
     public void addOutput(int output){
         if(!outputs.contains(output)) outputs.add(output);
         CircuitRenderer.getInstance().renderPuts(this);
     }
 
-    public void removeOutput(Object output){ inputs.remove(output); updateRender(true); }
+    public void removePut(Object value){
+
+        if(inputs.contains(value)) inputs.remove(value);
+        if(outputs.contains(value)) outputs.remove(value);
+
+    }
 
     public void updateRender(boolean newRender){
 
@@ -199,6 +256,12 @@ public class Circuit {
                 }
             }
         }
+    }
+
+    public void updatePuts(){
+
+
+
     }
 
     public void setDesign(boolean updateRender){

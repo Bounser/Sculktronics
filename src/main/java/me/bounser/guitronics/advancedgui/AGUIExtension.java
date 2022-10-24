@@ -9,7 +9,6 @@ import me.bounser.guitronics.components.electrocomponents.Diode;
 import me.bounser.guitronics.components.electrocomponents.Resistor;
 import me.bounser.guitronics.components.electrocomponents.Wire;
 import me.bounser.guitronics.tools.Data;
-import me.bounser.guitronics.tools.Miscellaneous;
 import me.leoko.advancedgui.utils.Layout;
 import me.leoko.advancedgui.utils.LayoutExtension;
 import me.leoko.advancedgui.utils.actions.Action;
@@ -22,8 +21,6 @@ import org.bukkit.event.EventHandler;
 import java.util.List;
 
 public class AGUIExtension implements LayoutExtension {
-
-    Data data = Data.getInstance();
 
     List<Layout> layoutList;
 
@@ -46,25 +43,25 @@ public class AGUIExtension implements LayoutExtension {
 
             e.getLayout().getTemplateComponentTree().locate("u10").setClickAction((interaction, player, primaryTrigger) -> {
 
-                CircuitsManager.getInstance().getCircuitFromInteraction(interaction).expand(1);
+                CircuitsManager.getInstance().getCircuitFromInteraction(interaction).expand(0);
 
             });
 
             e.getLayout().getTemplateComponentTree().locate("d10").setClickAction((interaction, player, primaryTrigger) -> {
 
-                CircuitsManager.getInstance().getCircuitFromInteraction(interaction).expand(3);
+                CircuitsManager.getInstance().getCircuitFromInteraction(interaction).expand(2);
 
             });
 
             e.getLayout().getTemplateComponentTree().locate("r10").setClickAction((interaction, player, primaryTrigger) -> {
 
-                CircuitsManager.getInstance().getCircuitFromInteraction(interaction).expand(2);
+                CircuitsManager.getInstance().getCircuitFromInteraction(interaction).expand(1);
 
             });
 
             e.getLayout().getTemplateComponentTree().locate("l10").setClickAction((interaction, player, primaryTrigger) -> {
 
-                CircuitsManager.getInstance().getCircuitFromInteraction(interaction).expand(4);
+                CircuitsManager.getInstance().getCircuitFromInteraction(interaction).expand(3);
 
             });
 
@@ -89,7 +86,7 @@ public class AGUIExtension implements LayoutExtension {
 
         int size = cir.getSize();
 
-        if(e.getInteraction().getLayout().getName().contains(Data.getInstance().getLayoutName())){
+        if(e.getInteraction().getLayout().getName().contains("Circuit")){
 
             int x = 0;
             int y = 0;
@@ -131,12 +128,12 @@ public class AGUIExtension implements LayoutExtension {
                             null,
                             false,
                             e.getInteraction(),
-                            10 + j*10,
-                            10 + i*10,
-                            9,
-                            9,
+                            19 + j*10,
+                            19 + i*10,
+                            8,
+                            8,
                             cir.getColor(i*j, cir.getPoweredState(i*j)),
-                            Miscellaneous.getInstance().getRoundFromEComponent(EComponent)
+                            CircuitsManager.getInstance().getRoundFromEComponent(EComponent)
                             );
 
                     Action clickAction = null;
@@ -145,7 +142,9 @@ public class AGUIExtension implements LayoutExtension {
                     int finalI = i;
 
                     switch(EComponent){
+
                         case WIRE:
+                        case RESISTOR:
                             clickAction = (interaction, player, primaryTrigger) -> {
 
                                 cir.removeEComponent(finalI*finalJ);
@@ -163,6 +162,7 @@ public class AGUIExtension implements LayoutExtension {
                                 } else {
 
                                     cir.removeEComponent(finalI*finalJ);
+
                                 }
 
                             }; break;
@@ -200,6 +200,7 @@ public class AGUIExtension implements LayoutExtension {
 
                     }
                     pixel.setClickAction(clickAction);
+                    Data.getInstance().updateDesign(cir);
                 }
             }
 
@@ -213,7 +214,7 @@ public class AGUIExtension implements LayoutExtension {
     @EventHandler
     public void onInteractionEnd(GuiInteractionExitEvent e) {
 
-        if(e.getInteraction().getLayout().getName().contains(Data.getInstance().getLayoutName())) {
+        if(e.getInteraction().getLayout().getName().contains("Circuit")) {
 
             e.getInteraction().getComponentTree().locate("lid").setHidden(false);
 
@@ -223,4 +224,5 @@ public class AGUIExtension implements LayoutExtension {
         }
 
     }
+
 }

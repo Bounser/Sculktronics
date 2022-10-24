@@ -18,9 +18,6 @@ import java.util.List;
 
 public class BlockListener implements Listener {
 
-    Data data = Data.getInstance();
-
-
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent e){
 
@@ -32,60 +29,40 @@ public class BlockListener implements Listener {
 
             // Check for near circuits
 
-            for(List<Location> listLocation : data.getAllCircuitLocations().values()){
+            for(Location loc : CircuitsManager.getInstance().getCircuitLocs().values()){
 
-                for(Location loc : listLocation){
-                    if(loc.distance(e.getBlock().getLocation()) < 10){
-                        e.getPlayer().sendMessage("Its too close to another circuit.");
-                        e.setCancelled(true);
-                        return;
-                    }
+                if(loc.distance(e.getBlock().getLocation()) < 10){
+                    e.getPlayer().sendMessage("Its too close to another circuit.");
+                    e.setCancelled(true);
+                    return;
                 }
-
             }
 
             // Create new circuit
 
             CircuitsManager.getInstance().createCircuit(e.getBlock().getLocation(), e.getPlayer().getUniqueId().toString());
-            return;
+        }
+
+        if(e.getBlock().getBlockData().getMaterial().equals(Material.REPEATER)){
+
+            HashMap<Circuit, Location> cirLocs = CircuitsManager.getInstance().getCircuitLocs();
+
+            for(Circuit cir : cirLocs.keySet()){
+
+                if(cir.getLocation().distance(e.getBlock().getLocation()) < 6){
+                    checkCircuitPuts(cir);
+                    cir.updatePuts();
+                }
+
+            }
+
         }
 
     }
 
     public void checkCircuitPuts(Circuit circuit){
 
-        HashMap<Location, Integer> locations = new HashMap<>();
-
-        locations.put(circuit.getLocation().add(0,0,-1), 0);
-
-        if(circuit.getSize() == 0){
-            locations.put(circuit.getLocation().add(1,0,0), 1);
-            locations.put(circuit.getLocation().add(0,0,-1), 2);
-            locations.put(circuit.getLocation().add(-1,0,0), 3);
-        }
-        if(circuit.getSize() == 1){
-            locations.put(circuit.getLocation().add(1,0,-1), 1);
-            locations.put(circuit.getLocation().add(2,0,0), 2);
-            locations.put(circuit.getLocation().add(1,0,1), 3);
-            locations.put(circuit.getLocation().add(0,0,1), 4);
-            locations.put(circuit.getLocation().add(-1,0,0), 5);
-        }
-        if(circuit.getSize() == 2){
-            locations.put(circuit.getLocation().add(1,0,0), 1);
-            locations.put(circuit.getLocation().add(1,0,1), 2);
-            locations.put(circuit.getLocation().add(0,0,2), 3);
-            locations.put(circuit.getLocation().add(-1,0,1), 4);
-            locations.put(circuit.getLocation().add(-1,0,0), 5);
-        }
-        if(circuit.getSize() == 3){
-            locations.put(circuit.getLocation().add(1,0,-1), 1);
-            locations.put(circuit.getLocation().add(2,0,0), 2);
-            locations.put(circuit.getLocation().add(2,0,-1), 3);
-            locations.put(circuit.getLocation().add(1,0,-2), 4);
-            locations.put(circuit.getLocation().add(0,0,-2), 5);
-            locations.put(circuit.getLocation().add(-1,0,1), 6);
-            locations.put(circuit.getLocation().add(-1,0,0), 7);
-        }
+        HashMap<Location, Integer> locations = circuit.getPutsLocations();
 
         // FOR CIRCUITS SIZED FROM 1-3
 
@@ -136,13 +113,17 @@ public class BlockListener implements Listener {
                     }
 
                 }
+            } else {
+
+                circuit.removePut(locations.get(loc));
+
             }
         }
     }
 
     public Location getNearestLoc(Location loc, List<Location> locs){
 
-        // Indeed, although the name might be misleading, it returns the block with distance 1.
+        // Indeed, although the name might be misleading without context, it returns one block of the list with distance 1.
 
         for(Location l : locs){
             if(l.distance(loc) == 1){
@@ -154,6 +135,13 @@ public class BlockListener implements Listener {
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e){
+
+        for(Circuit cir : CircuitsManager.getInstance().getAllCircuits()){
+
+            if(cir.getLocations().contains(e.getBlock().getLocation())){
+                e.setCancelled(true);
+            }
+        }
 
     }
 }

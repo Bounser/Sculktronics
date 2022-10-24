@@ -4,9 +4,12 @@ import me.bounser.guitronics.circuits.Circuit;
 import me.bounser.guitronics.components.ElectroComponent;
 import me.bounser.guitronics.components.EComponent;
 import me.bounser.guitronics.tools.Data;
+import me.leoko.advancedgui.utils.components.RectComponent;
 import me.leoko.advancedgui.utils.interactions.Interaction;
+import org.w3c.dom.css.Rect;
 
 import java.awt.*;
+import java.util.List;
 
 public class Diode implements ElectroComponent {
 
@@ -16,6 +19,8 @@ public class Diode implements ElectroComponent {
 
     Color basic;
     Color powered;
+
+    List<RectComponent> icon;
 
     public Diode(Circuit circuit, int direction){
         this.direction = direction;
@@ -78,6 +83,21 @@ public class Diode implements ElectroComponent {
 
     @Override
     public void placeIcon(int x, int y, Interaction interaction) {
+
+        Color black = new Color(0,0,0);
+
+        icon.add(new RectComponent("IconI", null, false, interaction, x + 2, y + 5, 2, 4, black));
+        icon.add(new RectComponent("IconI", null, false, interaction, x + 2, y + 4, 5, 2, black));
+        icon.add(new RectComponent("IconI", null, false, interaction, x + 6, y + 1, 2, 5, black));
+
+    }
+
+    @Override
+    public void remove() {
+
+        for(RectComponent rect : icon){
+            rect.dispose();
+        }
 
     }
 }

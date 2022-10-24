@@ -85,5 +85,14 @@ public class Delayer implements ElectroComponent {
     @Override
     public void placeIcon(int x, int y, Interaction interaction) {
 
+
+
+
+
+    }
+
+    @Override
+    public void remove() {
+
     }
 }

@@ -12,9 +12,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ItemFrame;
 
-import java.lang.runtime.SwitchBootstraps;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class AGUIInstances {

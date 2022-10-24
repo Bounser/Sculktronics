@@ -3,15 +3,10 @@ package me.bounser.guitronics.tools;
 import de.leonhard.storage.Json;
 import me.bounser.guitronics.GUItronics;
 import me.bounser.guitronics.circuits.Circuit;
-import me.bounser.guitronics.circuits.CircuitsManager;
-import me.bounser.guitronics.listeners.RedstoneListener;
-import me.leoko.advancedgui.manager.LayoutManager;
-import me.leoko.advancedgui.utils.Layout;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -53,11 +48,6 @@ public class Data {
 
     Color resistorBasic = getResistorBasicColor();
     Color resistorPowered = getResistorPoweredColor();
-
-    Layout layout0;
-    Layout layout1;
-    Layout layout2;
-    Layout layout3;
 
     private static Data instance;
     private static GUItronics main;
@@ -210,42 +200,30 @@ public class Data {
     }
 
     public void registerCircuit(Location loc, String owneruuid){
-        json.set(owneruuid + ".loc.world", loc.getWorld().getName());
-        json.set(owneruuid + ".loc.x", loc.getX());
-        json.set(owneruuid + ".loc.y", loc.getY());
-        json.set(owneruuid + ".loc.z", loc.getZ());
-        List<String> owners = json.getStringList("users");
-        owners.add(owneruuid);
-        json.set("users", owners);
-        RedstoneListener.getInstance().addBase(loc.add(0,-1,0));
-    }
 
-    /**
-     *   INPUT/OUTPUT points are numbered clockwise:
-     *   ONE  #    TWO   #   FOUR
-     *    0   |    0 1   |    0 1            N
-     *  3 o 1 |  5 o o 2 |  7 o o 2        W X E
-     *    2   |    4 3   |  6 o o 3          S
-     *        |          |    5 4
-     *        |    0     |
-     *        |  5 o 1   |
-     *        |  4 o 2   |
-     *        |    3     |
-     */
+        int i;
 
-    public void registerInput(){
+        if(getUsersUUID().contains(owneruuid)){
+            i = getNum(owneruuid) + 1;
+
+        } else {
+            List<String> owners = json.getStringList("users");
+            owners.add(owneruuid);
+            json.set("users", owners);
+            i = 0;
+        }
+
+            json.set(owneruuid + "." + i + ".loc.world", loc.getWorld().getName());
+            json.set(owneruuid + "." + i + ".loc.x", loc.getX());
+            json.set(owneruuid + "." + i + ".loc.y", loc.getY());
+            json.set(owneruuid + "." + i + ".loc.z", loc.getZ());
+            json.set(owneruuid + ".num", i);
 
     }
 
-    public void registerOutput(){
-
-    }
-
-    public void updateDesign(Circuit cir){ json.set(cir.getOwneruuid() + ".design", cir.getDesign()); }
+    public void updateDesign(Circuit cir){ json.set(cir.getOwneruuid() + "." + cir.getNum() + ".design", cir.getDesign()); }
 
     public List<String> getUsersUUID(){ return json.getStringList("users"); }
-
-    public int getNumberCircuitsOfUser(String uuid){ return json.getInt(uuid + ".num"); }
 
     public Location getLocation(int num, String uuid){
         return new Location(Bukkit.getWorld(json.getString(uuid+"." + num + ".loc.world")),
@@ -256,15 +234,5 @@ public class Data {
 
     public HashMap<Integer, Object> getDesign(String uuid){
         return (HashMap<Integer, Object>) json.getMap(uuid + ".design");
-    }
-
-    public HashMap<Circuit, List<Location>> getAllCircuitLocations(){
-
-        HashMap<Circuit, List<Location>> circuits = new HashMap<>();
-
-        for(String uuid : json.getStringList("users")){
-            circuits.put(CircuitsManager.getInstance().getCircuitFromOwner(uuid), getLocations(uuid));
-        }
-        return circuits;
     }
 }

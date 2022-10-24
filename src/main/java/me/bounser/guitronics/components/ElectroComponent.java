@@ -24,4 +24,6 @@ public interface ElectroComponent {
 
     void placeIcon(int x, int y, Interaction interaction);
 
+    void remove();
+
 }
