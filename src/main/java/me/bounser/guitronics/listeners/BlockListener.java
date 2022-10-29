@@ -3,6 +3,7 @@ package me.bounser.guitronics.listeners;
 import me.bounser.guitronics.circuits.Circuit;
 import me.bounser.guitronics.circuits.CircuitsManager;
 import me.bounser.guitronics.tools.Data;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -63,6 +64,7 @@ public class BlockListener implements Listener {
     public void checkCircuitPuts(Circuit circuit){
 
         HashMap<Location, Integer> locations = circuit.getPutsLocations();
+        if(Data.getInstance().getDebug()) Bukkit.broadcastMessage(locations.toString());
 
         // FOR CIRCUITS SIZED FROM 1-3
 
@@ -125,7 +127,10 @@ public class BlockListener implements Listener {
 
         // Indeed, although the name might be misleading without context, it returns one block of the list with distance 1.
 
+        if(Data.getInstance().getDebug()) Bukkit.broadcastMessage(loc + " " + locs);
+
         for(Location l : locs){
+            if(Data.getInstance().getDebug()) Bukkit.broadcastMessage(String.valueOf(l.distance(loc)));
             if(l.distance(loc) == 1){
                 return l;
             }

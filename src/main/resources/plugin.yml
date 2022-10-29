@@ -6,3 +6,5 @@ depend: [ AdvancedGUI ]
 softdepend: [ PlaceholderAPI ]
 authors: [ bounser ]
 description: Add boards to do complex redstoning more compact!
+commands:
+  debug:

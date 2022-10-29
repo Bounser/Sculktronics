@@ -100,33 +100,35 @@ public class Circuit {
 
         locs.put(location.add(0,0,-1), 0);
 
-        if(size == 0){
-            locs.put(location.add(1,0,0), 1);
-            locs.put(location.add(0,0,-1), 2);
-            locs.put(location.add(-1,0,0), 3);
-        }
-        if(size == 1){
-            locs.put(location.add(1,0,-1), 1);
-            locs.put(location.add(2,0,0), 2);
-            locs.put(location.add(1,0,1), 3);
-            locs.put(location.add(0,0,1), 4);
-            locs.put(location.add(-1,0,0), 5);
-        }
-        if(size == 2){
-            locs.put(location.add(1,0,0), 1);
-            locs.put(location.add(1,0,1), 2);
-            locs.put(location.add(0,0,2), 3);
-            locs.put(location.add(-1,0,1), 4);
-            locs.put(location.add(-1,0,0), 5);
-        }
-        if(size == 3){
-            locs.put(location.add(1,0,-1), 1);
-            locs.put(location.add(2,0,0), 2);
-            locs.put(location.add(2,0,-1), 3);
-            locs.put(location.add(1,0,-2), 4);
-            locs.put(location.add(0,0,-2), 5);
-            locs.put(location.add(-1,0,1), 6);
-            locs.put(location.add(-1,0,0), 7);
+        switch (size){
+            case 0:
+                locs.put(location.add(1,0,0), 1);
+                locs.put(location.add(0,0,-1), 2);
+                locs.put(location.add(-1,0,0), 3);
+                break;
+            case 1:
+                locs.put(location.add(1,0,-1), 1);
+                locs.put(location.add(2,0,0), 2);
+                locs.put(location.add(1,0,1), 3);
+                locs.put(location.add(0,0,1), 4);
+                locs.put(location.add(-1,0,0), 5);
+                break;
+            case 2:
+                locs.put(location.add(1,0,0), 1);
+                locs.put(location.add(1,0,1), 2);
+                locs.put(location.add(0,0,2), 3);
+                locs.put(location.add(-1,0,1), 4);
+                locs.put(location.add(-1,0,0), 5);
+                break;
+            case 3:
+                locs.put(location.add(1,0,-1), 1);
+                locs.put(location.add(2,0,0), 2);
+                locs.put(location.add(2,0,-1), 3);
+                locs.put(location.add(1,0,-2), 4);
+                locs.put(location.add(0,0,-2), 5);
+                locs.put(location.add(-1,0,1), 6);
+                locs.put(location.add(-1,0,0), 7);
+                break;
         }
         return locs;
     }
@@ -256,10 +258,13 @@ public class Circuit {
 
                 }
 
-                for(int k : Arrays.asList(5, 37, 45, 77)){
+                for(int k : Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7)){
 
+                    if(i.getComponentTree().locate(k + "t") != null)
                     i.getComponentTree().locate(k + "t").setHidden(!inputs.contains(k));
+                    if(i.getComponentTree().locate(k + "f") != null)
                     i.getComponentTree().locate(k + "f").setHidden(!outputs.contains(k));
+
                 }
             }
         }

@@ -5,6 +5,7 @@ import me.bounser.guitronics.circuits.CircuitsManager;
 import me.bounser.guitronics.listeners.BlockListener;
 import me.bounser.guitronics.listeners.RedstoneListener;
 import me.bounser.guitronics.tools.Data;
+import me.bounser.guitronics.tools.DebugCommand;
 import me.leoko.advancedgui.manager.LayoutManager;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -32,6 +33,8 @@ public final class GUItronics extends JavaPlugin {
         boolean debug = Data.getInstance().getDebug();
 
         if(debug) getLogger().info("Loading resources...");
+
+        if(debug) getCommand("debug").setExecutor(new DebugCommand(this));
 
         LayoutManager.getInstance().registerLayoutExtension(new AGUIExtension(), this);
 
