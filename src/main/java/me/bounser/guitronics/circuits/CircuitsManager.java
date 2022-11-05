@@ -3,8 +3,10 @@ package me.bounser.guitronics.circuits;
 import me.bounser.guitronics.advancedgui.AGUIInstances;
 import me.bounser.guitronics.components.EComponent;
 import me.bounser.guitronics.tools.Data;
+import me.leoko.advancedgui.manager.GuiWallManager;
 import me.leoko.advancedgui.utils.Direction;
 import me.leoko.advancedgui.utils.GuiInstance;
+import me.leoko.advancedgui.utils.GuiWallInstance;
 import me.leoko.advancedgui.utils.interactions.Interaction;
 import org.bukkit.Location;
 
@@ -54,12 +56,12 @@ public class CircuitsManager {
 
         Data data = Data.getInstance();
 
-        if(circuits.size() != 0){
+        if(circuits.size() == 0){
             for(String uuid : data.getUsersUUID()){
                 for(int i = 1; i <= data.getNum(uuid); i++){
 
                     Circuit cir = new Circuit(data.getLocation(i, uuid), data.getSize(i, uuid), uuid, data.getDesign(uuid), i);
-                    circuits.put(cir, AGUIInstances.getInstance().placeGUI(data.getLocation(i, uuid), Direction.FLOOR_EAST, cir, true));
+                    circuits.put(cir, GuiWallManager.getInstance().getActiveInstance(data.getLocation(i, uuid)));
 
                 }
             }

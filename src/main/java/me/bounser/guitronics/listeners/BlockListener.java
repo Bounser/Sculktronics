@@ -143,8 +143,9 @@ public class BlockListener implements Listener {
 
         for(Circuit cir : CircuitsManager.getInstance().getAllCircuits()){
 
-            if(cir.getLocations().contains(e.getBlock().getLocation())){
+            if(cir.getLocations().contains(e.getBlock().getLocation().add(0,1,0))){
                 e.setCancelled(true);
+                e.getPlayer().sendMessage("This block is form a circuit!");
             }
         }
 

@@ -98,36 +98,36 @@ public class Circuit {
 
         HashMap<Location, Integer> locs = new HashMap<>();
 
-        locs.put(location.add(0,0,-1), 0);
+        locs.put(location.add(0,-1,-1), 0);
 
         switch (size){
             case 0:
-                locs.put(location.add(1,0,0), 1);
-                locs.put(location.add(0,0,-1), 2);
-                locs.put(location.add(-1,0,0), 3);
+                locs.put(location.add(1,-1,0), 1);
+                locs.put(location.add(0,-1,-1), 2);
+                locs.put(location.add(-1,-1,0), 3);
                 break;
             case 1:
-                locs.put(location.add(1,0,-1), 1);
-                locs.put(location.add(2,0,0), 2);
-                locs.put(location.add(1,0,1), 3);
-                locs.put(location.add(0,0,1), 4);
-                locs.put(location.add(-1,0,0), 5);
+                locs.put(location.add(1,-1,-1), 1);
+                locs.put(location.add(2,-1,0), 2);
+                locs.put(location.add(1,-1,1), 3);
+                locs.put(location.add(0,-1,1), 4);
+                locs.put(location.add(-1,-1,0), 5);
                 break;
             case 2:
-                locs.put(location.add(1,0,0), 1);
-                locs.put(location.add(1,0,1), 2);
-                locs.put(location.add(0,0,2), 3);
-                locs.put(location.add(-1,0,1), 4);
-                locs.put(location.add(-1,0,0), 5);
+                locs.put(location.add(1,-1,0), 1);
+                locs.put(location.add(1,-1,1), 2);
+                locs.put(location.add(0,-1,2), 3);
+                locs.put(location.add(-1,-1,1), 4);
+                locs.put(location.add(-1,-1,0), 5);
                 break;
             case 3:
-                locs.put(location.add(1,0,-1), 1);
-                locs.put(location.add(2,0,0), 2);
-                locs.put(location.add(2,0,-1), 3);
-                locs.put(location.add(1,0,-2), 4);
-                locs.put(location.add(0,0,-2), 5);
-                locs.put(location.add(-1,0,1), 6);
-                locs.put(location.add(-1,0,0), 7);
+                locs.put(location.add(1,-1,-1), 1);
+                locs.put(location.add(2,-1,0), 2);
+                locs.put(location.add(2,-1,-1), 3);
+                locs.put(location.add(1,-1,-2), 4);
+                locs.put(location.add(0,-1,-2), 5);
+                locs.put(location.add(-1,-1,1), 6);
+                locs.put(location.add(-1,-1,0), 7);
                 break;
         }
         return locs;
