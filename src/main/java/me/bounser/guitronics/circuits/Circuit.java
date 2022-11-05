@@ -355,9 +355,9 @@ public class Circuit {
                     location = location.add(-1,0,0); break;
 
                 case 1:
-                    location.add(1,0,0).getBlock().setType(Material.SCULK_CATALYST); break;
+                    location.add(1,-1,0).getBlock().setType(Material.SCULK_CATALYST); break;
                 case 2:
-                    location.add(0,0,1).getBlock().setType(Material.SCULK_CATALYST); break;
+                    location.add(0,-1,1).getBlock().setType(Material.SCULK_CATALYST); break;
 
             }
         } else if(size == 1){

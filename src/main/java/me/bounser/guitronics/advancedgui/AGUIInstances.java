@@ -78,7 +78,7 @@ public class AGUIInstances {
             itemFrame.setFacingDirection(BlockFace.UP, true);
         }
 
-        GuiWallInstance guiInstance = new GuiWallInstance(gwm.getNextId(), layout, 3, new GuiLocation(locations.get(0), dir));
+        GuiWallInstance guiInstance = new GuiWallInstance(gwm.getNextId(), layout, 6, new GuiLocation(locations.get(0), dir));
         gwm.registerInstance(guiInstance, true);
 
         if(Data.getInstance().getDebug()) Bukkit.broadcastMessage("GUI Placed with instance: " + guiInstance);
