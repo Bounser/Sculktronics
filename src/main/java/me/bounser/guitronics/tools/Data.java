@@ -221,7 +221,16 @@ public class Data {
 
     }
 
-    public void updateDesign(Circuit cir){ json.set(cir.getOwneruuid() + "." + cir.getNum() + ".design", cir.getDesign()); }
+    public void updateCircuit(Circuit circuit){
+
+        String owneruuid = circuit.getOwneruuid();
+        int i = circuit.getNum();
+        Location loc = circuit.getLocation();
+
+        json.set(owneruuid + "." + i + ".size", circuit.getSize());
+        json.set(owneruuid + "." + i + ".design", circuit.getDesign());
+
+    }
 
     public List<String> getUsersUUID(){ return json.getStringList("users"); }
 

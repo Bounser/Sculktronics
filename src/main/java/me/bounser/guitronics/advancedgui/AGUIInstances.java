@@ -30,7 +30,7 @@ public class AGUIInstances {
     Layout layout3 = LayoutManager.getInstance().getLayout(data.getLayoutName(3));
 
     // Places the AdvancedGUI GUI and returns its GUIinstance.
-    public GuiInstance placeGUI(Location location, Direction dir, Circuit cir, Boolean remove){
+    public GuiWallInstance placeGUI(Location location, Direction dir, Circuit cir, Boolean remove){
 
         GuiWallManager gwm = GuiWallManager.getInstance();
 
@@ -76,6 +76,7 @@ public class AGUIInstances {
             itemFrame.setVisible(false);
             itemFrame.teleport(loc);
             itemFrame.setFacingDirection(BlockFace.UP, true);
+
         }
 
         GuiWallInstance guiInstance = new GuiWallInstance(gwm.getNextId(), layout, 6, new GuiLocation(locations.get(0), dir));

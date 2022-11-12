@@ -1,9 +1,13 @@
 package me.bounser.guitronics.circuits;
 
+import me.bounser.guitronics.advancedgui.AGUIInstances;
 import me.bounser.guitronics.components.ElectroComponent;
 import me.bounser.guitronics.components.EComponent;
 import me.bounser.guitronics.components.electrocomponents.*;
 import me.bounser.guitronics.tools.Data;
+import me.leoko.advancedgui.manager.GuiWallManager;
+import me.leoko.advancedgui.utils.Direction;
+import me.leoko.advancedgui.utils.GuiWallInstance;
 import me.leoko.advancedgui.utils.components.RectComponent;
 import me.leoko.advancedgui.utils.interactions.Interaction;
 import org.bukkit.Bukkit;
@@ -55,6 +59,8 @@ public class Circuit {
     // All interactions involved with this circuit. All changes will be done to ALL current interactions.
     List<Interaction> interactions = new ArrayList<>();
 
+    GuiWallInstance ginstance;
+
     // State of the circuit.
     Boolean overloaded = false;
 
@@ -68,6 +74,15 @@ public class Circuit {
         } else {
             this.design = design;
         }
+
+        GuiWallInstance instance = GuiWallManager.getInstance().getActiveInstance(loc);
+
+        if(instance != null){
+            ginstance = instance;
+        } else {
+            ginstance = AGUIInstances.getInstance().placeGUI(loc, Direction.FLOOR_NORTH,this, true);
+        }
+
     }
 
     // Getters
@@ -77,57 +92,83 @@ public class Circuit {
 
         List<Location> locations = new ArrayList<>();
 
-        locations.add(location);
+        Location auxLoc = location;
+        locations.add(auxLoc);
 
         if(size == 1){
-            locations.add(location.add(1,0,0));
+            locations.add(auxLoc.add(1,0,0));
         }
         if(size == 2){
-            locations.add(location.add(0,0,1));
+            auxLoc = location;
+            locations.add(auxLoc.add(0,0,1));
         }
         if(size == 3){
-            locations.add(location.add(1,0,0));
-            locations.add(location.add(0,0,1));
-            locations.add(location.add(1,0,1));
+            auxLoc = location;
+            locations.add(auxLoc.add(1,0,0));
+            auxLoc = location;
+            locations.add(auxLoc.add(0,0,1));
+            auxLoc = location;
+            locations.add(auxLoc.add(-1,0,1));
         }
 
         return locations;
     }
 
+    public GuiWallInstance getGuiWallInstance(){ return ginstance; }
+
     public HashMap<Location, Integer> getPutsLocations(){
 
         HashMap<Location, Integer> locs = new HashMap<>();
 
-        locs.put(location.add(0,-1,-1), 0);
+        Location auxLoc = location;
+        locs.put(auxLoc.add(0,-1,-1), 0);
 
         switch (size){
             case 0:
-                locs.put(location.add(1,-1,0), 1);
-                locs.put(location.add(0,-1,-1), 2);
-                locs.put(location.add(-1,-1,0), 3);
+                auxLoc = location;
+                locs.put(auxLoc.add(1,-1,0), 1);
+                auxLoc = location;
+                locs.put(auxLoc.add(0,-1,-1), 2);
+                auxLoc = location;
+                locs.put(auxLoc.add(-1,-1,0), 3);
                 break;
             case 1:
-                locs.put(location.add(1,-1,-1), 1);
-                locs.put(location.add(2,-1,0), 2);
-                locs.put(location.add(1,-1,1), 3);
-                locs.put(location.add(0,-1,1), 4);
-                locs.put(location.add(-1,-1,0), 5);
+                auxLoc = location;
+                locs.put(auxLoc.add(1,-1,-1), 1);
+                auxLoc = location;
+                locs.put(auxLoc.add(2,-1,0), 2);
+                auxLoc = location;
+                locs.put(auxLoc.add(1,-1,1), 3);
+                auxLoc = location;
+                locs.put(auxLoc.add(0,-1,1), 4);
+                auxLoc = location;
+                locs.put(auxLoc.add(-1,-1,0), 5);
                 break;
             case 2:
-                locs.put(location.add(1,-1,0), 1);
-                locs.put(location.add(1,-1,1), 2);
-                locs.put(location.add(0,-1,2), 3);
-                locs.put(location.add(-1,-1,1), 4);
-                locs.put(location.add(-1,-1,0), 5);
+                locs.put(auxLoc.add(1,-1,0), 1);
+                auxLoc = location;
+                locs.put(auxLoc.add(1,-1,1), 2);
+                auxLoc = location;
+                locs.put(auxLoc.add(0,-1,2), 3);
+                auxLoc = location;
+                locs.put(auxLoc.add(-1,-1,1), 4);
+                auxLoc = location;
+                locs.put(auxLoc.add(-1,-1,0), 5);
                 break;
             case 3:
-                locs.put(location.add(1,-1,-1), 1);
-                locs.put(location.add(2,-1,0), 2);
-                locs.put(location.add(2,-1,-1), 3);
-                locs.put(location.add(1,-1,-2), 4);
-                locs.put(location.add(0,-1,-2), 5);
-                locs.put(location.add(-1,-1,1), 6);
-                locs.put(location.add(-1,-1,0), 7);
+                locs.put(auxLoc.add(1,-1,-1), 1);
+                auxLoc = location;
+                locs.put(auxLoc.add(2,-1,0), 2);
+                auxLoc = location;
+                locs.put(auxLoc.add(2,-1,-1), 3);
+                auxLoc = location;
+                locs.put(auxLoc.add(1,-1,-2), 4);
+                auxLoc = location;
+                locs.put(auxLoc.add(0,-1,-2), 5);
+                auxLoc = location;
+                locs.put(auxLoc.add(-1,-1,1), 6);
+                auxLoc = location;
+                locs.put(auxLoc.add(-1,-1,0), 7);
                 break;
         }
         return locs;
@@ -347,33 +388,43 @@ public class Circuit {
     // Direction: INT corresponding to clockwise change (Direction). (0-3)
 
     public void expand(int direction){
+
+        Location auxLoc = location;
+
         if(size == 0){
             switch (direction){
                 case 0:
-                    location = location.add(0,0,-1); break;
+                    location.add(0,0,-1); break;
                 case 3:
-                    location = location.add(-1,0,0); break;
+                    location.add(-1,0,0); break;
 
                 case 1:
-                    location.add(1,-1,0).getBlock().setType(Material.SCULK_CATALYST); break;
+                    auxLoc.add(1,-1,0).getBlock().setType(Material.SCULK_CATALYST); break;
                 case 2:
-                    location.add(0,-1,1).getBlock().setType(Material.SCULK_CATALYST); break;
+                    auxLoc.add(0,-1,1).getBlock().setType(Material.SCULK_CATALYST); break;
 
             }
         } else if(size == 1){
-            if(direction == 0) { location = location.add(0, 0, -1); }
+            if(direction == 0) { location.add(0, 0, -1); }
 
-            location.add(0,0,1).getBlock().setType(Material.SCULK_CATALYST);
-            location.add(1,0,1).getBlock().setType(Material.SCULK_CATALYST);
+            auxLoc.add(0,0,1).getBlock().setType(Material.SCULK_CATALYST);
+            auxLoc = location;
+            auxLoc.add(1,0,1).getBlock().setType(Material.SCULK_CATALYST);
 
         } else if(size == 2){
-            if(direction == 3) { location = location.add(-1, 0, 0); }
+            if(direction == 3) { location.add(-1, 0, 0); }
 
-            location.add(0,0,1).getBlock().setType(Material.SCULK_CATALYST);
-            location.add(1,0,1).getBlock().setType(Material.SCULK_CATALYST);
+            auxLoc.add(0,0,1).getBlock().setType(Material.SCULK_CATALYST);
+            auxLoc = location;
+            auxLoc.add(1,0,1).getBlock().setType(Material.SCULK_CATALYST);
         }
 
-        CircuitsManager.getInstance().updateCircuit(this);
+        updateCircuit();
+    }
+
+    public void updateCircuit(){
+        ginstance = AGUIInstances.getInstance().placeGUI(location, Direction.FLOOR_NORTH,this, true);
+        Data.getInstance().updateCircuit(this);
     }
 
     public List<Interaction> getInteractions(){ return interactions; }

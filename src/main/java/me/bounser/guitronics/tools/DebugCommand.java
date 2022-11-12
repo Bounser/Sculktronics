@@ -35,6 +35,7 @@ public class DebugCommand implements CommandExecutor {
                     break;
                 case "locations":
                     p.sendMessage("Locations: " + CircuitsManager.getInstance().getCircuitLocs());
+                    break;
                 case "circuit":
                     for(Circuit circuit : CircuitsManager.getInstance().getAllCircuits()){
                         if(circuit.getLocation().distance(p.getLocation()) < 4){

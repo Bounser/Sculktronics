@@ -1,24 +1,21 @@
 package me.bounser.guitronics.circuits;
 
-import me.bounser.guitronics.advancedgui.AGUIInstances;
 import me.bounser.guitronics.components.EComponent;
 import me.bounser.guitronics.tools.Data;
-import me.leoko.advancedgui.manager.GuiWallManager;
-import me.leoko.advancedgui.utils.Direction;
 import me.leoko.advancedgui.utils.GuiInstance;
-import me.leoko.advancedgui.utils.GuiWallInstance;
 import me.leoko.advancedgui.utils.interactions.Interaction;
 import org.bukkit.Location;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Map.Entry;
+import java.util.List;
 import java.util.HashMap;
 
 public class CircuitsManager {
 
-    // Keeps information about circuits, and it's the responsable of creating/deleting them and keeping record of things.
+    // Responsable of creating/deleting circuits and keeping record of things.
 
-    HashMap<Circuit, GuiInstance> circuits = new HashMap<>();
+    List<Circuit> circuits = new ArrayList<>();
 
     private static CircuitsManager instance;
     public static CircuitsManager getInstance(){
@@ -27,26 +24,20 @@ public class CircuitsManager {
 
     public void createCircuit(Location loc, String owneruuid){
 
-        circuits.put(new Circuit(loc, 0, owneruuid, new HashMap<>(), Data.getInstance().getNum(owneruuid) +1), AGUIInstances.getInstance().placeGUI(loc, Direction.FLOOR_NORTH,null, true));
+        circuits.add(new Circuit(loc, 0, owneruuid, new HashMap<>(), Data.getInstance().getNum(owneruuid) +1));
         Data.getInstance().registerCircuit(loc, owneruuid);
 
     }
 
-    public void updateCircuit(Circuit cir){
-
-        circuits.replace(cir, AGUIInstances.getInstance().placeGUI(cir.getLocation(), Direction.FLOOR_NORTH, cir, true));
-
-    }
-
     public Circuit getCircuitFromGUIInstance(GuiInstance guiinstance){
-        for(Circuit cir : circuits.keySet()){
-            if(circuits.get(cir) == guiinstance) return cir;
+        for(Circuit cir : circuits){
+            if(cir.getGuiWallInstance() == guiinstance) return cir;
         }
         return null;
     }
 
     public Circuit getCircuitFromInteraction(Interaction interaction){
-        for(Circuit cir: circuits.keySet()){
+        for(Circuit cir: circuits){
             if(cir.getInteractions().contains(interaction)) return cir;
         }
         return null;
@@ -58,10 +49,9 @@ public class CircuitsManager {
 
         if(circuits.size() == 0){
             for(String uuid : data.getUsersUUID()){
-                for(int i = 1; i <= data.getNum(uuid); i++){
+                for(int i = 0; i <= data.getNum(uuid); i++){
 
-                    Circuit cir = new Circuit(data.getLocation(i, uuid), data.getSize(i, uuid), uuid, data.getDesign(uuid), i);
-                    circuits.put(cir, GuiWallManager.getInstance().getActiveInstance(data.getLocation(i, uuid)));
+                    circuits.add(new Circuit(data.getLocation(i, uuid), data.getSize(i, uuid), uuid, data.getDesign(uuid), i));
 
                 }
             }
@@ -70,13 +60,13 @@ public class CircuitsManager {
         return false;
     }
 
-    public Collection<Circuit> getAllCircuits(){ return circuits.keySet(); }
+    public Collection<Circuit> getAllCircuits(){ return circuits; }
 
     public HashMap<Circuit, Location> getCircuitLocs(){
 
         HashMap<Circuit, Location> circuitBases = new HashMap<>();
 
-        for(Circuit cir : circuits.keySet())
+        for(Circuit cir : circuits)
             circuitBases.put(cir, cir.getLocation());
 
 

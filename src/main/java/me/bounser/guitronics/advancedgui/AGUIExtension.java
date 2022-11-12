@@ -239,7 +239,6 @@ public class AGUIExtension implements LayoutExtension {
                     }
                     pixel.setClickAction(clickAction);
                 }
-                Data.getInstance().updateDesign(cir);
             }
         }
         if(Data.getInstance().getDebug()) e.getPlayer().sendMessage("With cir: " + cir + "inputs: " + cir.getInputs());
