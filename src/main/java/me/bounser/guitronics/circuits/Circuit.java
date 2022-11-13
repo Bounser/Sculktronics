@@ -13,6 +13,7 @@ import me.leoko.advancedgui.utils.interactions.Interaction;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -120,54 +121,57 @@ public class Circuit {
 
         HashMap<Location, Integer> locs = new HashMap<>();
 
-        Location auxLoc = location;
+        Block block = location.getBlock();
+
+        Location auxLoc = block.getLocation();
+
         locs.put(auxLoc.add(0,-1,-1), 0);
 
         switch (size){
             case 0:
-                auxLoc = location;
+                auxLoc = block.getLocation();
                 locs.put(auxLoc.add(1,-1,0), 1);
-                auxLoc = location;
-                locs.put(auxLoc.add(0,-1,-1), 2);
-                auxLoc = location;
+                auxLoc = block.getLocation();
+                locs.put(auxLoc.add(0,-1,1), 2);
+                auxLoc = block.getLocation();
                 locs.put(auxLoc.add(-1,-1,0), 3);
                 break;
             case 1:
-                auxLoc = location;
+                auxLoc = block.getLocation();
                 locs.put(auxLoc.add(1,-1,-1), 1);
-                auxLoc = location;
+                auxLoc = block.getLocation();
                 locs.put(auxLoc.add(2,-1,0), 2);
-                auxLoc = location;
+                auxLoc = block.getLocation();
                 locs.put(auxLoc.add(1,-1,1), 3);
-                auxLoc = location;
+                auxLoc = block.getLocation();
                 locs.put(auxLoc.add(0,-1,1), 4);
-                auxLoc = location;
+                auxLoc = block.getLocation();
                 locs.put(auxLoc.add(-1,-1,0), 5);
                 break;
             case 2:
                 locs.put(auxLoc.add(1,-1,0), 1);
-                auxLoc = location;
+                auxLoc = block.getLocation();
                 locs.put(auxLoc.add(1,-1,1), 2);
-                auxLoc = location;
+                auxLoc = block.getLocation();
                 locs.put(auxLoc.add(0,-1,2), 3);
-                auxLoc = location;
+                auxLoc = block.getLocation();
                 locs.put(auxLoc.add(-1,-1,1), 4);
-                auxLoc = location;
+                auxLoc = block.getLocation();
                 locs.put(auxLoc.add(-1,-1,0), 5);
                 break;
             case 3:
                 locs.put(auxLoc.add(1,-1,-1), 1);
-                auxLoc = location;
+                auxLoc = block.getLocation();
                 locs.put(auxLoc.add(2,-1,0), 2);
-                auxLoc = location;
+                auxLoc = block.getLocation();
                 locs.put(auxLoc.add(2,-1,-1), 3);
-                auxLoc = location;
+                auxLoc = block.getLocation();
                 locs.put(auxLoc.add(1,-1,-2), 4);
-                auxLoc = location;
+                auxLoc = block.getLocation();
                 locs.put(auxLoc.add(0,-1,-2), 5);
-                auxLoc = location;
+                auxLoc = block.getLocation();
                 locs.put(auxLoc.add(-1,-1,1), 6);
-                auxLoc = location;
+                auxLoc = block.getLocation();
                 locs.put(auxLoc.add(-1,-1,0), 7);
                 break;
         }

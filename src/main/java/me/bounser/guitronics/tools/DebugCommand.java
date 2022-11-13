@@ -3,6 +3,7 @@ package me.bounser.guitronics.tools;
 import me.bounser.guitronics.GUItronics;
 import me.bounser.guitronics.circuits.Circuit;
 import me.bounser.guitronics.circuits.CircuitsManager;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -39,14 +40,14 @@ public class DebugCommand implements CommandExecutor {
                 case "circuit":
                     for(Circuit circuit : CircuitsManager.getInstance().getAllCircuits()){
                         if(circuit.getLocation().distance(p.getLocation()) < 4){
-                            p.sendMessage("Circuit owner: " + circuit.getOwneruuid());
-                            p.sendMessage("Circuit locations: " + circuit.getLocations());
-                            p.sendMessage("Circuit puts: " + circuit.getPutsLocations());
-                            p.sendMessage("Circuit interactions: " + circuit.getInteractions());
-                            p.sendMessage("Circuit size: " + circuit.getSize());
-                            p.sendMessage("Circuit type (num): " + circuit.getNum());
-                            p.sendMessage("Circuit inputs: " + circuit.getInputs());
-                            p.sendMessage("Circuit outputs: " + circuit.getOutputs());
+                            p.sendMessage(ChatColor.BLUE + "Circuit owner: " + circuit.getOwneruuid());
+                            p.sendMessage(ChatColor.DARK_BLUE + "Circuit locations: " + circuit.getLocations());
+                            p.sendMessage(ChatColor.BLUE + "Circuit puts: " + circuit.getPutsLocations());
+                            p.sendMessage(ChatColor.DARK_BLUE + "Circuit interactions: " + circuit.getInteractions());
+                            p.sendMessage(ChatColor.BLUE + "Circuit size: " + circuit.getSize());
+                            p.sendMessage(ChatColor.DARK_BLUE + "Circuit type (num): " + circuit.getNum());
+                            p.sendMessage(ChatColor.BLUE + "Circuit inputs: " + circuit.getInputs());
+                            p.sendMessage(ChatColor.DARK_BLUE + "Circuit outputs: " + circuit.getOutputs());
                         }
                     }
             }
