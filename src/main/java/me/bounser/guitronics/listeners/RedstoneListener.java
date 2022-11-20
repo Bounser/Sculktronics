@@ -4,6 +4,7 @@ import me.bounser.guitronics.GUItronics;
 import me.bounser.guitronics.circuits.Circuit;
 import me.bounser.guitronics.circuits.CircuitsManager;
 import me.bounser.guitronics.tools.Data;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -38,6 +39,7 @@ public class RedstoneListener implements Listener {
                 if(circuit.getPutsLocations().containsKey(e.getBlock().getLocation())){
 
                     cir = circuit;
+
                 }
             }
 

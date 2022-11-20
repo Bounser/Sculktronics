@@ -8,6 +8,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.Directional;
 import org.bukkit.block.data.type.Repeater;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -22,7 +24,7 @@ public class BlockListener implements Listener {
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent e){
 
-        // General block logic
+        // BASE BLOCK
 
         if(e.getBlock().getBlockData().getMaterial().equals(Material.SCULK_CATALYST) &&
                 e.getItemInHand().getItemMeta().getLore() != null &&
@@ -44,13 +46,15 @@ public class BlockListener implements Listener {
             CircuitsManager.getInstance().createCircuit(e.getBlock().getLocation().add(0,1,0), e.getPlayer().getUniqueId().toString());
         }
 
+        // REPEATER
+
         if(e.getBlock().getBlockData().getMaterial().equals(Material.REPEATER)){
 
             HashMap<Circuit, Location> cirLocs = CircuitsManager.getInstance().getCircuitLocs();
 
             for(Circuit cir : cirLocs.keySet()){
 
-                if(cir.getLocation().distance(e.getBlock().getLocation()) < 6){
+                if(cir.getPutsLocations().containsKey(e.getBlock().getLocation())){
                     checkCircuitPuts(cir);
                     cir.updatePuts();
                 }
@@ -64,7 +68,6 @@ public class BlockListener implements Listener {
     public void checkCircuitPuts(Circuit circuit){
 
         HashMap<Location, Integer> locations = circuit.getPutsLocations();
-        if(Data.getInstance().getDebug()) Bukkit.broadcastMessage(locations.toString());
 
         // FOR CIRCUITS SIZED FROM 1-3
 
@@ -72,54 +75,57 @@ public class BlockListener implements Listener {
 
             Block block = loc.getBlock();
             Block blockC = getNearestLoc(loc, circuit.getLocations()).getBlock();
+            Directional repeater = null;
 
-            if(block.getType().equals(Material.REPEATER)){
-                Repeater repeater = (Repeater) block;
+            Bukkit.broadcastMessage(block.getBlockData().getMaterial().toString());
 
-                if(blockC.getFace(block) == BlockFace.EAST){
+            if(block.getBlockData().getMaterial().equals(Material.REPEATER) && Data.getInstance().getDebug()){
+                Bukkit.broadcastMessage("Its a repeater!");
+                repeater = (Directional) block.getBlockData();
+            }
 
-                    if(repeater.getFacing() == BlockFace.EAST){
-                        circuit.addInput(locations.get(loc));
-                    } else if(repeater.getFacing() == BlockFace.WEST){
-                        circuit.addOutput(locations.get(loc));
-                    }
+            if(Data.getInstance().getDebug()) Bukkit.broadcastMessage(blockC.getLocation() + " " + blockC.getFace(block));
 
+            if(blockC.getFace(block) == BlockFace.EAST){
+
+                if(repeater.getFacing() == BlockFace.EAST){
+                    circuit.addInput(locations.get(loc));
+                } else if(repeater.getFacing() == BlockFace.WEST){
+                    circuit.addOutput(locations.get(loc));
                 }
-
-                if(blockC.getFace(block) == BlockFace.WEST){
-
-                    if(repeater.getFacing() == BlockFace.WEST){
-                        circuit.addInput(locations.get(loc));
-                    } else if(repeater.getFacing() == BlockFace.EAST){
-                        circuit.addOutput(locations.get(loc));
-                    }
-
-                }
-
-                if(blockC.getFace(block) == BlockFace.NORTH){
-
-                    if(repeater.getFacing() == BlockFace.NORTH){
-                        circuit.addInput(locations.get(loc));
-                    } else if(repeater.getFacing() == BlockFace.SOUTH){
-                        circuit.addOutput(locations.get(loc));
-                    }
-
-                }
-
-                if(blockC.getFace(block) == BlockFace.SOUTH){
-
-                    if(repeater.getFacing() == BlockFace.SOUTH){
-                        circuit.addInput(locations.get(loc));
-                    } else if(repeater.getFacing() == BlockFace.NORTH){
-                        circuit.addOutput(locations.get(loc));
-                    }
-
-                }
-            } else {
-
-                circuit.removePut(locations.get(loc));
 
             }
+
+            if(blockC.getFace(block) == BlockFace.WEST){
+
+                if(repeater.getFacing() == BlockFace.WEST){
+                    circuit.addInput(locations.get(loc));
+                } else if(repeater.getFacing() == BlockFace.EAST){
+                    circuit.addOutput(locations.get(loc));
+                }
+
+            }
+
+            if(blockC.getFace(block) == BlockFace.NORTH){
+
+                if(repeater.getFacing() == BlockFace.NORTH){
+                    circuit.addInput(locations.get(loc));
+                } else if(repeater.getFacing() == BlockFace.SOUTH){
+                    circuit.addOutput(locations.get(loc));
+                }
+
+            }
+
+            if(blockC.getFace(block) == BlockFace.SOUTH){
+
+                if(repeater.getFacing() == BlockFace.SOUTH){
+                    circuit.addInput(locations.get(loc));
+                } else if(repeater.getFacing() == BlockFace.NORTH){
+                    circuit.addOutput(locations.get(loc));
+                }
+
+            }
+
         }
     }
 
@@ -130,8 +136,10 @@ public class BlockListener implements Listener {
         if(Data.getInstance().getDebug()) Bukkit.broadcastMessage(loc + " " + locs);
 
         for(Location l : locs){
+            l.add(0,-1,0);
             if(Data.getInstance().getDebug()) Bukkit.broadcastMessage(String.valueOf(l.distance(loc)));
             if(l.distance(loc) == 1){
+                if(Data.getInstance().getDebug()) Bukkit.broadcastMessage("Returned.");
                 return l;
             }
         }
@@ -149,5 +157,16 @@ public class BlockListener implements Listener {
             }
         }
 
+        if(e.getBlock().getType() == Material.REPEATER){
+
+            for(Circuit cir : CircuitsManager.getInstance().getAllCircuits()){
+
+                if(cir.getPutsLocations().containsKey(e.getBlock().getLocation())){
+
+                    cir.removePut(e.getBlock().getLocation());
+
+                }
+            }
+        }
     }
 }

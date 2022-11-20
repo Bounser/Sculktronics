@@ -207,6 +207,14 @@ public class Circuit {
                 Diode diode = (Diode) design.get(pos);
                 if(powered) return diode.getPoweredColor();
                 return diode.getBasicColor();
+            case RESISTOR:
+                Resistor resistor = (Resistor) design.get(pos);
+                if(powered) return resistor.getPoweredColor();
+                return resistor.getBasicColor();
+            case INVERTER:
+                Inverter inverter = (Inverter) design.get(pos);
+                if(powered) return inverter.getPoweredColor();
+                return inverter.getBasicColor();
         }
         return null;
     }
