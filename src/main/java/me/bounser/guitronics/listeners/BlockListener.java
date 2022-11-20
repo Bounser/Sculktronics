@@ -67,14 +67,16 @@ public class BlockListener implements Listener {
 
     public void checkCircuitPuts(Circuit circuit){
 
-        HashMap<Location, Integer> locations = circuit.getPutsLocations();
+        HashMap<Location, Integer> plocs = circuit.getPutsLocations();
 
         // FOR CIRCUITS SIZED FROM 1-3
 
-        for(Location loc : locations.keySet()){
+        for(Location ploc : plocs.keySet()){
 
-            Block block = loc.getBlock();
-            Block blockC = getNearestLoc(loc, circuit.getLocations()).getBlock();
+            if(ploc.getBlock().getType() != Material.REPEATER) return;
+
+            Block block = ploc.getBlock();
+            Block blockC = getNearestLoc(ploc, circuit.getLocations()).getBlock();
             Directional repeater = null;
 
             Bukkit.broadcastMessage(block.getBlockData().getMaterial().toString());
@@ -89,9 +91,9 @@ public class BlockListener implements Listener {
             if(blockC.getFace(block) == BlockFace.EAST){
 
                 if(repeater.getFacing() == BlockFace.EAST){
-                    circuit.addInput(locations.get(loc));
+                    circuit.addInput(plocs.get(ploc));
                 } else if(repeater.getFacing() == BlockFace.WEST){
-                    circuit.addOutput(locations.get(loc));
+                    circuit.addOutput(plocs.get(ploc));
                 }
 
             }
@@ -99,9 +101,9 @@ public class BlockListener implements Listener {
             if(blockC.getFace(block) == BlockFace.WEST){
 
                 if(repeater.getFacing() == BlockFace.WEST){
-                    circuit.addInput(locations.get(loc));
+                    circuit.addInput(plocs.get(ploc));
                 } else if(repeater.getFacing() == BlockFace.EAST){
-                    circuit.addOutput(locations.get(loc));
+                    circuit.addOutput(plocs.get(ploc));
                 }
 
             }
@@ -109,9 +111,9 @@ public class BlockListener implements Listener {
             if(blockC.getFace(block) == BlockFace.NORTH){
 
                 if(repeater.getFacing() == BlockFace.NORTH){
-                    circuit.addInput(locations.get(loc));
+                    circuit.addInput(plocs.get(ploc));
                 } else if(repeater.getFacing() == BlockFace.SOUTH){
-                    circuit.addOutput(locations.get(loc));
+                    circuit.addOutput(plocs.get(ploc));
                 }
 
             }
@@ -119,9 +121,9 @@ public class BlockListener implements Listener {
             if(blockC.getFace(block) == BlockFace.SOUTH){
 
                 if(repeater.getFacing() == BlockFace.SOUTH){
-                    circuit.addInput(locations.get(loc));
+                    circuit.addInput(plocs.get(ploc));
                 } else if(repeater.getFacing() == BlockFace.NORTH){
-                    circuit.addOutput(locations.get(loc));
+                    circuit.addOutput(plocs.get(ploc));
                 }
 
             }

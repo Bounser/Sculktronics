@@ -81,7 +81,7 @@ public class Circuit {
         if(instance != null){
             ginstance = instance;
         } else {
-            ginstance = AGUIInstances.getInstance().placeGUI(loc, Direction.FLOOR_NORTH,this, true);
+            ginstance = AGUIInstances.getInstance().placeGUI(loc,this, true);
         }
 
     }
@@ -435,7 +435,7 @@ public class Circuit {
     }
 
     public void updateCircuit(){
-        ginstance = AGUIInstances.getInstance().placeGUI(location, Direction.FLOOR_NORTH,this, true);
+        ginstance = AGUIInstances.getInstance().placeGUI(location,this, true);
         Data.getInstance().updateCircuit(this);
     }
 

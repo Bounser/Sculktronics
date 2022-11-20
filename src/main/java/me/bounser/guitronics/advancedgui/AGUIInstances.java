@@ -30,7 +30,7 @@ public class AGUIInstances {
     Layout layout3 = LayoutManager.getInstance().getLayout(data.getLayoutName(3));
 
     // Places the AdvancedGUI GUI and returns its GUIinstance.
-    public GuiWallInstance placeGUI(Location location, Direction dir, Circuit cir, Boolean remove){
+    public GuiWallInstance placeGUI(Location location, Circuit cir, Boolean remove){
 
         GuiWallManager gwm = GuiWallManager.getInstance();
 
@@ -79,7 +79,7 @@ public class AGUIInstances {
 
         }
 
-        GuiWallInstance guiInstance = new GuiWallInstance(gwm.getNextId(), layout, 6, new GuiLocation(locations.get(0), dir));
+        GuiWallInstance guiInstance = new GuiWallInstance(gwm.getNextId(), layout, 6, new GuiLocation(locations.get(0), Direction.SOUTH));
         gwm.registerInstance(guiInstance, true);
 
         if(Data.getInstance().getDebug()) Bukkit.broadcastMessage("GUI Placed with instance: " + guiInstance);
