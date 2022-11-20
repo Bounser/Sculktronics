@@ -73,60 +73,62 @@ public class BlockListener implements Listener {
 
         for(Location ploc : plocs.keySet()){
 
-            if(ploc.getBlock().getType() != Material.REPEATER) return;
+            if(ploc.getBlock().getType() == Material.REPEATER){
+                Block block = ploc.getBlock();
+                Block blockC = getNearestLoc(ploc, circuit.getLocations()).getBlock();
+                Directional repeater = null;
 
-            Block block = ploc.getBlock();
-            Block blockC = getNearestLoc(ploc, circuit.getLocations()).getBlock();
-            Directional repeater = null;
+                Bukkit.broadcastMessage(block.getBlockData().getMaterial().toString());
 
-            Bukkit.broadcastMessage(block.getBlockData().getMaterial().toString());
-
-            if(block.getBlockData().getMaterial().equals(Material.REPEATER) && Data.getInstance().getDebug()){
-                Bukkit.broadcastMessage("Its a repeater!");
-                repeater = (Directional) block.getBlockData();
-            }
-
-            if(Data.getInstance().getDebug()) Bukkit.broadcastMessage(blockC.getLocation() + " " + blockC.getFace(block));
-
-            if(blockC.getFace(block) == BlockFace.EAST){
-
-                if(repeater.getFacing() == BlockFace.EAST){
-                    circuit.addInput(plocs.get(ploc));
-                } else if(repeater.getFacing() == BlockFace.WEST){
-                    circuit.addOutput(plocs.get(ploc));
+                if(block.getBlockData().getMaterial().equals(Material.REPEATER) && Data.getInstance().getDebug()){
+                    Bukkit.broadcastMessage("Its a repeater!");
+                    repeater = (Directional) block.getBlockData();
                 }
 
-            }
+                if(Data.getInstance().getDebug()) Bukkit.broadcastMessage(blockC.getLocation() + " " + blockC.getFace(block));
 
-            if(blockC.getFace(block) == BlockFace.WEST){
+                if(blockC.getFace(block) == BlockFace.EAST){
 
-                if(repeater.getFacing() == BlockFace.WEST){
-                    circuit.addInput(plocs.get(ploc));
-                } else if(repeater.getFacing() == BlockFace.EAST){
-                    circuit.addOutput(plocs.get(ploc));
+                    if(repeater.getFacing() == BlockFace.EAST){
+                        circuit.addInput(plocs.get(ploc));
+                    } else if(repeater.getFacing() == BlockFace.WEST){
+                        circuit.addOutput(plocs.get(ploc));
+                    }
+
                 }
 
-            }
+                if(blockC.getFace(block) == BlockFace.WEST){
 
-            if(blockC.getFace(block) == BlockFace.NORTH){
+                    if(repeater.getFacing() == BlockFace.WEST){
+                        circuit.addInput(plocs.get(ploc));
+                    } else if(repeater.getFacing() == BlockFace.EAST){
+                        circuit.addOutput(plocs.get(ploc));
+                    }
 
-                if(repeater.getFacing() == BlockFace.NORTH){
-                    circuit.addInput(plocs.get(ploc));
-                } else if(repeater.getFacing() == BlockFace.SOUTH){
-                    circuit.addOutput(plocs.get(ploc));
                 }
 
-            }
+                if(blockC.getFace(block) == BlockFace.NORTH){
 
-            if(blockC.getFace(block) == BlockFace.SOUTH){
+                    if(repeater.getFacing() == BlockFace.NORTH){
+                        circuit.addInput(plocs.get(ploc));
+                    } else if(repeater.getFacing() == BlockFace.SOUTH){
+                        circuit.addOutput(plocs.get(ploc));
+                    }
 
-                if(repeater.getFacing() == BlockFace.SOUTH){
-                    circuit.addInput(plocs.get(ploc));
-                } else if(repeater.getFacing() == BlockFace.NORTH){
-                    circuit.addOutput(plocs.get(ploc));
                 }
 
+                if(blockC.getFace(block) == BlockFace.SOUTH){
+
+                    if(repeater.getFacing() == BlockFace.SOUTH){
+                        circuit.addInput(plocs.get(ploc));
+                    } else if(repeater.getFacing() == BlockFace.NORTH){
+                        circuit.addOutput(plocs.get(ploc));
+                    }
+
+                }
             }
+
+
 
         }
     }

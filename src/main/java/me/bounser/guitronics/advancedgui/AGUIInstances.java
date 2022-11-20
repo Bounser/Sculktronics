@@ -79,7 +79,7 @@ public class AGUIInstances {
 
         }
 
-        GuiWallInstance guiInstance = new GuiWallInstance(gwm.getNextId(), layout, 6, new GuiLocation(locations.get(0), Direction.SOUTH));
+        GuiWallInstance guiInstance = new GuiWallInstance(gwm.getNextId(), layout, 9, new GuiLocation(location, Direction.FLOOR_SOUTH));
         gwm.registerInstance(guiInstance, true);
 
         if(Data.getInstance().getDebug()) Bukkit.broadcastMessage("GUI Placed with instance: " + guiInstance);
