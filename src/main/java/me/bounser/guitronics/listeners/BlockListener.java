@@ -69,10 +69,10 @@ public class BlockListener implements Listener {
         HashMap<Location, Integer> plocs = circuit.getPutsLocations();
 
         // TODO: FOR CIRCUITS SIZED FROM 1-3
-
         for(Location ploc : plocs.keySet()){
 
             if(ploc.getBlock().getType() == Material.REPEATER){
+
                 Block block = ploc.getBlock();
                 Block blockC = getNearestLoc(ploc, circuit.getLocations()).getBlock();
                 Directional repeater = null;
@@ -83,7 +83,6 @@ public class BlockListener implements Listener {
                 }
 
                 if(Data.getInstance().getDebug()) Bukkit.broadcastMessage(blockC.getLocation() + " " + blockC.getFace(block));
-
                 if(blockC.getFace(block) == BlockFace.EAST){
 
                     if(repeater.getFacing() == BlockFace.EAST){
@@ -130,11 +129,12 @@ public class BlockListener implements Listener {
         // Indeed, although the name might be misleading without context, it returns one block of the list with distance 1.
 
         for(Location l : locs){
-            l.add(0,-1,0);
+            Location laux = new Location(l.getWorld(), l.getX(), l.getY(), l.getZ());
+            laux.add(0,-1,0);
             if(Data.getInstance().getDebug()) Bukkit.broadcastMessage(String.valueOf(l.distance(loc)));
-            if(l.distance(loc) == 1){
+            if(laux.distance(loc) == 1){
                 // if(Data.getInstance().getDebug()) Bukkit.broadcastMessage("Returned.");
-                return l;
+                return laux;
             }
         }
         return null;
@@ -159,7 +159,6 @@ public class BlockListener implements Listener {
 
                 if(cir.getPutsLocations().containsKey(e.getBlock().getLocation())){
 
-                    Bukkit.broadcastMessage("ASD");
                     cir.removePut(e.getBlock().getLocation());
 
                 }

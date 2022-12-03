@@ -120,15 +120,11 @@ public class Circuit {
 
         HashMap<Location, Integer> locs = new HashMap<>();
         locs.put(getAuxLoc().add(0,-1,-1), 0);
-        Bukkit.broadcastMessage(locs.toString());
         switch (size){
             case 0:
                 locs.put(getAuxLoc().add(1,-1,0), 1);
                 locs.put(getAuxLoc().add(0,-1,1), 2);
                 locs.put(getAuxLoc().add(-1,-1,0), 3);
-                Bukkit.broadcastMessage(locs.toString());
-                getAuxLoc().add(0,4,0);
-                Bukkit.broadcastMessage(locs.toString());
                 break;
             case 1:
                 locs.put(getAuxLoc().add(1,-1,-1), 1);
