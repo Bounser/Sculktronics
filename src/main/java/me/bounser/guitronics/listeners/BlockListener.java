@@ -68,7 +68,7 @@ public class BlockListener implements Listener {
 
         HashMap<Location, Integer> plocs = circuit.getPutsLocations();
 
-        // FOR CIRCUITS SIZED FROM 1-3
+        // TODO: FOR CIRCUITS SIZED FROM 1-3
 
         for(Location ploc : plocs.keySet()){
 
@@ -91,7 +91,6 @@ public class BlockListener implements Listener {
                     } else if(repeater.getFacing() == BlockFace.WEST){
                         circuit.addOutput(plocs.get(ploc));
                     }
-
                 }
 
                 if(blockC.getFace(block) == BlockFace.WEST){
@@ -101,7 +100,6 @@ public class BlockListener implements Listener {
                     } else if(repeater.getFacing() == BlockFace.EAST){
                         circuit.addOutput(plocs.get(ploc));
                     }
-
                 }
 
                 if(blockC.getFace(block) == BlockFace.NORTH){
@@ -111,7 +109,6 @@ public class BlockListener implements Listener {
                     } else if(repeater.getFacing() == BlockFace.SOUTH){
                         circuit.addOutput(plocs.get(ploc));
                     }
-
                 }
 
                 if(blockC.getFace(block) == BlockFace.SOUTH){
@@ -125,8 +122,6 @@ public class BlockListener implements Listener {
                 }
             }
 
-
-
         }
     }
 
@@ -134,13 +129,11 @@ public class BlockListener implements Listener {
 
         // Indeed, although the name might be misleading without context, it returns one block of the list with distance 1.
 
-        if(Data.getInstance().getDebug()) Bukkit.broadcastMessage(loc + " " + locs);
-
         for(Location l : locs){
             l.add(0,-1,0);
             if(Data.getInstance().getDebug()) Bukkit.broadcastMessage(String.valueOf(l.distance(loc)));
             if(l.distance(loc) == 1){
-                if(Data.getInstance().getDebug()) Bukkit.broadcastMessage("Returned.");
+                // if(Data.getInstance().getDebug()) Bukkit.broadcastMessage("Returned.");
                 return l;
             }
         }
@@ -163,8 +156,6 @@ public class BlockListener implements Listener {
         if(e.getBlock().getType() == Material.REPEATER){
 
             for(Circuit cir : CircuitsManager.getInstance().getAllCircuits()){
-
-                Bukkit.broadcastMessage(cir.getPutsLocations() + " " + e.getBlock().getLocation());
 
                 if(cir.getPutsLocations().containsKey(e.getBlock().getLocation())){
 

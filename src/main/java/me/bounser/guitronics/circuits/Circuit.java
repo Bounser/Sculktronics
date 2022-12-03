@@ -257,19 +257,18 @@ public class Circuit {
 
     public void addInput(int input){
         if(!inputs.contains(input)) inputs.add(input);
-        CircuitRenderer.getInstance().renderPuts(this);
+        updateRender(true);
     }
 
     public void addOutput(int output){
         if(!outputs.contains(output)) outputs.add(output);
-        CircuitRenderer.getInstance().renderPuts(this);
+        updateRender(true);
     }
 
     public void removePut(Object value){
-
         if(inputs.contains(value)) inputs.remove(value);
         if(outputs.contains(value)) outputs.remove(value);
-
+        updateRender(true);
     }
 
     public void updateRender(boolean newRender){

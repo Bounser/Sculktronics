@@ -22,20 +22,6 @@ public class CircuitRenderer {
         return instance == null ? instance = new CircuitRenderer() : instance;
     }
 
-    public void renderPuts(Circuit cir){
-
-        for(Interaction interaction : cir.getInteractions()){
-            for(int input : cir.getInputs()){
-                interaction.getComponentTree().locate(input + "t");
-            }
-            for(int output : cir.getOutputs()){
-                interaction.getComponentTree().locate(output + "t");
-            }
-        }
-
-
-    }
-
     public void render(Circuit cir){
 
         HashMap<Integer, Object> design = cir.getDesign();
