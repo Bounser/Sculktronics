@@ -27,6 +27,8 @@ public final class GUItronics extends JavaPlugin {
     private static GUItronics main;
     public static GUItronics getInstance(){ return main; }
 
+    public BlockListener bl = new BlockListener();
+
     @Override
     public void onEnable() {
         main = this;
@@ -39,7 +41,7 @@ public final class GUItronics extends JavaPlugin {
         LayoutManager.getInstance().registerLayoutExtension(new AGUIExtension(), this);
 
 
-        Bukkit.getPluginManager().registerEvents(new BlockListener(), this);
+        Bukkit.getPluginManager().registerEvents(bl, this);
         Bukkit.getPluginManager().registerEvents(new RedstoneListener(), this);
 
         if(debug) getLogger().info("Resources loaded.");

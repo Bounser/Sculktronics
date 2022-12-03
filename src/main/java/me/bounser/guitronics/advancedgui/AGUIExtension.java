@@ -244,6 +244,7 @@ public class AGUIExtension implements LayoutExtension {
         if(Data.getInstance().getDebug()) e.getPlayer().sendMessage("With cir: " + cir + "inputs: " + cir.getInputs());
 
         cir.updateRender(true);
+        cir.updatePuts();
     }
 
 

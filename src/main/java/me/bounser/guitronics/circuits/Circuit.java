@@ -1,19 +1,18 @@
 package me.bounser.guitronics.circuits;
 
+import me.bounser.guitronics.GUItronics;
 import me.bounser.guitronics.advancedgui.AGUIInstances;
 import me.bounser.guitronics.components.ElectroComponent;
 import me.bounser.guitronics.components.EComponent;
 import me.bounser.guitronics.components.electrocomponents.*;
 import me.bounser.guitronics.tools.Data;
 import me.leoko.advancedgui.manager.GuiWallManager;
-import me.leoko.advancedgui.utils.Direction;
 import me.leoko.advancedgui.utils.GuiWallInstance;
 import me.leoko.advancedgui.utils.components.RectComponent;
 import me.leoko.advancedgui.utils.interactions.Interaction;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -23,9 +22,11 @@ import java.util.List;
 
 public class Circuit {
 
+
     // Persistent info:
     // Location of the main base, located at the north-west block within the cicuit base.
-    Location location;
+    final Location LOC;
+    
     /** Sizes of the circuit. 0 = 1x1 1 = 1x2 2 = 2x1 3 = 2x2
      *                                       N
      *      Size 1: oo  Size 2:  o         W X E
@@ -66,7 +67,7 @@ public class Circuit {
     Boolean overloaded = false;
 
     public Circuit(Location loc, int size, String uuid, HashMap<Integer, Object> design, int number){
-        location = loc;
+        LOC = loc;
         owneruuid = uuid;
         this.size = size;
         num = number;
@@ -83,33 +84,31 @@ public class Circuit {
         } else {
             ginstance = AGUIInstances.getInstance().placeGUI(loc,this, true);
         }
+        Bukkit.broadcastMessage("1" + LOC);
+        GUItronics.getInstance().bl.checkCircuitPuts(this);
+        Bukkit.broadcastMessage("2" + LOC);
 
     }
-
+    
     // Getters
-    public Location getLocation(){ return location; }
+    public Location getLocation(){ return LOC; }
 
     public List<Location> getLocations(){
 
         List<Location> locations = new ArrayList<>();
 
-        Location auxLoc = location;
-        locations.add(auxLoc);
+        locations.add(LOC);
 
         if(size == 1){
-            locations.add(auxLoc.add(1,0,0));
+            locations.add(LOC.add(1,0,0));
         }
         if(size == 2){
-            auxLoc = location;
-            locations.add(auxLoc.add(0,0,1));
+            locations.add(LOC.add(0,0,1));
         }
         if(size == 3){
-            auxLoc = location;
-            locations.add(auxLoc.add(1,0,0));
-            auxLoc = location;
-            locations.add(auxLoc.add(0,0,1));
-            auxLoc = location;
-            locations.add(auxLoc.add(-1,0,1));
+            locations.add(LOC.add(1,0,0));
+            locations.add(LOC.add(0,0,1));
+            locations.add(LOC.add(-1,0,1));
         }
 
         return locations;
@@ -120,62 +119,46 @@ public class Circuit {
     public HashMap<Location, Integer> getPutsLocations(){
 
         HashMap<Location, Integer> locs = new HashMap<>();
-
-        Block block = location.getBlock();
-
-        Location auxLoc = block.getLocation();
-
-        locs.put(auxLoc.add(0,-1,-1), 0);
-
+        locs.put(getAuxLoc().add(0,-1,-1), 0);
+        Bukkit.broadcastMessage(locs.toString());
         switch (size){
             case 0:
-                auxLoc = block.getLocation();
-                locs.put(auxLoc.add(1,-1,0), 1);
-                auxLoc = block.getLocation();
-                locs.put(auxLoc.add(0,-1,1), 2);
-                auxLoc = block.getLocation();
-                locs.put(auxLoc.add(-1,-1,0), 3);
+                locs.put(getAuxLoc().add(1,-1,0), 1);
+                locs.put(getAuxLoc().add(0,-1,1), 2);
+                locs.put(getAuxLoc().add(-1,-1,0), 3);
+                Bukkit.broadcastMessage(locs.toString());
+                getAuxLoc().add(0,4,0);
+                Bukkit.broadcastMessage(locs.toString());
                 break;
             case 1:
-                auxLoc = block.getLocation();
-                locs.put(auxLoc.add(1,-1,-1), 1);
-                auxLoc = block.getLocation();
-                locs.put(auxLoc.add(2,-1,0), 2);
-                auxLoc = block.getLocation();
-                locs.put(auxLoc.add(1,-1,1), 3);
-                auxLoc = block.getLocation();
-                locs.put(auxLoc.add(0,-1,1), 4);
-                auxLoc = block.getLocation();
-                locs.put(auxLoc.add(-1,-1,0), 5);
+                locs.put(getAuxLoc().add(1,-1,-1), 1);
+                locs.put(getAuxLoc().add(2,-1,0), 2);
+                locs.put(getAuxLoc().add(1,-1,1), 3);
+                locs.put(getAuxLoc().add(0,-1,1), 4);
+                locs.put(getAuxLoc().add(-1,-1,0), 5);
                 break;
             case 2:
-                locs.put(auxLoc.add(1,-1,0), 1);
-                auxLoc = block.getLocation();
-                locs.put(auxLoc.add(1,-1,1), 2);
-                auxLoc = block.getLocation();
-                locs.put(auxLoc.add(0,-1,2), 3);
-                auxLoc = block.getLocation();
-                locs.put(auxLoc.add(-1,-1,1), 4);
-                auxLoc = block.getLocation();
-                locs.put(auxLoc.add(-1,-1,0), 5);
+                locs.put(getAuxLoc().add(1,-1,0), 1);
+                locs.put(getAuxLoc().add(1,-1,1), 2);
+                locs.put(getAuxLoc().add(0,-1,2), 3);
+                locs.put(getAuxLoc().add(-1,-1,1), 4);
+                locs.put(getAuxLoc().add(-1,-1,0), 5);
                 break;
             case 3:
-                locs.put(auxLoc.add(1,-1,-1), 1);
-                auxLoc = block.getLocation();
-                locs.put(auxLoc.add(2,-1,0), 2);
-                auxLoc = block.getLocation();
-                locs.put(auxLoc.add(2,-1,-1), 3);
-                auxLoc = block.getLocation();
-                locs.put(auxLoc.add(1,-1,-2), 4);
-                auxLoc = block.getLocation();
-                locs.put(auxLoc.add(0,-1,-2), 5);
-                auxLoc = block.getLocation();
-                locs.put(auxLoc.add(-1,-1,1), 6);
-                auxLoc = block.getLocation();
-                locs.put(auxLoc.add(-1,-1,0), 7);
+                locs.put(getAuxLoc().add(1,-1,-1), 1);
+                locs.put(getAuxLoc().add(2,-1,0), 2);
+                locs.put(getAuxLoc().add(2,-1,-1), 3);
+                locs.put(getAuxLoc().add(1,-1,-2), 4);
+                locs.put(getAuxLoc().add(0,-1,-2), 5);
+                locs.put(getAuxLoc().add(-1,-1,1), 6);
+                locs.put(getAuxLoc().add(-1,-1,0), 7);
                 break;
         }
         return locs;
+    }
+
+    private Location getAuxLoc(){
+        return new Location(LOC.getWorld(), LOC.getX(), LOC.getY(), LOC.getZ());
     }
 
     public int getSize(){ return size; }
@@ -401,41 +384,37 @@ public class Circuit {
 
     public void expand(int direction){
 
-        Location auxLoc = location;
-
         if(size == 0){
             switch (direction){
                 case 0:
-                    location.add(0,0,-1); break;
+                    LOC.add(0,0,-1); break;
                 case 3:
-                    location.add(-1,0,0); break;
+                    LOC.add(-1,0,0); break;
 
                 case 1:
-                    auxLoc.add(1,-1,0).getBlock().setType(Material.SCULK_CATALYST); break;
+                    LOC.add(1,-1,0).getBlock().setType(Material.SCULK_CATALYST); break;
                 case 2:
-                    auxLoc.add(0,-1,1).getBlock().setType(Material.SCULK_CATALYST); break;
+                    LOC.add(0,-1,1).getBlock().setType(Material.SCULK_CATALYST); break;
 
             }
         } else if(size == 1){
-            if(direction == 0) { location.add(0, 0, -1); }
+            if(direction == 0) { LOC.add(0, 0, -1); }
 
-            auxLoc.add(0,0,1).getBlock().setType(Material.SCULK_CATALYST);
-            auxLoc = location;
-            auxLoc.add(1,0,1).getBlock().setType(Material.SCULK_CATALYST);
+            LOC.add(0,0,1).getBlock().setType(Material.SCULK_CATALYST);
+            LOC.add(1,0,1).getBlock().setType(Material.SCULK_CATALYST);
 
         } else if(size == 2){
-            if(direction == 3) { location.add(-1, 0, 0); }
+            if(direction == 3) { LOC.add(-1, 0, 0); }
 
-            auxLoc.add(0,0,1).getBlock().setType(Material.SCULK_CATALYST);
-            auxLoc = location;
-            auxLoc.add(1,0,1).getBlock().setType(Material.SCULK_CATALYST);
+            LOC.add(0,0,1).getBlock().setType(Material.SCULK_CATALYST);
+            LOC.add(1,0,1).getBlock().setType(Material.SCULK_CATALYST);
         }
 
         updateCircuit();
     }
 
     public void updateCircuit(){
-        ginstance = AGUIInstances.getInstance().placeGUI(location,this, true);
+        ginstance = AGUIInstances.getInstance().placeGUI(LOC,this, true);
         Data.getInstance().updateCircuit(this);
     }
 

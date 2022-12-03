@@ -4,13 +4,12 @@ import me.bounser.guitronics.circuits.Circuit;
 import me.bounser.guitronics.circuits.CircuitsManager;
 import me.bounser.guitronics.tools.Data;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
-import org.bukkit.block.data.type.Repeater;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -77,8 +76,6 @@ public class BlockListener implements Listener {
                 Block block = ploc.getBlock();
                 Block blockC = getNearestLoc(ploc, circuit.getLocations()).getBlock();
                 Directional repeater = null;
-
-                Bukkit.broadcastMessage(block.getBlockData().getMaterial().toString());
 
                 if(block.getBlockData().getMaterial().equals(Material.REPEATER) && Data.getInstance().getDebug()){
                     Bukkit.broadcastMessage("Its a repeater!");
@@ -153,11 +150,13 @@ public class BlockListener implements Listener {
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e){
 
-        for(Circuit cir : CircuitsManager.getInstance().getAllCircuits()){
+        if(e.getBlock().getType() == Material.SCULK_CATALYST){
+            for(Circuit cir : CircuitsManager.getInstance().getAllCircuits()){
 
-            if(cir.getLocations().contains(e.getBlock().getLocation().add(0,1,0))){
-                e.setCancelled(true);
-                e.getPlayer().sendMessage("This block is form a circuit!");
+                if(cir.getLocations().contains(e.getBlock().getLocation().add(0,1,0))){
+                    e.setCancelled(true);
+                    e.getPlayer().sendMessage(ChatColor.RED + "This block is from a circuit!");
+                }
             }
         }
 
@@ -165,8 +164,11 @@ public class BlockListener implements Listener {
 
             for(Circuit cir : CircuitsManager.getInstance().getAllCircuits()){
 
+                Bukkit.broadcastMessage(cir.getPutsLocations() + " " + e.getBlock().getLocation());
+
                 if(cir.getPutsLocations().containsKey(e.getBlock().getLocation())){
 
+                    Bukkit.broadcastMessage("ASD");
                     cir.removePut(e.getBlock().getLocation());
 
                 }
