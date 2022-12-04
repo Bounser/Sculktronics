@@ -75,14 +75,8 @@ public class BlockListener implements Listener {
 
                 Block block = ploc.getBlock();
                 Block blockC = getNearestLoc(ploc, circuit.getLocations()).getBlock();
-                Directional repeater = null;
+                Directional repeater = (Directional) block.getBlockData();
 
-                if(block.getBlockData().getMaterial().equals(Material.REPEATER) && Data.getInstance().getDebug()){
-                    Bukkit.broadcastMessage("Its a repeater!");
-                    repeater = (Directional) block.getBlockData();
-                }
-
-                if(Data.getInstance().getDebug()) Bukkit.broadcastMessage(blockC.getLocation() + " " + blockC.getFace(block));
                 if(blockC.getFace(block) == BlockFace.EAST){
 
                     if(repeater.getFacing() == BlockFace.EAST){
@@ -129,11 +123,11 @@ public class BlockListener implements Listener {
         // Indeed, although the name might be misleading without context, it returns one block of the list with distance 1.
 
         for(Location l : locs){
+
             Location laux = new Location(l.getWorld(), l.getX(), l.getY(), l.getZ());
             laux.add(0,-1,0);
-            if(Data.getInstance().getDebug()) Bukkit.broadcastMessage(String.valueOf(l.distance(loc)));
-            if(laux.distance(loc) == 1){
-                // if(Data.getInstance().getDebug()) Bukkit.broadcastMessage("Returned.");
+
+            if(laux.distance(loc) < 1.5){
                 return laux;
             }
         }
@@ -159,7 +153,7 @@ public class BlockListener implements Listener {
 
                 if(cir.getPutsLocations().containsKey(e.getBlock().getLocation())){
 
-                    cir.removePut(e.getBlock().getLocation());
+                    cir.removePut(cir.getPutFromLoc(e.getBlock().getLocation()));
 
                 }
             }

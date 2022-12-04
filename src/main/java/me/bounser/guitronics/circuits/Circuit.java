@@ -55,6 +55,9 @@ public class Circuit {
      */
     List<Integer> inputs = new ArrayList<>();
     List<Integer> outputs = new ArrayList<>();
+
+    // Outputs of the design. Possible values: 5, 37, 45, 77 (Analogous to 0, 3, 1, 2)
+    List<Integer> designOutput = new ArrayList<>();
     // Temp info.
     // List of wires that will be rendered in the next visual render.
     List<Integer> toRender = new ArrayList<>();
@@ -151,6 +154,10 @@ public class Circuit {
                 break;
         }
         return locs;
+    }
+
+    public int getPutFromLoc(Location loc){
+        return getPutsLocations().get(loc);
     }
 
     private Location getAuxLoc(){
@@ -267,30 +274,34 @@ public class Circuit {
         updateRender(true);
     }
 
+    public void addDesignOutput(int signal){
+        designOutput.add(signal);
+    }
+
+    public void removeDesignOutput(int signal){
+        if(designOutput.contains(signal)) designOutput.remove(signal);
+    }
+
     public void updateRender(boolean newRender){
 
         if(Data.getInstance().getDebug()) Bukkit.broadcastMessage("Tries to render.");
         if(overloaded) return;
 
         if(newRender){
-            outputs.clear();
             toRender.clear();
             CircuitRenderer.getInstance().render(this);
-            CircuitRenderer.getInstance().outputRedstone(getOutputs(), this);
+            CircuitRenderer.getInstance().outputRedstone(designOutput, this);
         }
-        if(Data.getInstance().getDebug()) Bukkit.broadcastMessage("Renders:");
+
         setDesign(false);
 
         for(Interaction i : interactions){
             if(i != null){
                 for(int j : toRender){
-
                     updateRect(design.get(j), i, j, true);
-
                 }
 
                 for(int k : Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7)){
-
                     if(i.getComponentTree().locate(k + "t") != null)
                     i.getComponentTree().locate(k + "t").setHidden(!inputs.contains(k));
                     if(i.getComponentTree().locate(k + "f") != null)

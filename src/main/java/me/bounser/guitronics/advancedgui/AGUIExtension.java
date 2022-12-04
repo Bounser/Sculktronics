@@ -45,27 +45,19 @@ public class AGUIExtension implements LayoutExtension {
         if(e.getLayout().getName().contains("Circuit")) {
 
             e.getLayout().getTemplateComponentTree().locate("u10").setClickAction((interaction, player, primaryTrigger) -> {
-
                 CircuitsManager.getInstance().getCircuitFromInteraction(interaction).expand(0);
-
             });
 
             e.getLayout().getTemplateComponentTree().locate("d10").setClickAction((interaction, player, primaryTrigger) -> {
-
                 CircuitsManager.getInstance().getCircuitFromInteraction(interaction).expand(2);
-
             });
 
             e.getLayout().getTemplateComponentTree().locate("r10").setClickAction((interaction, player, primaryTrigger) -> {
-
                 CircuitsManager.getInstance().getCircuitFromInteraction(interaction).expand(1);
-
             });
 
             e.getLayout().getTemplateComponentTree().locate("l10").setClickAction((interaction, player, primaryTrigger) -> {
-
                 CircuitsManager.getInstance().getCircuitFromInteraction(interaction).expand(3);
-
             });
 
         }
@@ -83,8 +75,6 @@ public class AGUIExtension implements LayoutExtension {
 
         // If the interaction is with a circuit, it will set its corresponding design and update the render.
 
-        if(Data.getInstance().getDebug()) Bukkit.broadcastMessage(CircuitsManager.getInstance().getAllCircuits().toString());
-
         if(!e.getInteraction().getLayout().getName().contains("Circuit")) return;
 
         if(Data.getInstance().getDebug()) Bukkit.broadcastMessage("Starting interaction...");
@@ -93,12 +83,12 @@ public class AGUIExtension implements LayoutExtension {
 
         int size = cir.getSize();
 
-        if(e.getInteraction().getLayout().getName().contains("Circuit")){
+        if(e.getInteraction().getLayout().getName().contains("Circuit")) {
 
             int x = 0;
             int y = 0;
 
-            switch(size){
+            switch (size) {
                 case 0:
                     x = 9;
                     y = 9;
@@ -119,13 +109,11 @@ public class AGUIExtension implements LayoutExtension {
 
             e.getInteraction().getComponentTree().locate("lid").setHidden(true);
 
-            if(Data.getInstance().getDebug()) e.getPlayer().sendMessage("Interaction with circuit begins.");
-
             cir.addInteraction(e.getInteraction());
 
             // Mapping all the rects.
 
-            for(int i = 1; i<x; i++) {
+            for (int i = 1; i < x; i++) {
 
                 for (int j = 1; j < y; j++) {
 
@@ -241,8 +229,6 @@ public class AGUIExtension implements LayoutExtension {
                 }
             }
         }
-        if(Data.getInstance().getDebug()) e.getPlayer().sendMessage("With cir: " + cir + "inputs: " + cir.getInputs());
-
         cir.updateRender(true);
         cir.updatePuts();
     }

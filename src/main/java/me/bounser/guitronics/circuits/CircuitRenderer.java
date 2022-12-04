@@ -99,7 +99,8 @@ public class CircuitRenderer {
 
                     }else {
                             if (x == 5 || x == 37 || x == 45 || x == 77) {
-                                cir.addOutput(x);
+                                // Adds output
+                                cir.addDesignOutput(x);
                             }
 
                             cir.addToRender(j + i);
