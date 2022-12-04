@@ -113,8 +113,8 @@ public class BlockListener implements Listener {
                     }
 
                 }
+                circuit.updatePuts();
             }
-
         }
     }
 

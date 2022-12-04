@@ -87,10 +87,7 @@ public class Circuit {
         } else {
             ginstance = AGUIInstances.getInstance().placeGUI(loc,this, true);
         }
-        Bukkit.broadcastMessage("1" + LOC);
         GUItronics.getInstance().bl.checkCircuitPuts(this);
-        Bukkit.broadcastMessage("2" + LOC);
-
     }
     
     // Getters
@@ -260,18 +257,16 @@ public class Circuit {
 
     public void addInput(int input){
         if(!inputs.contains(input)) inputs.add(input);
-        updateRender(true);
     }
 
     public void addOutput(int output){
         if(!outputs.contains(output)) outputs.add(output);
-        updateRender(true);
     }
 
     public void removePut(Object value){
         if(inputs.contains(value)) inputs.remove(value);
         if(outputs.contains(value)) outputs.remove(value);
-        updateRender(true);
+        updatePuts();
     }
 
     public void addDesignOutput(int signal){
@@ -300,40 +295,19 @@ public class Circuit {
                 for(int j : toRender){
                     updateRect(design.get(j), i, j, true);
                 }
-
-                for(int k : Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7)){
-                    if(i.getComponentTree().locate(k + "t") != null)
-                    i.getComponentTree().locate(k + "t").setHidden(!inputs.contains(k));
-                    if(i.getComponentTree().locate(k + "f") != null)
-                    i.getComponentTree().locate(k + "f").setHidden(!outputs.contains(k));
-
-                }
             }
         }
     }
 
     public void updatePuts(){
 
-        for(int i = 0 ; i<=7; i++){
+        for(Interaction i : interactions) {
 
-            for(Interaction interaction : interactions){
-                if( interaction.getComponentTree().locate(i + "f") != null)
-                    interaction.getComponentTree().locate(i + "f").setHidden(true);
-                if( interaction.getComponentTree().locate(i + "t") != null)
-                    interaction.getComponentTree().locate(i + "t").setHidden(true);
-            }
-        }
-        for(int i : inputs){
-            for(Interaction interaction : interactions){
-
-                interaction.getComponentTree().locate(i + "t").setHidden(false);
-
-            }
-        }
-        for(int i : outputs){
-            for(Interaction interaction : interactions){
-
-                interaction.getComponentTree().locate(i + "f").setHidden(false);
+            for (int k : Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7)) {
+                if (i.getComponentTree().locate(k + "t") != null)
+                    i.getComponentTree().locate(k + "t").setHidden(!inputs.contains(k));
+                if (i.getComponentTree().locate(k + "f") != null)
+                    i.getComponentTree().locate(k + "f").setHidden(!outputs.contains(k));
 
             }
         }

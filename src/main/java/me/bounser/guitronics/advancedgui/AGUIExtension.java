@@ -111,6 +111,8 @@ public class AGUIExtension implements LayoutExtension {
 
             cir.addInteraction(e.getInteraction());
 
+            cir.updatePuts();
+
             // Mapping all the rects.
 
             for (int i = 1; i < x; i++) {
@@ -229,8 +231,6 @@ public class AGUIExtension implements LayoutExtension {
                 }
             }
         }
-        cir.updateRender(true);
-        cir.updatePuts();
     }
 
 
