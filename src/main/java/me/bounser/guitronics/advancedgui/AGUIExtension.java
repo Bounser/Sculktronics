@@ -14,6 +14,7 @@ import me.leoko.advancedgui.utils.events.GuiInteractionBeginEvent;
 import me.leoko.advancedgui.utils.events.GuiInteractionExitEvent;
 import me.leoko.advancedgui.utils.events.LayoutLoadEvent;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 
 import java.awt.*;
@@ -83,6 +84,8 @@ public class AGUIExtension implements LayoutExtension {
 
         int size = cir.getSize();
 
+        cir.getLocation().getBlock().setType(Material.AIR);
+
         if(e.getInteraction().getLayout().getName().contains("Circuit")) {
 
             int x = 0;
@@ -106,8 +109,6 @@ public class AGUIExtension implements LayoutExtension {
                     y = 22;
                     break;
             }
-
-            e.getInteraction().getComponentTree().locate("lid").setHidden(true);
 
             cir.addInteraction(e.getInteraction());
 
@@ -239,9 +240,9 @@ public class AGUIExtension implements LayoutExtension {
 
         if(e.getInteraction().getLayout().getName().contains("Circuit")) {
 
-            e.getInteraction().getComponentTree().locate("lid").setHidden(false);
-
             Circuit cir = CircuitsManager.getInstance().getCircuitFromGUIInstance(e.getGuiInstance());
+
+            cir.getLocation().getBlock().setType(Material.BLACK_CARPET);
 
             cir.removeInteraction(e.getInteraction());
 

@@ -71,6 +71,7 @@ public class Circuit {
 
     public Circuit(Location loc, int size, String uuid, HashMap<Integer, Object> design, int number){
         LOC = loc;
+        loc.getBlock().setType(Material.BLACK_CARPET);
         owneruuid = uuid;
         this.size = size;
         num = number;
