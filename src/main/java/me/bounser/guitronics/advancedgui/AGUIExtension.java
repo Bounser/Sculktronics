@@ -9,6 +9,8 @@ import me.bounser.guitronics.tools.Data;
 import me.leoko.advancedgui.utils.Layout;
 import me.leoko.advancedgui.utils.LayoutExtension;
 import me.leoko.advancedgui.utils.actions.Action;
+import me.leoko.advancedgui.utils.components.DummyComponent;
+import me.leoko.advancedgui.utils.components.GroupComponent;
 import me.leoko.advancedgui.utils.components.RectComponent;
 import me.leoko.advancedgui.utils.events.GuiInteractionBeginEvent;
 import me.leoko.advancedgui.utils.events.GuiInteractionExitEvent;
@@ -68,7 +70,7 @@ public class AGUIExtension implements LayoutExtension {
 
     /**
      *  When the interaction is created, the rects are created with a click action which states the response depending
-     *  on the type of component (If any). Then it updates (Visually) the circuit if there is any substantial change.
+     *  on the type of Electro-component (If any). Then it updates (Visually) the circuit if there is any substantial change.
      */
 
     @EventHandler
@@ -116,9 +118,9 @@ public class AGUIExtension implements LayoutExtension {
 
             // Mapping all the rects.
 
-            for (int i = 1; i < x; i++) {
+            for (int i = 1; i <= x; i++) {
 
-                for (int j = 1; j < y; j++) {
+                for (int j = 1; j <= y; j++) {
 
                     Action clickAction = null;
                     EComponent EComponent = cir.getEComponent(cir.getElectroComponent(i * j));
@@ -130,8 +132,8 @@ public class AGUIExtension implements LayoutExtension {
                                 null,
                                 false,
                                 e.getInteraction(),
-                                19 + j * 10,
-                                19 + i * 10,
+                                10 + j * 10,
+                                10 + i * 10,
                                 8,
                                 8,
                                 cir.getColor(i * j, cir.getPoweredState(i * j)),
@@ -144,8 +146,8 @@ public class AGUIExtension implements LayoutExtension {
                                 null,
                                 false,
                                 e.getInteraction(),
-                                19 + j * 10,
-                                19 + i * 10,
+                                10 + j * 10,
+                                10 + i * 10,
                                 8,
                                 8,
                                 new Color(18, 25, 33)
@@ -229,8 +231,23 @@ public class AGUIExtension implements LayoutExtension {
                         };
                     }
                     pixel.setClickAction(clickAction);
+                    e.getInteraction().getComponentTree().getComponents().add(pixel);
                 }
             }
+            RectComponent back = new RectComponent(
+                    "back",
+                    null,
+                    false,
+                    e.getInteraction(),
+                    19,
+                    19,
+                    90,
+                    90,
+                    new Color(0, 0 ,0),
+                    0
+            );
+
+            e.getInteraction().getComponentTree().getComponents().add(back);
         }
     }
 
