@@ -80,6 +80,19 @@ public class AGUIExtension implements LayoutExtension {
 
         if (!e.getInteraction().getLayout().getName().contains("Circuit")) return;
 
+        RectComponent back = new RectComponent(
+                "back",
+                null,
+                false,
+                e.getInteraction(),
+                19,
+                19,
+                90,
+                90,
+                new Color(0, 0, 0),
+                0
+        );
+
         Circuit cir = CircuitsManager.getInstance().getCircuitFromGUIInstance(e.getGuiInstance());
 
         int size = cir.getSize();
@@ -110,8 +123,6 @@ public class AGUIExtension implements LayoutExtension {
         cir.addInteraction(e.getInteraction());
 
         cir.updatePuts();
-
-        Bukkit.broadcastMessage(cir.getDesign().get(10) == null ? "Na" : cir.getDesign().get(10).toString());
 
         // Mapping all the rects.
 
@@ -247,18 +258,6 @@ public class AGUIExtension implements LayoutExtension {
                 e.getInteraction().getComponentTree().getComponents().add(pixel);
             }
         }
-        RectComponent back = new RectComponent(
-                "back",
-                null,
-                false,
-                e.getInteraction(),
-                19,
-                19,
-                90,
-                90,
-                new Color(0, 0, 0),
-                0
-        );
         e.getInteraction().getComponentTree().getComponents().add(back);
     }
 

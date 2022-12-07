@@ -57,7 +57,8 @@ public class Circuit {
     List<Integer> outputs = new ArrayList<>();
 
     // Outputs of the design. Possible values: 5, 37, 45, 77 (Analogous to 0, 3, 1, 2)
-    List<Integer> designOutput = new ArrayList<>();
+    List<Integer> signalsIn = new ArrayList<>();
+    List<Integer> signalsOut = new ArrayList<>();
     // Temp info.
     // List of wires that will be rendered in the next visual render.
     List<Integer> toRender = new ArrayList<>();
@@ -270,14 +271,6 @@ public class Circuit {
         updatePuts();
     }
 
-    public void addDesignOutput(int signal){
-        designOutput.add(signal);
-    }
-
-    public void removeDesignOutput(int signal){
-        if(designOutput.contains(signal)) designOutput.remove(signal);
-    }
-
     public void updateRender(boolean newRender){
 
         if(Data.getInstance().getDebug()) Bukkit.broadcastMessage("Tries to render.");
@@ -286,7 +279,7 @@ public class Circuit {
         if(newRender){
             toRender.clear();
             CircuitRenderer.getInstance().render(this);
-            CircuitRenderer.getInstance().outputRedstone(designOutput, this);
+            CircuitRenderer.getInstance().outputRedstone(signalsOut, this);
         }
 
         setDesign(false);
@@ -356,6 +349,24 @@ public class Circuit {
 
         }
     }
+
+    public void modifySignalsIn(boolean remove, Object value){
+        if(remove){
+            signalsIn.remove(value);
+        } else {
+            signalsIn.add((Integer) value);
+        }
+    }
+
+    public void modifySignalsOut(boolean remove, int value){
+        if(remove){
+            signalsOut.remove(value);
+        } else {
+            signalsOut.add((Integer) value);
+        }
+    }
+
+    public List<Integer> getSignalsOut(){ return signalsOut; }
 
     public void addInteraction(Interaction interaction) { if(!interactions.contains(interaction)) interactions.add(interaction); }
 

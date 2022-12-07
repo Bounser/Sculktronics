@@ -28,9 +28,7 @@ public class CircuitRenderer {
 
             cir.addToRender(input);
             checkPixel(input, design, cir);
-
         }
-
     }
 
     public void checkPixel(int i, HashMap<Integer, Object> design, Circuit cir){
@@ -98,7 +96,7 @@ public class CircuitRenderer {
                     }else {
                             if (x == 5 || x == 37 || x == 45 || x == 77) {
                                 // Adds output
-                                cir.addDesignOutput(x);
+                                cir.modifySignalsOut(false, x);
                             }
 
                             cir.addToRender(j + i);

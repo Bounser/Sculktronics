@@ -4,8 +4,9 @@ import me.bounser.guitronics.GUItronics;
 import me.bounser.guitronics.circuits.Circuit;
 import me.bounser.guitronics.circuits.CircuitsManager;
 import me.bounser.guitronics.tools.Data;
-import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockRedstoneEvent;
@@ -33,36 +34,79 @@ public class RedstoneListener implements Listener {
 
         if((e.getNewCurrent() == 0 || e.getOldCurrent() == 0) && e.getBlock().getBlockData().getMaterial().equals(Material.REPEATER)){
 
-            Circuit cir = null;
             for(Circuit circuit : CircuitsManager.getInstance().getAllCircuits()) {
 
                 if(circuit.getPutsLocations().containsKey(e.getBlock().getLocation())){
 
-                    cir = circuit;
+                    for(Location put : circuit.getPutsLocations().keySet()){
 
-                }
-            }
-
-            if(data.getClockPrevention() && cir != null){
-
-                if(activeCooldownCircuits.contains(cir)) {
-                    cir.setOverloaded();
-                    return;
-                }
-
-                activeCooldownCircuits.add(cir);
-
-                Circuit finalCir = cir;
-
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-
-                        activeCooldownCircuits.remove(finalCir);
-                        finalCir.unsetOverloaded();
-
+                        if(circuit.getInputs().contains(circuit.getPutsLocations().get(put))){
+                            if(e.getNewCurrent() > 0){
+                                int point = 0;
+                                switch(circuit.getPutsLocations().get(put)){
+                                    case 0:
+                                        point = 5; break;
+                                    case 1:
+                                        point = 45; break;
+                                    case 2:
+                                        point = 77; break;
+                                    case 3:
+                                        point = 37; break;
+                                }
+                                circuit.modifySignalsIn(false, point);
+                            }else if(e.getNewCurrent() == 0){
+                                int point = 0;
+                                switch(circuit.getPutsLocations().get(put)){
+                                    case 0:
+                                        point = 5; break;
+                                    case 1:
+                                        point = 45; break;
+                                    case 2:
+                                        point = 77; break;
+                                    case 3:
+                                        point = 37; break;
+                                }
+                                circuit.modifySignalsIn(true, point);
+                            }
+                        }
+                        if(circuit.getOutputs().contains(circuit.getPutsLocations().get(put))){
+                            if(!circuit.getSignalsOut().contains(circuit.getPutsLocations().get(put))){
+                                e.setNewCurrent(0);
+                            }
+                        }
                     }
-                }.runTaskLater(GUItronics.getInstance(), data.getTicksPerChange());
+                    if(data.getClockPrevention()){
+
+                        if(activeCooldownCircuits.contains(circuit)) {
+                            circuit.setOverloaded();
+
+                            // Animation
+
+                            circuit.getLocation().getWorld().spawnParticle(Particle.SMOKE_LARGE, circuit.getLocation().add(0,-0.5,0),30);
+
+                            new BukkitRunnable() {
+                                @Override
+                                public void run() {
+
+                                     circuit.unsetOverloaded();
+
+                                }
+                            }.runTaskLater(GUItronics.getInstance(), 50);
+                            return;
+                        }
+
+                        activeCooldownCircuits.add(circuit);
+
+                        new BukkitRunnable() {
+                            @Override
+                            public void run() {
+
+                                activeCooldownCircuits.remove(circuit);
+
+                            }
+                        }.runTaskLater(GUItronics.getInstance(), data.getTicksPerChange());
+                    }
+                }
             }
         }
     }
