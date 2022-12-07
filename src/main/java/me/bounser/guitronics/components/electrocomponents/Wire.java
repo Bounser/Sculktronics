@@ -6,12 +6,14 @@ import me.bounser.guitronics.components.EComponent;
 import me.bounser.guitronics.tools.Data;
 import me.leoko.advancedgui.utils.components.RectComponent;
 import me.leoko.advancedgui.utils.interactions.Interaction;
+import org.bukkit.Bukkit;
 
 import java.awt.*;
 
 public class Wire implements ElectroComponent {
 
     Circuit circuit;
+    int[] pos;
 
     Color basicColor;
     Color poweredColor;
@@ -20,11 +22,14 @@ public class Wire implements ElectroComponent {
 
     RectComponent icon;
 
-    public Wire(Circuit circuit){
+    public Wire(Circuit circuit, int[] pos){
         basicColor = Data.getInstance().getWireBasicColor();
         poweredColor = Data.getInstance().getWirePoweredColor();
 
         this.circuit = circuit;
+        this.pos = new int[]{pos[0] * 10 + 10, pos[1] * 10 + 10};
+
+        // placeIcon();
     }
 
     @Override
@@ -40,7 +45,7 @@ public class Wire implements ElectroComponent {
     @Override
     public void setPowered(boolean setpowered) {
         powered = setpowered;
-        icon.setColor(poweredColor);
+        // icon.setColor(poweredColor);
     }
 
     @Override
@@ -72,15 +77,17 @@ public class Wire implements ElectroComponent {
     }
 
     @Override
-    public void placeIcon(int x, int y) {
-        for(Interaction interaction : circuit.getInteractions()){
-                icon = new RectComponent("IconW1", null, false, interaction, x + 2, y + 2, 1, 6, basicColor);
-        }
+    public void placeIcon() {
+        /*for(Interaction interaction : circuit.getInteractions()){
+            icon = new RectComponent("IconW1", null, false, interaction, pos[0], pos[1], 6, 6, basicColor);
+            Bukkit.broadcastMessage("Icon placed");
+            interaction.getComponentTree().getComponents().add(icon);
+        }*/
     }
 
     @Override
     public void remove(){
-        icon.dispose();
+        // icon.dispose();
     }
 
 }

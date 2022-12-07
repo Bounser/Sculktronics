@@ -13,6 +13,7 @@ import java.util.List;
 public class Inverter implements ElectroComponent {
 
     Circuit circuit;
+    int[] pos;
     int direction;
 
     Color basicColor;
@@ -29,7 +30,8 @@ public class Inverter implements ElectroComponent {
         poweredColor = Data.getInstance().getDiodePoweredColor();
 
         this.circuit = circuit;
-        placeIcon(pos[0], pos[1]);
+        this.pos = new int[]{pos[0] * 10 + 10, pos[1] * 10 + 10};
+        placeIcon();
     }
 
     @Override
@@ -76,13 +78,13 @@ public class Inverter implements ElectroComponent {
     }
 
     @Override
-    public void placeIcon(int x, int y) {
+    public void placeIcon() {
         Color black = new Color(0,0,0);
 
         for(Interaction interaction : circuit.getInteractions()){
-            icon.add(new RectComponent("IconI", null, false, interaction, x + 2, y + 5, 2, 4, black));
-            icon.add(new RectComponent("IconI", null, false, interaction, x + 2, y + 4, 5, 2, black));
-            icon.add(new RectComponent("IconI", null, false, interaction, x + 6, y + 1, 2, 5, black));
+            icon.add(new RectComponent("IconI", null, false, interaction, pos[0] + 2, pos[1] + 5, 2, 4, black));
+            icon.add(new RectComponent("IconI", null, false, interaction, pos[0] + 2, pos[1] + 4, 5, 2, black));
+            icon.add(new RectComponent("IconI", null, false, interaction, pos[0] + 6, pos[1] + 1, 2, 5, black));
         }
 
     }

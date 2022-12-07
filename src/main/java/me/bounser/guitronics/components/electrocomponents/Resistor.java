@@ -13,6 +13,7 @@ import java.util.List;
 public class Resistor implements ElectroComponent {
 
     Circuit circuit;
+    int[] pos;
 
     Color basicColor;
     Color poweredColor;
@@ -27,7 +28,8 @@ public class Resistor implements ElectroComponent {
         poweredColor = Data.getInstance().getDiodePoweredColor();
 
         this.circuit = circuit;
-        placeIcon(pos[0], pos[1]);
+        this.pos = new int[]{pos[0] * 10 + 10, pos[1] * 10 + 10};
+        placeIcon();
     }
 
     @Override
@@ -74,15 +76,15 @@ public class Resistor implements ElectroComponent {
     }
 
     @Override
-    public void placeIcon(int x, int y) {
+    public void placeIcon() {
 
         Color black = new Color(0,0,0);
 
         for(Interaction interaction : circuit.getInteractions()){
-            icon.add(new RectComponent("IconR1", null, false, interaction, x + 2, y + 2, 6, 1, black));
-            icon.add(new RectComponent("IconR2", null, false, interaction, x + 7, y + 2, 1, 6, black));
-            icon.add(new RectComponent("IconR3", null, false, interaction, x + 3, y + 7, 5, 1, black));
-            icon.add(new RectComponent("IconR4", null, false, interaction, x + 2, y + 2, 1, 6, black));
+            icon.add(new RectComponent("IconR1", null, false, interaction, pos[0] + 2, pos[1] + 2, 6, 1, black));
+            icon.add(new RectComponent("IconR2", null, false, interaction, pos[0] + 7, pos[1] + 2, 1, 6, black));
+            icon.add(new RectComponent("IconR3", null, false, interaction, pos[0] + 3, pos[1] + 7, 5, 1, black));
+            icon.add(new RectComponent("IconR4", null, false, interaction, pos[0] + 2, pos[1] + 2, 1, 6, black));
         }
     }
 

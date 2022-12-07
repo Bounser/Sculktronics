@@ -4,7 +4,6 @@ import me.bounser.guitronics.circuits.Circuit;
 import me.bounser.guitronics.components.ElectroComponent;
 import me.bounser.guitronics.components.EComponent;
 import me.bounser.guitronics.tools.Data;
-import me.leoko.advancedgui.utils.interactions.Interaction;
 
 import java.awt.*;
 
@@ -89,7 +88,7 @@ public class Delayer implements ElectroComponent {
     }
 
     @Override
-    public void placeIcon(int x, int y) {
+    public void placeIcon() {
 
 
 

@@ -1,7 +1,5 @@
 package me.bounser.guitronics.components;
 
-import me.leoko.advancedgui.utils.interactions.Interaction;
-
 import java.awt.*;
 
 public interface ElectroComponent {
@@ -24,7 +22,7 @@ public interface ElectroComponent {
 
     boolean hasIcon();
 
-    void placeIcon(int x, int y);
+    void placeIcon();
 
     void remove();
 

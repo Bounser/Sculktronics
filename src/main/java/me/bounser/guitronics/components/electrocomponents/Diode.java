@@ -12,9 +12,9 @@ import java.util.List;
 
 public class Diode implements ElectroComponent {
 
-    int direction;
-
     Circuit circuit;
+    int[] pos;
+    int direction;
 
     Color basicColor;
     Color poweredColor;
@@ -30,22 +30,24 @@ public class Diode implements ElectroComponent {
         poweredColor = Data.getInstance().getDiodePoweredColor();
 
         this.circuit = circuit;
-
-        placeIcon(pos[0], pos[1]);
+        this.pos = new int[]{pos[0] * 10 + 10, pos[1] * 10 + 10};
+        placeIcon();
     }
 
     public void rotate(){
 
-        if (direction == 0){
-            direction = 1;
-        } else if (direction == 1){
-            direction = 2;
-        } else if (direction == 2){
-            direction = 3;
-        } else if (direction == 3){
-            direction = 0;
+        switch(direction){
+            case 3:
+                direction = 0; break;
+            case 2:
+                direction = 3; break;
+            case 1:
+                direction = 2; break;
+            case 0:
+                direction = 1; break;
         }
-
+        remove();
+        placeIcon();
     }
 
     @Override
@@ -88,7 +90,7 @@ public class Diode implements ElectroComponent {
     }
 
     @Override
-    public void placeIcon(int x, int y) {
+    public void placeIcon() {
 
         Color black = new Color(0,0,0);
 
@@ -96,24 +98,24 @@ public class Diode implements ElectroComponent {
         switch(direction){
 
             case 0:
-                icon.add(new RectComponent("IconD1", null, false, interaction, x + 4, y + 1, 2, 8, black));
-                icon.add(new RectComponent("IconD2", null, false, interaction, x + 2, y + 3, 6, 2, black));
-                icon.add(new RectComponent("IconD3", null, false, interaction, x + 3, y + 2, 4, 2, black));
+                icon.add(new RectComponent("IconD1", null, false, interaction, pos[0] + 4, pos[1] + 1, 2, 8, black));
+                icon.add(new RectComponent("IconD2", null, false, interaction, pos[0] + 2, pos[1] + 3, 6, 2, black));
+                icon.add(new RectComponent("IconD3", null, false, interaction, pos[0] + 3, pos[1] + 2, 4, 2, black));
                 break;
             case 1:
-                icon.add(new RectComponent("IconD1", null, false, interaction, x + 1, y + 4, 8, 2, black));
-                icon.add(new RectComponent("IconD2", null, false, interaction, x + 5, y + 2, 2, 6, black));
-                icon.add(new RectComponent("IconD3", null, false, interaction, x + 6, y + 3, 2, 4, black));
+                icon.add(new RectComponent("IconD1", null, false, interaction, pos[0] + 1, pos[1] + 4, 8, 2, black));
+                icon.add(new RectComponent("IconD2", null, false, interaction, pos[0] + 5, pos[1] + 2, 2, 6, black));
+                icon.add(new RectComponent("IconD3", null, false, interaction, pos[0] + 6, pos[1] + 3, 2, 4, black));
                 break;
             case 2:
-                icon.add(new RectComponent("IconD1", null, false, interaction, x + 4, y + 1, 2, 8, black));
-                icon.add(new RectComponent("IconD2", null, false, interaction, x + 2, y + 5, 6, 2, black));
-                icon.add(new RectComponent("IconD3", null, false, interaction, x + 3, y + 6, 4, 2, black));
+                icon.add(new RectComponent("IconD1", null, false, interaction, pos[0] + 4, pos[1] + 1, 2, 8, black));
+                icon.add(new RectComponent("IconD2", null, false, interaction, pos[0] + 2, pos[1] + 5, 6, 2, black));
+                icon.add(new RectComponent("IconD3", null, false, interaction, pos[0] + 3, pos[1] + 6, 4, 2, black));
                 break;
             case 3:
-                icon.add(new RectComponent("IconD1", null, false, interaction, x + 1, y + 4, 8, 2, black));
-                icon.add(new RectComponent("IconD2", null, false, interaction, x + 3, y + 2, 2, 6, black));
-                icon.add(new RectComponent("IconD3", null, false, interaction, x + 2, y + 3, 2, 4, black));
+                icon.add(new RectComponent("IconD1", null, false, interaction, pos[0] + 1, pos[1] + 4, 8, 2, black));
+                icon.add(new RectComponent("IconD2", null, false, interaction, pos[0] + 3, pos[1] + 2, 2, 6, black));
+                icon.add(new RectComponent("IconD3", null, false, interaction, pos[0] + 2, pos[1] + 3, 2, 4, black));
                 break;
 
         }

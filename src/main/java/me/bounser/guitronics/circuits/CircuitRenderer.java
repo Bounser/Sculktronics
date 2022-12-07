@@ -3,13 +3,11 @@ package me.bounser.guitronics.circuits;
 import me.bounser.guitronics.components.EComponent;
 import me.bounser.guitronics.components.electrocomponents.Diode;
 import me.bounser.guitronics.tools.Data;
-import me.leoko.advancedgui.utils.interactions.Interaction;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.data.type.RedstoneWire;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
