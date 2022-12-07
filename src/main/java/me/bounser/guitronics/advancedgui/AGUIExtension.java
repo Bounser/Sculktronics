@@ -12,9 +12,11 @@ import me.leoko.advancedgui.utils.components.RectComponent;
 import me.leoko.advancedgui.utils.events.GuiInteractionBeginEvent;
 import me.leoko.advancedgui.utils.events.GuiInteractionExitEvent;
 import me.leoko.advancedgui.utils.events.LayoutLoadEvent;
+import me.leoko.advancedgui.utils.interactions.Interaction;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.w3c.dom.css.Rect;
 
@@ -76,7 +78,7 @@ public class AGUIExtension implements LayoutExtension {
 
         // If the interaction is with a circuit, it will set its corresponding design and update the render.
 
-        if(!e.getInteraction().getLayout().getName().contains("Circuit")) return;
+        if (!e.getInteraction().getLayout().getName().contains("Circuit")) return;
 
         Circuit cir = CircuitsManager.getInstance().getCircuitFromGUIInstance(e.getGuiInstance());
 
@@ -109,7 +111,7 @@ public class AGUIExtension implements LayoutExtension {
 
         cir.updatePuts();
 
-        Bukkit.broadcastMessage(cir.getDesign().get(10) == null ? "Na": cir.getDesign().get(10).toString());
+        Bukkit.broadcastMessage(cir.getDesign().get(10) == null ? "Na" : cir.getDesign().get(10).toString());
 
         // Mapping all the rects.
 
@@ -118,7 +120,7 @@ public class AGUIExtension implements LayoutExtension {
             for (int j = 1; j <= y; j++) {
 
                 int finalJ = j, finalI = i;
-                int posf = (finalI-1)*9 + finalJ;
+                int posf = (i - 1) * 9 + j;
 
                 Action clickAction = null;
                 EComponent eComponent = cir.getEComponent(cir.getElectroComponent(posf));
@@ -128,20 +130,20 @@ public class AGUIExtension implements LayoutExtension {
                 if (eComponent != null) {
 
                     pixel = new RectComponent(
-                        posf + "a",
-                        null,
-                        false,
-                        e.getInteraction(),
-                        10 + j * 10,
-                        10 + i * 10,
-                        8,
-                        8,
-                        cir.getColor(i * j, cir.getPoweredState(posf)),
-                        CircuitsManager.getInstance().getRoundFromEComponent(eComponent)
+                            posf + "a",
+                            null,
+                            false,
+                            e.getInteraction(),
+                            9 + j * 10,
+                            9 + i * 10,
+                            10,
+                            10,
+                            cir.getColor(posf, cir.getPoweredState(posf)),
+                            CircuitsManager.getInstance().getRoundFromEComponent(eComponent)
                     );
                     e.getInteraction().getComponentTree().getComponents().add(pixel);
 
-                    if(e.getPlayer().getUniqueId().toString().equals(cir.getOwneruuid())){
+                    if (e.getPlayer().getUniqueId().toString().equals(cir.getOwneruuid())) {
                         switch (eComponent) {
 
                             case WIRE:
@@ -196,22 +198,22 @@ public class AGUIExtension implements LayoutExtension {
                 } else {
 
                     pixel = new RectComponent(
-                        posf + "",
-                        null,
-                        false,
-                        e.getInteraction(),
-                        10 + j * 10,
-                        10 + i * 10,
-                        8,
-                        8,
-                        new Color(18, 25, 33)
+                            posf + "",
+                            null,
+                            false,
+                            e.getInteraction(),
+                            10 + j * 10,
+                            10 + i * 10,
+                            8,
+                            8,
+                            new Color(18, 25, 33)
                     );
                     clickAction = (interaction, player, primaryTrigger) -> {
 
-                        if(player.getUniqueId().toString().equals(cir.getOwneruuid())){
+                        if (player.getUniqueId().toString().equals(cir.getOwneruuid())) {
                             int[] pos = new int[2];
-                            pos[0] = finalI;
-                            pos[1] = finalJ;
+                            pos[0] = 10 + finalI * 10;
+                            pos[1] = 10 + finalJ * 10;
 
                             switch (player.getInventory().getItemInMainHand().getType()) {
                                 case ECHO_SHARD:
@@ -235,11 +237,11 @@ public class AGUIExtension implements LayoutExtension {
                                     player.sendMessage(ChatColor.AQUA + "Resistor " + ChatColor.GRAY + "added.");
                                     break;
                             }
+
                         } else {
                             player.sendMessage(ChatColor.RED + "[!] You can't change the design of this circuit!");
                         }
                     };
-
                 }
                 pixel.setClickAction(clickAction);
                 e.getInteraction().getComponentTree().getComponents().add(pixel);
@@ -254,10 +256,21 @@ public class AGUIExtension implements LayoutExtension {
                 19,
                 90,
                 90,
-                new Color(0, 0 ,0),
+                new Color(0, 0, 0),
                 0
         );
         e.getInteraction().getComponentTree().getComponents().add(back);
+    }
+
+    public void updatePixel(RectComponent pixel, Color color){
+
+        pixel.setHeight(10);
+        pixel.setWidth(10);
+
+        pixel.setX(pixel.getX()-1);
+        pixel.setY(pixel.getY()-1);
+
+        pixel.setColor(color);
     }
 
 

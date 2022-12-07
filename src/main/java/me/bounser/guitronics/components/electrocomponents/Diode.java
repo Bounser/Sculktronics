@@ -30,7 +30,7 @@ public class Diode implements ElectroComponent {
         poweredColor = Data.getInstance().getDiodePoweredColor();
 
         this.circuit = circuit;
-        this.pos = new int[]{pos[0] * 10 + 10, pos[1] * 10 + 10};
+        this.pos = new int[]{pos[0], pos[1]};
         placeIcon();
     }
 

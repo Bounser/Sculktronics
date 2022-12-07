@@ -20,16 +20,13 @@ public class Wire implements ElectroComponent {
 
     boolean powered;
 
-    RectComponent icon;
-
     public Wire(Circuit circuit, int[] pos){
         basicColor = Data.getInstance().getWireBasicColor();
         poweredColor = Data.getInstance().getWirePoweredColor();
+        powered = false;
 
         this.circuit = circuit;
-        this.pos = new int[]{pos[0] * 10 + 10, pos[1] * 10 + 10};
-
-        // placeIcon();
+        this.pos = new int[]{pos[0], pos[1]};
     }
 
     @Override
@@ -39,13 +36,12 @@ public class Wire implements ElectroComponent {
 
     @Override
     public boolean isPowered() {
-        return false;
+        return powered;
     }
 
     @Override
     public void setPowered(boolean setpowered) {
         powered = setpowered;
-        // icon.setColor(poweredColor);
     }
 
     @Override
@@ -78,16 +74,10 @@ public class Wire implements ElectroComponent {
 
     @Override
     public void placeIcon() {
-        /*for(Interaction interaction : circuit.getInteractions()){
-            icon = new RectComponent("IconW1", null, false, interaction, pos[0], pos[1], 6, 6, basicColor);
-            Bukkit.broadcastMessage("Icon placed");
-            interaction.getComponentTree().getComponents().add(icon);
-        }*/
     }
 
     @Override
     public void remove(){
-        // icon.dispose();
     }
 
 }
