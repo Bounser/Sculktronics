@@ -38,74 +38,76 @@ public class RedstoneListener implements Listener {
 
                 if(circuit.getPutsLocations().containsKey(e.getBlock().getLocation())){
 
-                    for(Location put : circuit.getPutsLocations().keySet()){
+                    Location loc = e.getBlock().getLocation();
 
-                        if(circuit.getInputs().contains(circuit.getPutsLocations().get(put))){
-                            if(e.getNewCurrent() > 0){
-                                int point = 0;
-                                switch(circuit.getPutsLocations().get(put)){
-                                    case 0:
-                                        point = 5; break;
-                                    case 1:
-                                        point = 45; break;
-                                    case 2:
-                                        point = 77; break;
-                                    case 3:
-                                        point = 37; break;
-                                }
-                                circuit.modifySignalsIn(false, point);
-                            }else if(e.getNewCurrent() == 0){
-                                int point = 0;
-                                switch(circuit.getPutsLocations().get(put)){
-                                    case 0:
-                                        point = 5; break;
-                                    case 1:
-                                        point = 45; break;
-                                    case 2:
-                                        point = 77; break;
-                                    case 3:
-                                        point = 37; break;
-                                }
-                                circuit.modifySignalsIn(true, point);
+                    if(circuit.getInputs().contains(circuit.getPutsLocations().get(e.getBlock().getLocation()))){
+
+                        if(e.getNewCurrent() > 0){
+                            int point = 0;
+                            switch(circuit.getPutsLocations().get(loc)){
+                                case 0:
+                                    point = 5; break;
+                                case 1:
+                                    point = 45; break;
+                                case 2:
+                                    point = 77; break;
+                                case 3:
+                                    point = 37; break;
                             }
+                            circuit.modifySignalsIn(false, point);
+                        }else{
+                            int point = 0;
+                            switch(circuit.getPutsLocations().get(loc)){
+                                case 0:
+                                    point = 5; break;
+                                case 1:
+                                    point = 45; break;
+                                case 2:
+                                    point = 77; break;
+                                case 3:
+                                    point = 37; break;
+                            }
+                            circuit.modifySignalsIn(true, point);
                         }
-                        if(circuit.getOutputs().contains(circuit.getPutsLocations().get(put))){
-                            if(!circuit.getSignalsOut().contains(circuit.getPutsLocations().get(put))){
-                                e.setNewCurrent(0);
-                            }
+                    } else if(circuit.getOutputs().contains(circuit.getPutsLocations().get(loc))){
+                        if(!circuit.getSignalsOut().contains(circuit.getPutsLocations().get(loc))){
+                            e.setNewCurrent(0);
                         }
                     }
-                    if(data.getClockPrevention()){
+                }
+                if(data.getClockPrevention()){
 
-                        if(activeCooldownCircuits.contains(circuit)) {
-                            circuit.setOverloaded();
+                    if(circuit.getOverloaded()) return;
+                    if(activeCooldownCircuits.contains(circuit)) {
+                        circuit.setOverloaded();
 
-                            // Animation
+                        // Animation
 
-                            circuit.getLocation().getWorld().spawnParticle(Particle.SMOKE_LARGE, circuit.getLocation().add(0,-0.5,0),30);
-
-                            new BukkitRunnable() {
-                                @Override
-                                public void run() {
-
-                                     circuit.unsetOverloaded();
-
-                                }
-                            }.runTaskLater(GUItronics.getInstance(), 50);
-                            return;
-                        }
-
-                        activeCooldownCircuits.add(circuit);
+                        circuit.getLocation().getWorld().spawnParticle(Particle.SMOKE_LARGE, circuit.getLocation(),30, 1, 0,1);
 
                         new BukkitRunnable() {
                             @Override
                             public void run() {
 
-                                activeCooldownCircuits.remove(circuit);
+                                circuit.unsetOverloaded();
 
                             }
-                        }.runTaskLater(GUItronics.getInstance(), data.getTicksPerChange());
+                        }.runTaskLater(GUItronics.getInstance(), 50);
+                        return;
+
+                        //
                     }
+
+                    activeCooldownCircuits.add(circuit);
+
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+
+                            activeCooldownCircuits.remove(circuit);
+
+                        }
+                    }.runTaskLater(GUItronics.getInstance(), data.getTicksPerChange());
                 }
             }
         }

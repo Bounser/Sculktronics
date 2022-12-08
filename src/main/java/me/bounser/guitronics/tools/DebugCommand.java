@@ -48,6 +48,8 @@ public class DebugCommand implements CommandExecutor {
                             p.sendMessage(ChatColor.DARK_BLUE + "Circuit type (num): " + circuit.getNum());
                             p.sendMessage(ChatColor.BLUE + "Circuit inputs: " + circuit.getInputs());
                             p.sendMessage(ChatColor.DARK_BLUE + "Circuit outputs: " + circuit.getOutputs());
+                            p.sendMessage(ChatColor.BLUE + "Circuit signals (Input): " + circuit.getSignalsIn());
+                            p.sendMessage(ChatColor.DARK_BLUE + "Circuit signals (Output): " + circuit.getSignalsOut());
                         }
                     }
             }

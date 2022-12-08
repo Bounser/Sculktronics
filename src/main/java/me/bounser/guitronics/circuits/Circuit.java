@@ -279,7 +279,7 @@ public class Circuit {
         if(newRender){
             toRender.clear();
             CircuitRenderer.getInstance().render(this);
-            CircuitRenderer.getInstance().outputRedstone(signalsOut, this);
+            // CircuitRenderer.getInstance().outputRedstone(signalsOut, this);
         }
 
         setDesign(false);
@@ -358,13 +358,15 @@ public class Circuit {
         }
     }
 
-    public void modifySignalsOut(boolean remove, int value){
+    public void modifySignalsOut(boolean remove, Object value){
         if(remove){
             signalsOut.remove(value);
         } else {
             signalsOut.add((Integer) value);
         }
     }
+
+    public List<Integer> getSignalsIn(){ return signalsIn; }
 
     public List<Integer> getSignalsOut(){ return signalsOut; }
 
@@ -416,4 +418,5 @@ public class Circuit {
 
     public void unsetOverloaded(){ overloaded = false; }
 
+    public boolean getOverloaded(){ return overloaded; }
 }
