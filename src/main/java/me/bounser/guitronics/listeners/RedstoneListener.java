@@ -6,7 +6,6 @@ import me.bounser.guitronics.circuits.CircuitsManager;
 import me.bounser.guitronics.tools.Data;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Particle;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockRedstoneEvent;
