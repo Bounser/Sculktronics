@@ -15,7 +15,7 @@ public class Data {
     /** Data structure:
      *
      *  data.json: (Simplified)
-     *       users:
+     *    users:
      *       - "UUID1"
      *       - "UUID2"
      *        ...
@@ -86,27 +86,22 @@ public class Data {
             rgb[0] = main.getConfig().getInt("Colors.wire.basic.r");
             rgb[1] = main.getConfig().getInt("Colors.wire.basic.g");
             rgb[2] = main.getConfig().getInt("Colors.wire.basic.b");
-
             return new Color(rgb[0],rgb[1],rgb[2]);
         } else {
             return wireBasic;
         }
-
     }
 
     public Color getWirePoweredColor(){
-
         if(wirePowered == null){
             int[] rgb = new int[3];
             rgb[0] = main.getConfig().getInt("Colors.wire.powered.r");
             rgb[1] = main.getConfig().getInt("Colors.wire.powered.g");
             rgb[2] = main.getConfig().getInt("Colors.wire.powered.b");
-
             return new Color(rgb[0],rgb[1],rgb[2]);
         } else {
             return wirePowered;
         }
-
     }
 
     public Color getDelayerBasicColor(){
@@ -116,12 +111,10 @@ public class Data {
             rgb[0] = main.getConfig().getInt("Colors.delayer.basic.r");
             rgb[1] = main.getConfig().getInt("Colors.delayer.basic.g");
             rgb[2] = main.getConfig().getInt("Colors.delayer.basic.b");
-
             return new Color(rgb[0],rgb[1],rgb[2]);
         } else {
             return delayerBasic;
         }
-
     }
 
     public Color getDelayerPoweredColor(){
@@ -131,12 +124,10 @@ public class Data {
             rgb[0] = main.getConfig().getInt("Colors.delayer.powered.r");
             rgb[1] = main.getConfig().getInt("Colors.delayer.powered.g");
             rgb[2] = main.getConfig().getInt("Colors.delayer.powered.b");
-
             return new Color(rgb[0],rgb[1],rgb[2]);
         } else {
             return delayerPowered;
         }
-
     }
 
     public Color getDiodeBasicColor(){
@@ -146,12 +137,10 @@ public class Data {
             rgb[0] = main.getConfig().getInt("Colors.diode.basic.r");
             rgb[1] = main.getConfig().getInt("Colors.diode.basic.g");
             rgb[2] = main.getConfig().getInt("Colors.diode.basic.b");
-
             return new Color(rgb[0],rgb[1],rgb[2]);
         } else {
             return diodeBasic;
         }
-
     }
 
     public Color getDiodePoweredColor(){
@@ -161,12 +150,10 @@ public class Data {
             rgb[0] = main.getConfig().getInt("Colors.diode.powered.r");
             rgb[1] = main.getConfig().getInt("Colors.diode.powered.g");
             rgb[2] = main.getConfig().getInt("Colors.diode.powered.b");
-
             return new Color(rgb[0],rgb[1],rgb[2]);
         } else {
             return diodePowered;
         }
-
     }
 
     public Color getResistorBasicColor(){
@@ -176,12 +163,10 @@ public class Data {
             rgb[0] = main.getConfig().getInt("Colors.resistance.basic.r");
             rgb[1] = main.getConfig().getInt("Colors.resistance.basic.g");
             rgb[2] = main.getConfig().getInt("Colors.resistance.basic.b");
-
             return new Color(rgb[0],rgb[1],rgb[2]);
         } else {
             return resistorBasic;
         }
-
     }
 
     public Color getResistorPoweredColor(){
@@ -191,41 +176,34 @@ public class Data {
             rgb[0] = main.getConfig().getInt("Colors.resistance.powered.r");
             rgb[1] = main.getConfig().getInt("Colors.resistance.powered.g");
             rgb[2] = main.getConfig().getInt("Colors.resistance.powered.b");
-
             return new Color(rgb[0],rgb[1],rgb[2]);
         } else {
             return resistorPowered;
         }
-
     }
 
     public void registerCircuit(Location loc, String owneruuid){
 
         int i;
-
         if(getUsersUUID().contains(owneruuid)){
             i = getNum(owneruuid) + 1;
-
         } else {
             List<String> owners = json.getStringList("users");
             owners.add(owneruuid);
             json.set("users", owners);
             i = 0;
         }
-
             json.set(owneruuid + "." + i + ".loc.world", loc.getWorld().getName());
             json.set(owneruuid + "." + i + ".loc.x", loc.getX());
             json.set(owneruuid + "." + i + ".loc.y", loc.getY());
             json.set(owneruuid + "." + i + ".loc.z", loc.getZ());
             json.set(owneruuid + ".num", i);
-
     }
 
     public void updateCircuit(Circuit circuit){
 
         String owneruuid = circuit.getOwneruuid();
         int i = circuit.getNum();
-        Location loc = circuit.getLocation();
 
         json.set(owneruuid + "." + i + ".size", circuit.getSize());
         json.set(owneruuid + "." + i + ".design", circuit.getDesign());

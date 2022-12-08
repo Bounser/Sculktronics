@@ -2,10 +2,11 @@ package me.bounser.guitronics.circuits;
 
 import me.bounser.guitronics.components.EComponent;
 import me.bounser.guitronics.components.electrocomponents.Diode;
+import me.bounser.guitronics.components.electrocomponents.Wire;
 import me.bounser.guitronics.tools.Data;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.block.data.type.RedstoneWire;
+import org.bukkit.block.data.Powerable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,10 +25,12 @@ public class CircuitRenderer {
 
         HashMap<Integer, Object> design = cir.getDesign();
 
-        for(int input : cir.getInputs()){
+        for(int signalsIn : cir.getSignalsIn()){
 
-            cir.addToRender(input);
-            checkPixel(input, design, cir);
+            if(cir.getDesign().get(signalsIn) instanceof Wire){
+                cir.addToRender(signalsIn);
+                checkPixel(signalsIn, design, cir);
+            }
         }
     }
 
@@ -107,27 +110,23 @@ public class CircuitRenderer {
         }
     }
 
-    public void outputRedstone(List<Integer> outputs, Circuit cir){
+    public void outputRedstone(Circuit cir){
 
-        for(int output : outputs){
+        for(int output : cir.getSignalsOut()){
 
-            Location base = cir.getLocation().add(0,-1,0);
+            Location cb = cir.getLocation();
+            Location base = new Location(cb.getWorld(), cb.getX(), cb.getY(), cb.getZ());
 
             switch(output){
-                case 5:  base.add(-1,0,0); break;
-                case 37: base.add(0,0,1); break;
-                case 45: base.add(0,0,-1); break;
-                case 77: base.add(1,0,0); break;
+                case 5:  base.add(0,-1,-1); break;
+                case 37: base.add(-1,-1,0); break;
+                case 45: base.add(1,-1,0); break;
+                case 77: base.add(0,-1,1); break;
             }
 
-            if(Data.getInstance().getDebug()) Bukkit.broadcastMessage("Lighting: " + base);
-
             if(base.getBlock().getBlockPower() == 0){
-
-                if(Data.getInstance().getDebug()) Bukkit.broadcastMessage("It can be lighted.");
-
-                RedstoneWire rw = (RedstoneWire) base.getBlock().getBlockData();
-                rw.setPower(15);
+                Powerable rw = (Powerable) base.getBlock().getBlockData();
+                rw.setPowered(true);
                 base.getBlock().setBlockData(rw);
             }
         }

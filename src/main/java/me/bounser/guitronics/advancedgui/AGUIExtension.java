@@ -5,6 +5,8 @@ import me.bounser.guitronics.circuits.Circuit;
 import me.bounser.guitronics.circuits.CircuitsManager;
 import me.bounser.guitronics.components.EComponent;
 import me.bounser.guitronics.components.electrocomponents.*;
+import me.leoko.advancedgui.utils.GuiInstance;
+import me.leoko.advancedgui.utils.GuiWallInstance;
 import me.leoko.advancedgui.utils.Layout;
 import me.leoko.advancedgui.utils.LayoutExtension;
 import me.leoko.advancedgui.utils.actions.Action;
@@ -12,13 +14,10 @@ import me.leoko.advancedgui.utils.components.RectComponent;
 import me.leoko.advancedgui.utils.events.GuiInteractionBeginEvent;
 import me.leoko.advancedgui.utils.events.GuiInteractionExitEvent;
 import me.leoko.advancedgui.utils.events.LayoutLoadEvent;
-import me.leoko.advancedgui.utils.interactions.Interaction;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.w3c.dom.css.Rect;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -160,6 +159,7 @@ public class AGUIExtension implements LayoutExtension {
                             case WIRE:
                                 clickAction = (interaction, player, primaryTrigger) -> {
                                     cir.removeEComponent(posf);
+                                    finishAndStartInteraction(player, e.getGuiInstance());
                                 };
                                 break;
                             case RESISTOR:
@@ -167,6 +167,7 @@ public class AGUIExtension implements LayoutExtension {
                                     Resistor resistor = (Resistor) cir.getElectroComponent(posf);
                                     resistor.remove();
                                     cir.removeEComponent(posf);
+                                    finishAndStartInteraction(player, e.getGuiInstance());
                                 };
                                 break;
                             case DELAYER:
@@ -177,6 +178,7 @@ public class AGUIExtension implements LayoutExtension {
                                     } else {
                                         delayer.remove();
                                         cir.removeEComponent(posf);
+                                        finishAndStartInteraction(player, e.getGuiInstance());
                                     }
                                 };
                                 break;
@@ -189,6 +191,7 @@ public class AGUIExtension implements LayoutExtension {
                                     } else {
                                         diode.remove();
                                         cir.removeEComponent(posf);
+                                        finishAndStartInteraction(player, e.getGuiInstance());
                                     }
                                 };
                                 break;
@@ -197,6 +200,7 @@ public class AGUIExtension implements LayoutExtension {
                                     Inverter inverter = (Inverter) cir.getElectroComponent(posf);
                                     inverter.remove();
                                     cir.removeEComponent(posf);
+                                    finishAndStartInteraction(player, e.getGuiInstance());
                                 };
                                 break;
                         }
@@ -248,6 +252,7 @@ public class AGUIExtension implements LayoutExtension {
                                     player.sendMessage(ChatColor.AQUA + "Resistor " + ChatColor.GRAY + "added.");
                                     break;
                             }
+                            finishAndStartInteraction(player, e.getGuiInstance());
 
                         } else {
                             player.sendMessage(ChatColor.RED + "[!] You can't change the design of this circuit!");
@@ -261,15 +266,9 @@ public class AGUIExtension implements LayoutExtension {
         e.getInteraction().getComponentTree().getComponents().add(back);
     }
 
-    public void updatePixel(RectComponent pixel, Color color){
-
-        pixel.setHeight(10);
-        pixel.setWidth(10);
-
-        pixel.setX(pixel.getX()-1);
-        pixel.setY(pixel.getY()-1);
-
-        pixel.setColor(color);
+    public void finishAndStartInteraction(Player player, GuiInstance ginstance){
+        ginstance.endInteraction(player);
+        ginstance.startInteraction(player);
     }
 
 
@@ -283,6 +282,8 @@ public class AGUIExtension implements LayoutExtension {
             cir.getLocation().getBlock().setType(Material.BLACK_CARPET);
 
             cir.removeInteraction(e.getInteraction());
+
+            // cir.updateCircuit();
         }
     }
 }

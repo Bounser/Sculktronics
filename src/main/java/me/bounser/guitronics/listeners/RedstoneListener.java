@@ -69,6 +69,7 @@ public class RedstoneListener implements Listener {
                             }
                             circuit.modifySignalsIn(true, point);
                         }
+                        circuit.updateRender(true);
                     } else if(circuit.getOutputs().contains(circuit.getPutsLocations().get(loc))){
                         if(!circuit.getSignalsOut().contains(circuit.getPutsLocations().get(loc))){
                             e.setNewCurrent(0);
@@ -78,12 +79,13 @@ public class RedstoneListener implements Listener {
                 if(data.getClockPrevention()){
 
                     if(circuit.getOverloaded()) return;
+
                     if(activeCooldownCircuits.contains(circuit)) {
                         circuit.setOverloaded();
 
                         // Animation
 
-                        circuit.getLocation().getWorld().spawnParticle(Particle.SMOKE_LARGE, circuit.getLocation(),30, 1, 0,1);
+                        // circuit.getLocation().getWorld().spawnParticle(Particle.SMOKE_LARGE, circuit.getLocation(),30, 1, 0,1);
 
                         new BukkitRunnable() {
                             @Override
@@ -94,8 +96,6 @@ public class RedstoneListener implements Listener {
                             }
                         }.runTaskLater(GUItronics.getInstance(), 50);
                         return;
-
-                        //
                     }
 
                     activeCooldownCircuits.add(circuit);

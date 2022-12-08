@@ -13,6 +13,7 @@ import me.leoko.advancedgui.utils.interactions.Interaction;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -278,8 +279,9 @@ public class Circuit {
 
         if(newRender){
             toRender.clear();
+            signalsOut.clear();
             CircuitRenderer.getInstance().render(this);
-            // CircuitRenderer.getInstance().outputRedstone(signalsOut, this);
+            CircuitRenderer.getInstance().outputRedstone(this);
         }
 
         setDesign(false);
@@ -287,7 +289,9 @@ public class Circuit {
         for(Interaction i : interactions){
             if(i != null){
                 for(int j : toRender){
+
                     updateRect(design.get(j), i, j, true);
+
                 }
             }
         }
@@ -356,14 +360,16 @@ public class Circuit {
         } else {
             signalsIn.add((Integer) value);
         }
+        CircuitRenderer.getInstance().render(this);
     }
 
     public void modifySignalsOut(boolean remove, Object value){
         if(remove){
             signalsOut.remove(value);
         } else {
-            signalsOut.add((Integer) value);
+            if(!signalsOut.contains(value)) signalsOut.add((Integer) value);
         }
+        CircuitRenderer.getInstance().render(this);
     }
 
     public List<Integer> getSignalsIn(){ return signalsIn; }
@@ -403,7 +409,6 @@ public class Circuit {
             LOC.add(0,0,1).getBlock().setType(Material.SCULK_CATALYST);
             LOC.add(1,0,1).getBlock().setType(Material.SCULK_CATALYST);
         }
-
         updateCircuit();
     }
 
