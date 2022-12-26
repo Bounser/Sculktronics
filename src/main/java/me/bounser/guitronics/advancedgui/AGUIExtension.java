@@ -6,7 +6,6 @@ import me.bounser.guitronics.circuits.CircuitsManager;
 import me.bounser.guitronics.components.EComponent;
 import me.bounser.guitronics.components.electrocomponents.*;
 import me.leoko.advancedgui.utils.GuiInstance;
-import me.leoko.advancedgui.utils.GuiWallInstance;
 import me.leoko.advancedgui.utils.Layout;
 import me.leoko.advancedgui.utils.LayoutExtension;
 import me.leoko.advancedgui.utils.actions.Action;
@@ -162,26 +161,6 @@ public class AGUIExtension implements LayoutExtension {
                                     finishAndStartInteraction(player, e.getGuiInstance());
                                 };
                                 break;
-                            case RESISTOR:
-                                clickAction = (interaction, player, primaryTrigger) -> {
-                                    Resistor resistor = (Resistor) cir.getElectroComponent(posf);
-                                    resistor.remove();
-                                    cir.removeEComponent(posf);
-                                    finishAndStartInteraction(player, e.getGuiInstance());
-                                };
-                                break;
-                            case DELAYER:
-                                clickAction = (interaction, player, primaryTrigger) -> {
-                                    Delayer delayer = (Delayer) cir.getElectroComponent(posf);
-                                    if (player.isSneaking()) {
-                                        delayer.changeDelay();
-                                    } else {
-                                        delayer.remove();
-                                        cir.removeEComponent(posf);
-                                        finishAndStartInteraction(player, e.getGuiInstance());
-                                    }
-                                };
-                                break;
                             case DIODE:
                                 clickAction = (interaction, player, primaryTrigger) -> {
 
@@ -189,16 +168,16 @@ public class AGUIExtension implements LayoutExtension {
                                     if (player.isSneaking()) {
                                         diode.rotate();
                                     } else {
-                                        diode.remove();
+                                        diode.removeIcon();
                                         cir.removeEComponent(posf);
                                         finishAndStartInteraction(player, e.getGuiInstance());
                                     }
                                 };
                                 break;
-                            case INVERTER:
+                            case NOT:
                                 clickAction = (interaction, player, primaryTrigger) -> {
-                                    Inverter inverter = (Inverter) cir.getElectroComponent(posf);
-                                    inverter.remove();
+                                    NOT inverter = (NOT) cir.getElectroComponent(posf);
+                                    inverter.removeIcon();
                                     cir.removeEComponent(posf);
                                     finishAndStartInteraction(player, e.getGuiInstance());
                                 };
@@ -233,23 +212,12 @@ public class AGUIExtension implements LayoutExtension {
                             switch (player.getInventory().getItemInMainHand().getType()) {
                                 case ECHO_SHARD:
                                     cir.addElectroComponent(posf, new Wire(cir, pos));
-                                    player.sendMessage(ChatColor.AQUA + "Wire " + ChatColor.GRAY + "added.");
-                                    break;
-                                case REPEATER:
-                                    cir.addElectroComponent(posf, new Delayer(cir, pos, 5));
-                                    player.sendMessage(ChatColor.AQUA + "Delayer " + ChatColor.GRAY + "added.");
                                     break;
                                 case COMPARATOR:
                                     cir.addElectroComponent(posf, new Diode(cir, pos, 0));
-                                    player.sendMessage(ChatColor.AQUA + "Diode " + ChatColor.GRAY + "added.");
                                     break;
                                 case REDSTONE_TORCH:
-                                    cir.addElectroComponent(posf, new Inverter(cir, pos, 0));
-                                    player.sendMessage(ChatColor.AQUA + "Inverter " + ChatColor.GRAY + "added.");
-                                    break;
-                                case LIGHTNING_ROD:
-                                    cir.addElectroComponent(posf, new Resistor(cir, pos));
-                                    player.sendMessage(ChatColor.AQUA + "Resistor " + ChatColor.GRAY + "added.");
+                                    cir.addElectroComponent(posf, new NOT(cir, pos, 0));
                                     break;
                             }
                             finishAndStartInteraction(player, e.getGuiInstance());

@@ -13,12 +13,9 @@ import me.leoko.advancedgui.utils.interactions.Interaction;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
 
 public class Circuit {
@@ -91,6 +88,10 @@ public class Circuit {
             ginstance = AGUIInstances.getInstance().placeGUI(loc,this, true);
         }
         GUItronics.getInstance().bl.checkCircuitPuts(this);
+
+        if(ginstance.isInArea(Bukkit.getPlayer(UUID.fromString(uuid)).getLocation())){
+            ginstance.startInteraction(Bukkit.getPlayer(UUID.fromString(uuid)));
+        }
     }
     
     // Getters
@@ -185,20 +186,12 @@ public class Circuit {
                 Wire wire = (Wire) design.get(pos);
                 if(powered) return wire.getPoweredColor();
                 return wire.getBasicColor();
-            case DELAYER:
-                Delayer delayer = (Delayer) design.get(pos);
-                if(powered) return delayer.getPoweredColor();
-                return delayer.getBasicColor();
             case DIODE:
                 Diode diode = (Diode) design.get(pos);
                 if(powered) return diode.getPoweredColor();
                 return diode.getBasicColor();
-            case RESISTOR:
-                Resistor resistor = (Resistor) design.get(pos);
-                if(powered) return resistor.getPoweredColor();
-                return resistor.getBasicColor();
-            case INVERTER:
-                Inverter inverter = (Inverter) design.get(pos);
+            case NOT:
+                NOT inverter = (NOT) design.get(pos);
                 if(powered) return inverter.getPoweredColor();
                 return inverter.getBasicColor();
         }
@@ -210,17 +203,11 @@ public class Circuit {
         if(ElectroComponent instanceof Wire){
             return ((Wire) ElectroComponent).getEComponent();
         }
-        if(ElectroComponent instanceof Delayer){
-            return ((Delayer) ElectroComponent).getEComponent();
-        }
         if(ElectroComponent instanceof Diode){
             return ((Diode) ElectroComponent).getEComponent();
         }
-        if(ElectroComponent instanceof Inverter){
-            return ((Inverter) ElectroComponent).getEComponent();
-        }
-        if(ElectroComponent instanceof Resistor){
-            return ((Resistor) ElectroComponent).getEComponent();
+        if(ElectroComponent instanceof NOT){
+            return ((NOT) ElectroComponent).getEComponent();
         }
         return null;
     }
@@ -232,18 +219,12 @@ public class Circuit {
             case WIRE:
                 Wire wire = (Wire) design.get(pos);
                 return wire.isPowered();
-            case DELAYER:
-                Delayer delayer = (Delayer) design.get(pos);
-                return delayer.isPowered();
             case DIODE:
                 Diode diode = (Diode) design.get(pos);
                 return diode.isPowered();
-            case INVERTER:
-                Inverter inverter = (Inverter) design.get(pos);
+            case NOT:
+                NOT inverter = (NOT) design.get(pos);
                 return inverter.isPowered();
-            case RESISTOR:
-                Resistor resistor = (Resistor) design.get(pos);
-                return resistor.isPowered();
          }
         return false;
     }
@@ -274,7 +255,6 @@ public class Circuit {
 
     public void updateRender(boolean newRender){
 
-        if(Data.getInstance().getDebug()) Bukkit.broadcastMessage("Tries to render.");
         if(overloaded) return;
 
         if(newRender){
@@ -336,20 +316,15 @@ public class Circuit {
                 if(powered) blockw.setColor(wire.getPoweredColor());
                 else blockw.setColor(wire.getBasicColor()); break;
 
-            case DELAYER: Delayer delayer = (Delayer) electroComponent;
-                RectComponent blockde = i.getComponentTree().locate(id + "a", RectComponent.class);
-                if(powered) blockde.setColor(delayer.getPoweredColor());
-                else blockde.setColor(delayer.getBasicColor()); break;
-
             case DIODE: Diode diode = (Diode) electroComponent;
                 RectComponent blockdi = i.getComponentTree().locate(id + "a", RectComponent.class);
                 if(powered) blockdi.setColor(diode.getPoweredColor());
                 else blockdi.setColor(diode.getBasicColor()); break;
 
-            case RESISTOR: Resistor resistor = (Resistor) electroComponent;
+            case NOT: NOT Not = (NOT) electroComponent;
                 RectComponent blockr = i.getComponentTree().locate(id + "a", RectComponent.class);
-                if(powered) blockr.setColor(resistor.getPoweredColor());
-                else blockr.setColor(resistor.getBasicColor()); break;
+                if(powered) blockr.setColor(Not.getPoweredColor());
+                else blockr.setColor(Not.getBasicColor()); break;
 
         }
     }

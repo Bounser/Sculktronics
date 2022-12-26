@@ -4,9 +4,6 @@ import me.bounser.guitronics.circuits.Circuit;
 import me.bounser.guitronics.components.ElectroComponent;
 import me.bounser.guitronics.components.EComponent;
 import me.bounser.guitronics.tools.Data;
-import me.leoko.advancedgui.utils.components.RectComponent;
-import me.leoko.advancedgui.utils.interactions.Interaction;
-import org.bukkit.Bukkit;
 
 import java.awt.*;
 
@@ -35,23 +32,18 @@ public class Wire implements ElectroComponent {
     }
 
     @Override
+    public int getLocations() {
+        return 0;
+    }
+
+    @Override
     public boolean isPowered() {
         return powered;
     }
 
     @Override
-    public void setPowered(boolean setpowered) {
-        powered = setpowered;
-    }
-
-    @Override
-    public int getSecondsDelay() {
+    public int getOutput() {
         return 0;
-    }
-
-    @Override
-    public boolean isDirectional() {
-        return false;
     }
 
     @Override
@@ -77,7 +69,7 @@ public class Wire implements ElectroComponent {
     }
 
     @Override
-    public void remove(){
+    public void removeIcon(){
     }
 
 }

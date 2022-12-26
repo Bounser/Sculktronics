@@ -46,7 +46,7 @@ public class Diode implements ElectroComponent {
             case 0:
                 direction = 1; break;
         }
-        remove();
+        removeIcon();
         placeIcon();
     }
 
@@ -56,21 +56,18 @@ public class Diode implements ElectroComponent {
     }
 
     @Override
+    public int getLocations() {
+        return 0;
+    }
+
+    @Override
     public boolean isPowered() {
         return false;
     }
 
     @Override
-    public void setPowered(boolean setpowered) { powered = setpowered; }
-
-    @Override
-    public int getSecondsDelay() {
+    public int getOutput() {
         return 0;
-    }
-
-    @Override
-    public boolean isDirectional() {
-        return true;
     }
 
     @Override
@@ -122,7 +119,7 @@ public class Diode implements ElectroComponent {
     }
 
     @Override
-    public void remove() {
+    public void removeIcon() {
         for(RectComponent rect : icon){
             rect.dispose();
         }

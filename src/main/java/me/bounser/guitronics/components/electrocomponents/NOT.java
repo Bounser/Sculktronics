@@ -10,7 +10,16 @@ import me.leoko.advancedgui.utils.interactions.Interaction;
 import java.awt.*;
 import java.util.List;
 
-public class Inverter implements ElectroComponent {
+public class NOT implements ElectroComponent {
+
+    /*
+    TRUTH TABLE:
+
+    A | Output
+    1 | 0
+    0 | 1
+
+     */
 
     Circuit circuit;
     int[] pos;
@@ -23,7 +32,7 @@ public class Inverter implements ElectroComponent {
 
     List<RectComponent> icon;
 
-    public Inverter(Circuit circuit, int[] pos, int direction){
+    public NOT(Circuit circuit, int[] pos, int direction){
         this.direction = direction;
 
         basicColor = Data.getInstance().getDiodeBasicColor();
@@ -40,21 +49,18 @@ public class Inverter implements ElectroComponent {
     }
 
     @Override
+    public int getLocations() {
+        return 0;
+    }
+
+    @Override
     public boolean isPowered() {
         return false;
     }
 
     @Override
-    public void setPowered(boolean setpowered) { powered = setpowered; }
-
-    @Override
-    public int getSecondsDelay() {
+    public int getOutput() {
         return 0;
-    }
-
-    @Override
-    public boolean isDirectional() {
-        return false;
     }
 
     @Override
@@ -90,7 +96,7 @@ public class Inverter implements ElectroComponent {
     }
 
     @Override
-    public void remove() {
+    public void removeIcon() {
         for(RectComponent rect : icon){
             rect.dispose();
         }

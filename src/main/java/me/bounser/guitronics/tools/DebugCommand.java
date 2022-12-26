@@ -10,9 +10,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Objects;
-import java.util.Set;
-
 public class DebugCommand implements CommandExecutor {
 
     GUItronics main;

@@ -6,13 +6,11 @@ public interface ElectroComponent {
 
     EComponent getEComponent();
 
+    int getLocations();
+
     boolean isPowered();
 
-    void setPowered(boolean powered);
-
-    int getSecondsDelay();
-
-    boolean isDirectional();
+    int getOutput();
 
     int getDirection();
 
@@ -24,6 +22,6 @@ public interface ElectroComponent {
 
     void placeIcon();
 
-    void remove();
+    void removeIcon();
 
 }
