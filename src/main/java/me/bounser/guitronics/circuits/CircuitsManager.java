@@ -77,9 +77,8 @@ public class CircuitsManager {
 
         switch(EComponent){
             case WIRE: return 0;
-            case DELAYER:
             case DIODE:
-            case INVERTER:
+            case NOT:
                 return 3;
             case RESISTOR: return 4;
         }

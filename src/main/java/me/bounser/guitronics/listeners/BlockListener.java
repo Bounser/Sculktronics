@@ -33,7 +33,17 @@ public class BlockListener implements Listener {
 
             for(Location loc : CircuitsManager.getInstance().getCircuitLocs().values()){
 
-                // TODO - Logic for physical extensions. On second expansion: check for needed materials.
+                if(loc.distance(e.getBlock().getLocation()) == 1){
+
+                    for(Circuit cir : CircuitsManager.getInstance().getAllCircuits()){
+                        if(cir.getLocation().equals(loc)){
+
+                        // TODO - Logic for physical extensions. On second expansion: check for needed materials.
+
+                        }
+                    }
+
+                }
 
                 if(loc.distance(e.getBlock().getLocation()) < 10){
                     e.getPlayer().sendMessage("Its too close to another circuit.");

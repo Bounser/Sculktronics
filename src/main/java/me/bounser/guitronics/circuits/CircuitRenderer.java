@@ -3,8 +3,6 @@ package me.bounser.guitronics.circuits;
 import me.bounser.guitronics.components.EComponent;
 import me.bounser.guitronics.components.electrocomponents.Diode;
 import me.bounser.guitronics.components.electrocomponents.Wire;
-import me.bounser.guitronics.tools.Data;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.data.Powerable;
 
@@ -78,7 +76,7 @@ public class CircuitRenderer {
                             checkPixel(j*2 +i, design, cir);
                         }
 
-                    } else if (cir.getEComponent(cir.getElectroComponent(x)).equals(EComponent.INVERTER)) {
+                    } else if (cir.getEComponent(cir.getElectroComponent(x)).equals(EComponent.NOT)) {
 
                         // INVERTER LOGIC - GET OFFSET OF INTEGERS (CARDINAL)
 

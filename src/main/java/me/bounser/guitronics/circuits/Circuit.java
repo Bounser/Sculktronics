@@ -22,7 +22,7 @@ public class Circuit {
 
 
     // Persistent info:
-    // Location of the main base, located at the north-west block within the cicuit base.
+    // Location of the GUI. The location above the main base, located at the north-west block within the cicuit base.
     final Location LOC;
     
     /** Sizes of the circuit. 0 = 1x1 1 = 1x2 2 = 2x1 3 = 2x2

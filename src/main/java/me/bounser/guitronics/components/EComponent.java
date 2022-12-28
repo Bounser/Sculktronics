@@ -6,8 +6,8 @@ public enum EComponent {
 
     WIRE,
     DIODE,
+    RESISTOR,
     // Transistor? It would have to be NPN
-    // Resistor
     // OpAmp
 
     // LOGIC GATES (Inverter = NOT)
@@ -18,7 +18,7 @@ public enum EComponent {
     NOT,
     AND,
     OR,
-    XOR,
+    XOR
 
     // SPECIAL UTILITIES
 

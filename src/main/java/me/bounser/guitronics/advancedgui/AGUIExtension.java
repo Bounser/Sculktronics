@@ -44,6 +44,11 @@ public class AGUIExtension implements LayoutExtension {
                 layoutList.add(e.getLayout()); break;
         }
 
+        if(layoutList.size() < 4){
+            GUItronics.getInstance().getLogger().info(ChatColor.RED + " Some of the required layout are missing! We found " + layoutList.size() + " /4");
+            GUItronics.getInstance().getPluginLoader().disablePlugin(GUItronics.getInstance());
+        }
+
         if(e.getLayout().getName().contains("Circuit")) {
 
             e.getLayout().getTemplateComponentTree().locate("u10").setClickAction((interaction, player, primaryTrigger) -> {
