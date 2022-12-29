@@ -1,6 +1,5 @@
 package me.bounser.guitronics.advancedgui;
 
-import me.bounser.guitronics.GUItronics;
 import me.bounser.guitronics.circuits.Circuit;
 import me.bounser.guitronics.circuits.CircuitsManager;
 import me.bounser.guitronics.components.EComponent;
@@ -28,36 +27,14 @@ public class AGUIExtension implements LayoutExtension {
 
     List<Layout> layoutList = new ArrayList<>();
 
-    @Override
-    public void onLayoutLoad(LayoutLoadEvent e){
+    public AGUIExtension(){
 
-        if(layoutList.size() < 4){
-            for(int i = 0; i < 4 ; i++){
-                try {
-                    layoutList.add(LayoutManager.getInstance().layoutFromJson("Circuit" + i + ".json"));
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
+        for(int i = 0; i < 4 ; i++){
+            try {
+                layoutList.add(LayoutManager.getInstance().layoutFromJson("Circuit" + i + ".json"));
+            } catch (IOException ex) {
+                ex.printStackTrace();
             }
-        }
-
-        if(e.getLayout().getName().contains("Circuit")) {
-
-            e.getLayout().getTemplateComponentTree().locate("u10").setClickAction((interaction, player, primaryTrigger) -> {
-                CircuitsManager.getInstance().getCircuitFromInteraction(interaction).expand(0);
-            });
-
-            e.getLayout().getTemplateComponentTree().locate("d10").setClickAction((interaction, player, primaryTrigger) -> {
-                CircuitsManager.getInstance().getCircuitFromInteraction(interaction).expand(2);
-            });
-
-            e.getLayout().getTemplateComponentTree().locate("r10").setClickAction((interaction, player, primaryTrigger) -> {
-                CircuitsManager.getInstance().getCircuitFromInteraction(interaction).expand(1);
-            });
-
-            e.getLayout().getTemplateComponentTree().locate("l10").setClickAction((interaction, player, primaryTrigger) -> {
-                CircuitsManager.getInstance().getCircuitFromInteraction(interaction).expand(3);
-            });
         }
     }
 
@@ -250,5 +227,10 @@ public class AGUIExtension implements LayoutExtension {
 
             // cir.updateCircuit();
         }
+    }
+
+    @Override
+    public void onLayoutLoad(LayoutLoadEvent event) {
+
     }
 }

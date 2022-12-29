@@ -12,7 +12,8 @@ import java.util.List;
 
 public class Data {
 
-    /** Data structure:
+    /**
+     * Data structure:
      *
      *  data.json: (Simplified)
      *    users:
