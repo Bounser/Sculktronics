@@ -1,5 +1,6 @@
 package me.bounser.guitronics;
 
+import de.leonhard.storage.util.FileUtils;
 import me.bounser.guitronics.advancedgui.AGUIExtension;
 import me.bounser.guitronics.circuits.CircuitsManager;
 import me.bounser.guitronics.listeners.BlockListener;
@@ -9,6 +10,11 @@ import me.bounser.guitronics.tools.DebugCommand;
 import me.leoko.advancedgui.manager.LayoutManager;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 
 public final class GUItronics extends JavaPlugin {
@@ -31,15 +37,17 @@ public final class GUItronics extends JavaPlugin {
 
     @Override
     public void onEnable() {
+
         main = this;
         boolean debug = Data.getInstance().getDebug();
 
         if(debug) getLogger().info("Loading resources...");
 
+        if(Data.getInstance().getCheckLayout()){ checkLayouts(); }
+
         if(debug) getCommand("debug").setExecutor(new DebugCommand(this));
 
         LayoutManager.getInstance().registerLayoutExtension(new AGUIExtension(), this);
-
 
         Bukkit.getPluginManager().registerEvents(bl, this);
         Bukkit.getPluginManager().registerEvents(new RedstoneListener(), this);
@@ -50,4 +58,37 @@ public final class GUItronics extends JavaPlugin {
 
     }
 
+    public void checkLayouts() {
+
+        getLogger().info("Checking layouts... ");
+        getLogger().info("If you want to disable this procedure, set AutoLayoutInjection to false in the config.yml file.");
+
+        for(int i = 0; i <= 3; i++){
+
+            File toLayout0 = new File(getDataFolder().getParent() + "/AdvancedGUI/layout/Circuit" + i + ".json");
+            if(!toLayout0.exists()){
+
+                InputStream fromLayout0 = getResource("Circuit" + i + ".json");
+
+                getLogger().info("Layout " + i + " added.");
+                FileUtils.writeToFile(toLayout0, fromLayout0);
+
+            } else {
+
+                InputStream input = null;
+                try {
+                    input = new FileInputStream(toLayout0);
+                } catch (FileNotFoundException e) {
+                    getLogger().info("Error trying to read layout " + i + " in AdvancedGUI's layouts file");
+                    e.printStackTrace();
+                }
+                InputStream fromLayout0 = getResource("Circuit" + i + ".json");
+
+                if(input != fromLayout0){
+                    getLogger().info("Layout " + i + " updated.");
+                    FileUtils.writeToFile(toLayout0, fromLayout0);
+                }
+            }
+        }
+    }
 }

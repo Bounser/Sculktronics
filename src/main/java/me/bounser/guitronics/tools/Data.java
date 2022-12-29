@@ -67,6 +67,8 @@ public class Data {
         return instance;
     }
 
+    public Boolean getCheckLayout(){ return main.getConfig().getBoolean("AutoLayoutInjection"); }
+
     public String getLayoutName(int size){ return main.getConfig().getString("Layout." + size); }
 
     public int getSize(int n, String uuid){ return main.getConfig().getInt(uuid + "." + n + ".size"); }

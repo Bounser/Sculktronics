@@ -1,3 +1,5 @@
+# Should the plugin check if the correct layouts are present, and add them in case they are not?
+AutoLayoutInjection: true
 
 # Prevent users from using clocks to feed circuits.
 ClockPrevention:

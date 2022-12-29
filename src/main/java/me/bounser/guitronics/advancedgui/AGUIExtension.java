@@ -5,6 +5,7 @@ import me.bounser.guitronics.circuits.Circuit;
 import me.bounser.guitronics.circuits.CircuitsManager;
 import me.bounser.guitronics.components.EComponent;
 import me.bounser.guitronics.components.electrocomponents.*;
+import me.leoko.advancedgui.manager.LayoutManager;
 import me.leoko.advancedgui.utils.GuiInstance;
 import me.leoko.advancedgui.utils.Layout;
 import me.leoko.advancedgui.utils.LayoutExtension;
@@ -19,6 +20,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 
 import java.awt.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,24 +31,14 @@ public class AGUIExtension implements LayoutExtension {
     @Override
     public void onLayoutLoad(LayoutLoadEvent e){
 
-        switch(e.getLayout().getName()){
-            case "Circuit0":
-                GUItronics.getInstance().getLogger().info("Layout 0 found!");
-                layoutList.add(e.getLayout()); break;
-            case "Circuit1":
-                GUItronics.getInstance().getLogger().info("Layout 1 found!");
-                layoutList.add(e.getLayout()); break;
-            case "Circuit2":
-                GUItronics.getInstance().getLogger().info("Layout 2 found!");
-                layoutList.add(e.getLayout()); break;
-            case "Circuit3":
-                GUItronics.getInstance().getLogger().info("Layout 3 found!");
-                layoutList.add(e.getLayout()); break;
-        }
-
         if(layoutList.size() < 4){
-            GUItronics.getInstance().getLogger().info(ChatColor.RED + " Some of the required layout are missing! We found " + layoutList.size() + " /4");
-            GUItronics.getInstance().getPluginLoader().disablePlugin(GUItronics.getInstance());
+            for(int i = 0; i < 4 ; i++){
+                try {
+                    layoutList.add(LayoutManager.getInstance().layoutFromJson("Circuit" + i + ".json"));
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
         }
 
         if(e.getLayout().getName().contains("Circuit")) {
