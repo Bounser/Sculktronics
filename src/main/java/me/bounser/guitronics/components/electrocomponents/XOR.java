@@ -7,6 +7,8 @@ import java.awt.*;
 
 public class XOR implements ElectroComponent {
 
+    boolean negated;
+
     /*
     TRUTH TABLE:
 

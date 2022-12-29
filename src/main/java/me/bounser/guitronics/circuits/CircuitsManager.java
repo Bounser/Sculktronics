@@ -51,13 +51,22 @@ public class CircuitsManager {
             for(String uuid : data.getUsersUUID()){
                 for(int i = 0; i <= data.getNum(uuid); i++){
 
-                    circuits.add(new Circuit(data.getLocation(i, uuid), data.getSize(i, uuid), uuid, data.getDesign(uuid), i));
+                    circuits.add(new Circuit(data.getLocation(i, uuid), data.getSize(i, uuid), uuid, data.getDesign(i, uuid), i));
 
                 }
             }
             return true;
         }
         return false;
+    }
+
+    public Circuit getCircuitFromOwner(int num, String UUID){
+        for(Circuit cir : circuits){
+            if(cir.getOwneruuid().equals(UUID) && cir.getNum() == num){
+                return cir;
+            }
+        }
+        return null;
     }
 
     public Collection<Circuit> getAllCircuits(){ return circuits; }

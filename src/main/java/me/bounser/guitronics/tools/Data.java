@@ -3,6 +3,7 @@ package me.bounser.guitronics.tools;
 import de.leonhard.storage.Json;
 import me.bounser.guitronics.GUItronics;
 import me.bounser.guitronics.circuits.Circuit;
+import me.bounser.guitronics.circuits.CircuitsManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
@@ -163,9 +164,9 @@ public class Data {
 
         if(resistorBasic == null){
             int[] rgb = new int[3];
-            rgb[0] = main.getConfig().getInt("Colors.resistance.basic.r");
-            rgb[1] = main.getConfig().getInt("Colors.resistance.basic.g");
-            rgb[2] = main.getConfig().getInt("Colors.resistance.basic.b");
+            rgb[0] = main.getConfig().getInt("Colors.resistor.basic.r");
+            rgb[1] = main.getConfig().getInt("Colors.resistor.basic.g");
+            rgb[2] = main.getConfig().getInt("Colors.resistor.basic.b");
             return new Color(rgb[0],rgb[1],rgb[2]);
         } else {
             return resistorBasic;
@@ -176,17 +177,17 @@ public class Data {
 
         if(resistorPowered == null){
             int[] rgb = new int[3];
-            rgb[0] = main.getConfig().getInt("Colors.resistance.powered.r");
-            rgb[1] = main.getConfig().getInt("Colors.resistance.powered.g");
-            rgb[2] = main.getConfig().getInt("Colors.resistance.powered.b");
+            rgb[0] = main.getConfig().getInt("Colors.resistor.powered.r");
+            rgb[1] = main.getConfig().getInt("Colors.resistor.powered.g");
+            rgb[2] = main.getConfig().getInt("Colors.resistor.powered.b");
             return new Color(rgb[0],rgb[1],rgb[2]);
         } else {
             return resistorPowered;
         }
     }
 
+    // Only called on new circuits.
     public void registerCircuit(Location loc, String owneruuid){
-
         int i;
         if(getUsersUUID().contains(owneruuid)){
             i = getNum(owneruuid) + 1;
@@ -207,10 +208,20 @@ public class Data {
 
         String owneruuid = circuit.getOwneruuid();
         int i = circuit.getNum();
+        HashMap<Integer, Object> design = circuit.getDesign();
+        String uuid = circuit.getOwneruuid();
 
         json.set(owneruuid + "." + i + ".size", circuit.getSize());
-        json.set(owneruuid + "." + i + ".design", circuit.getDesign());
 
+        int j = 0;
+        switch(circuit.getSize()){
+            case 0: i = 9*9; break;
+            case 3: i = 24*24; break; // NOT THE ACTUAL NUMBER... probably?
+            default: i = 9*24;
+        }
+        for(int k = 1; k<=i; k++){
+            json.set(uuid + "." + i + ".design." + j, design.get(k));
+        }
     }
 
     public List<String> getUsersUUID(){ return json.getStringList("users"); }
@@ -222,7 +233,21 @@ public class Data {
                 json.getDouble(uuid + "." + num + ".loc.z"));
     }
 
-    public HashMap<Integer, Object> getDesign(String uuid){
-        return (HashMap<Integer, Object>) json.getMap(uuid + ".design");
+    public HashMap<Integer, Object> getDesign(int num, String uuid){
+
+        HashMap<Integer, Object> design = new HashMap<>();
+
+        Circuit cir = CircuitsManager.getInstance().getCircuitFromOwner(num, uuid);
+        int i;
+        switch(cir.getSize()){
+            case 0: i = 9*9; break;
+            case 3: i = 24*24; break; // NOT THE ACTUAL NUMBER... probably?
+            default: i = 9*24;
+        }
+
+        for(int j = 1; j<=i; j++){
+            design.put(j, json.get(uuid + "." + num + ".design." + j));
+        }
+        return design;
     }
 }
