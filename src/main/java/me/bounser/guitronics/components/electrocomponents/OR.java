@@ -7,6 +7,8 @@ import java.awt.*;
 
 public class OR implements ElectroComponent {
 
+    boolean negated;
+
     /*
     TRUTH TABLE:
 
@@ -17,6 +19,8 @@ public class OR implements ElectroComponent {
     1 1 | 1
 
      */
+
+    public OR(boolean negated){ this.negated = negated; }
 
     @Override
     public EComponent getEComponent() {

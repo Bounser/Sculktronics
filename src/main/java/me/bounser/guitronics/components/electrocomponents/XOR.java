@@ -20,6 +20,8 @@ public class XOR implements ElectroComponent {
 
     */
 
+    public XOR(boolean negated){ this.negated = negated; }
+
     @Override
     public EComponent getEComponent() {
         return null;

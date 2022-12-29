@@ -7,6 +7,8 @@ import java.awt.*;
 
 public class AND implements ElectroComponent {
 
+    boolean negated;
+
    /*
     TRUTH TABLE:
 
@@ -17,6 +19,8 @@ public class AND implements ElectroComponent {
     1 1 | 1
 
     */
+
+    public AND( boolean negated){ this.negated = negated; }
 
     @Override
     public EComponent getEComponent() {

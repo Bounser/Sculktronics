@@ -24,6 +24,7 @@ public class NOT implements ElectroComponent {
     Circuit circuit;
     int[] pos;
     int direction;
+    boolean negated;
 
     Color basicColor;
     Color poweredColor;
@@ -32,8 +33,9 @@ public class NOT implements ElectroComponent {
 
     List<RectComponent> icon;
 
-    public NOT(Circuit circuit, int[] pos, int direction){
+    public NOT(Circuit circuit, int[] pos, int direction, boolean negated){
         this.direction = direction;
+        this.negated = negated;
 
         basicColor = Data.getInstance().getDiodeBasicColor();
         poweredColor = Data.getInstance().getDiodePoweredColor();
