@@ -37,7 +37,7 @@ public class DebugCommand implements CommandExecutor {
                 case "c":
                     for(Circuit circuit : CircuitsManager.getInstance().getAllCircuits()){
                         if(circuit.getLocation().distance(p.getLocation()) < 4){
-                            p.sendMessage(ChatColor.BLUE + "Circuit owner: " + circuit.getOwneruuid());
+                            p.sendMessage(ChatColor.BLUE + "Circuit owner: " + circuit.getOwnerUUID());
                             p.sendMessage(ChatColor.DARK_BLUE + "Circuit locations: " + circuit.getLocations());
                             p.sendMessage(ChatColor.BLUE + "Circuit puts: " + circuit.getPutsLocations());
                             p.sendMessage(ChatColor.DARK_BLUE + "Circuit interactions: " + circuit.getInteractions());

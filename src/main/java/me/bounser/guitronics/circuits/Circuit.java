@@ -20,7 +20,6 @@ import java.util.List;
 
 public class Circuit {
 
-
     // Persistent info:
     // Location of the GUI. The location above the main base, located at the north-west block within the cicuit base.
     final Location LOC;
@@ -169,7 +168,7 @@ public class Circuit {
 
     public int getNum(){ return num; }
 
-    public String getOwneruuid(){ return owneruuid; }
+    public String getOwnerUUID(){ return owneruuid; }
 
     public HashMap<Integer, Object> getDesign(){ return design; }
 
@@ -233,7 +232,13 @@ public class Circuit {
 
     // adders / removers
 
-    public void addElectroComponent(int pos, Object ElectroComponent){ design.put(pos, ElectroComponent); }
+    public void addElectroComponent(int pos, Object ElectroComponent){
+
+        design.put(pos, ElectroComponent);
+
+        // Visual placement. Iteration throw all the interactions of the circuit.
+
+    }
 
     public void removeEComponent(Object pos){ if(design.containsKey(pos)) design.remove(pos); }
 
@@ -351,7 +356,12 @@ public class Circuit {
 
     public List<Integer> getSignalsOut(){ return signalsOut; }
 
-    public void addInteraction(Interaction interaction) { if(!interactions.contains(interaction)) interactions.add(interaction); }
+    public void addInteraction(Interaction interaction) {
+        if(!interactions.contains(interaction)) interactions.add(interaction);
+
+        // Paste the render on the interaction
+
+    }
 
     public void removeInteraction(Interaction interaction) { interactions.remove(interaction); }
 
@@ -365,7 +375,6 @@ public class Circuit {
                     LOC.add(0,0,-1); break;
                 case 3:
                     LOC.add(-1,0,0); break;
-
                 case 1:
                     LOC.add(1,-1,0).getBlock().setType(Material.SCULK_CATALYST); break;
                 case 2:

@@ -62,7 +62,7 @@ public class CircuitsManager {
 
     public Circuit getCircuitFromOwner(int num, String UUID){
         for(Circuit cir : circuits){
-            if(cir.getOwneruuid().equals(UUID) && cir.getNum() == num){
+            if(cir.getOwnerUUID().equals(UUID) && cir.getNum() == num){
                 return cir;
             }
         }

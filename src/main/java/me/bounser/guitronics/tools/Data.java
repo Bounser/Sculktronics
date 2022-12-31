@@ -206,10 +206,10 @@ public class Data {
 
     public void updateCircuit(Circuit circuit){
 
-        String owneruuid = circuit.getOwneruuid();
+        String owneruuid = circuit.getOwnerUUID();
         int i = circuit.getNum();
         HashMap<Integer, Object> design = circuit.getDesign();
-        String uuid = circuit.getOwneruuid();
+        String uuid = circuit.getOwnerUUID();
 
         json.set(owneruuid + "." + i + ".size", circuit.getSize());
 
