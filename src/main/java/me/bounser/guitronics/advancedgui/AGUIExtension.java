@@ -31,11 +31,60 @@ public class AGUIExtension implements LayoutExtension {
 
         for(int i = 0; i < 4 ; i++){
             try {
-                layoutList.add(LayoutManager.getInstance().layoutFromJson("Circuit" + i + ".json"));
+                Layout circuit = LayoutManager.getInstance().layoutFromJson("Circuit" + i + ".json");
+                if(!LayoutManager.getInstance().getLayouts().contains(circuit)){
+                    LayoutManager.getInstance().getLayouts().add(circuit);
+                    layoutList.add(circuit);
+                }
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public void onLayoutLoad(LayoutLoadEvent e) {
+
+        String layoutName = e.getLayout().getName();
+
+        if (!layoutName.contains("Circuit")) return;
+
+        int size = Integer.parseInt(layoutName.substring(layoutName.length() - 1));
+        int x, y;
+
+        switch (size) {
+            case 0:
+                x = 9;
+                y = 9;
+                break;
+            case 1:
+                x = 22;
+                y = 9;
+                break;
+            case 2:
+                x = 9;
+                y = 22;
+                break;
+            case 3:
+                x = 22;
+                y = 22;
+                break;
+        }
+
+        RectComponent back = new RectComponent(
+                "back",
+                null,
+                false,
+                e.getLayout().getDefaultInteraction(),
+                19,
+                19,
+                90,
+                90,
+                new Color(0, 0, 0),
+                0
+        );
+
+
     }
 
     /**
@@ -51,19 +100,6 @@ public class AGUIExtension implements LayoutExtension {
         // If the interaction is with a circuit, it will set its corresponding design and update the render.
 
         if (!e.getInteraction().getLayout().getName().contains("Circuit")) return;
-
-        RectComponent back = new RectComponent(
-                "back",
-                null,
-                false,
-                e.getInteraction(),
-                19,
-                19,
-                90,
-                90,
-                new Color(0, 0, 0),
-                0
-        );
 
         Circuit cir = CircuitsManager.getInstance().getCircuitFromGUIInstance(e.getGuiInstance());
 
@@ -191,7 +227,7 @@ public class AGUIExtension implements LayoutExtension {
                                     cir.addElectroComponent(posf, new Diode(cir, pos, 0));
                                     break;
                                 case REDSTONE_TORCH:
-                                    cir.addElectroComponent(posf, new NOT(cir, pos, 0));
+                                    cir.addElectroComponent(posf, new NOT(cir, pos, 0, false));
                                     break;
                             }
                             finishAndStartInteraction(player, e.getGuiInstance());
@@ -205,7 +241,6 @@ public class AGUIExtension implements LayoutExtension {
                 e.getInteraction().getComponentTree().getComponents().add(pixel);
             }
         }
-        e.getInteraction().getComponentTree().getComponents().add(back);
     }
 
     public void finishAndStartInteraction(Player player, GuiInstance ginstance){
@@ -225,12 +260,8 @@ public class AGUIExtension implements LayoutExtension {
 
             cir.removeInteraction(e.getInteraction());
 
-            // cir.updateCircuit();
+            cir.updateCircuit();
         }
     }
 
-    @Override
-    public void onLayoutLoad(LayoutLoadEvent event) {
-
-    }
 }

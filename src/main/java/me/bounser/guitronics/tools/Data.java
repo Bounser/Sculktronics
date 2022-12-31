@@ -216,8 +216,8 @@ public class Data {
         int j = 0;
         switch(circuit.getSize()){
             case 0: i = 9*9; break;
-            case 3: i = 24*24; break; // NOT THE ACTUAL NUMBER... probably?
-            default: i = 9*24;
+            case 3: i = 22*22; break;
+            default: i = 9*22;
         }
         for(int k = 1; k<=i; k++){
             json.set(uuid + "." + i + ".design." + j, design.get(k));
@@ -241,8 +241,8 @@ public class Data {
         int i;
         switch(cir.getSize()){
             case 0: i = 9*9; break;
-            case 3: i = 24*24; break; // NOT THE ACTUAL NUMBER... probably?
-            default: i = 9*24;
+            case 3: i = 22*22; break;
+            default: i = 9*22;
         }
 
         for(int j = 1; j<=i; j++){

@@ -66,14 +66,7 @@ public final class GUItronics extends JavaPlugin {
         for(int i = 0; i <= 3; i++){
 
             File toLayout0 = new File(getDataFolder().getParent() + "/AdvancedGUI/layout/Circuit" + i + ".json");
-            if(!toLayout0.exists()){
-
-                InputStream fromLayout0 = getResource("Circuit" + i + ".json");
-
-                getLogger().info("Layout " + i + " added.");
-                FileUtils.writeToFile(toLayout0, fromLayout0);
-
-            } else {
+            if(toLayout0.exists()){
 
                 InputStream input = null;
                 try {
@@ -88,6 +81,14 @@ public final class GUItronics extends JavaPlugin {
                     getLogger().info("Layout " + i + " updated.");
                     FileUtils.writeToFile(toLayout0, fromLayout0);
                 }
+
+            } else {
+
+                InputStream fromLayout0 = getResource("Circuit" + i + ".json");
+
+                getLogger().info("Layout " + i + " added.");
+                FileUtils.writeToFile(toLayout0, fromLayout0);
+
             }
         }
     }
