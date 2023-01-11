@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>me.bounser</groupId>
-    <artifactId>GUItronics</artifactId>
+    <artifactId>Sculktronics</artifactId>
     <version>1.0</version>
     <packaging>jar</packaging>
 
-    <name>GUItronics</name>
+    <name>Sculktronics</name>
 
     <description>Add boards to do complex redstoning more compact!</description>
     <properties>
