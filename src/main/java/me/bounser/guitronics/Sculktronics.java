@@ -17,7 +17,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 
-public final class GUItronics extends JavaPlugin {
+public final class Sculktronics extends JavaPlugin {
 
     /**
      *  Project Notes:
@@ -40,8 +40,8 @@ public final class GUItronics extends JavaPlugin {
      *  Inputs/Outputs follow the same structure.
      */
 
-    private static GUItronics main;
-    public static GUItronics getInstance(){ return main; }
+    private static Sculktronics main;
+    public static Sculktronics getInstance(){ return main; }
 
     @Override
     public void onEnable() {

@@ -1,6 +1,6 @@
 package me.bounser.guitronics.tools;
 
-import me.bounser.guitronics.GUItronics;
+import me.bounser.guitronics.Sculktronics;
 import me.bounser.guitronics.circuits.Circuit;
 import me.bounser.guitronics.circuits.CircuitsManager;
 import org.bukkit.ChatColor;
@@ -12,8 +12,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class DebugCommand implements CommandExecutor {
 
-    GUItronics main;
-    public DebugCommand(GUItronics main){
+    Sculktronics main;
+    public DebugCommand(Sculktronics main){
         this.main = main;
     }
 

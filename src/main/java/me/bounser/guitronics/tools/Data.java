@@ -1,7 +1,7 @@
 package me.bounser.guitronics.tools;
 
 import de.leonhard.storage.Json;
-import me.bounser.guitronics.GUItronics;
+import me.bounser.guitronics.Sculktronics;
 import me.bounser.guitronics.circuits.Circuit;
 import me.bounser.guitronics.circuits.CircuitsManager;
 import org.bukkit.Bukkit;
@@ -52,14 +52,14 @@ public class Data {
     Color resistorPowered = getResistorPoweredColor();
 
     private static Data instance;
-    private static GUItronics main;
+    private static Sculktronics main;
     public static Json json;
 
     public static Data getInstance(){
         if(instance == null){
-            main = GUItronics.getInstance();
+            main = Sculktronics.getInstance();
 
-            json = new Json("data", GUItronics.getInstance().getDataFolder().getPath() + "/data");
+            json = new Json("data", Sculktronics.getInstance().getDataFolder().getPath() + "/data");
             main.getConfig().options().copyDefaults();
             main.saveDefaultConfig();
             instance = new Data();

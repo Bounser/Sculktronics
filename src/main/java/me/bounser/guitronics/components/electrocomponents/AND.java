@@ -1,7 +1,11 @@
 package me.bounser.guitronics.components.electrocomponents;
 
+import me.bounser.guitronics.circuits.Circuit;
 import me.bounser.guitronics.components.EComponent;
 import me.bounser.guitronics.components.ElectroComponent;
+import me.bounser.guitronics.tools.Data;
+import me.leoko.advancedgui.manager.ResourceManager;
+import me.leoko.advancedgui.utils.components.ImageComponent;
 
 import java.awt.*;
 
@@ -20,7 +24,23 @@ public class AND implements ElectroComponent {
 
     */
 
-    public AND( boolean negated){ this.negated = negated; }
+    Circuit circuit;
+    int[] pos;
+
+    Color basicColor;
+    Color poweredColor;
+
+    boolean powered;
+
+    public AND(Circuit circuit, int[] pos, int direction, boolean negated){
+        basicColor = Data.getInstance().getWireBasicColor();
+        poweredColor = Data.getInstance().getWirePoweredColor();
+        powered = false;
+
+        this.circuit = circuit;
+        this.pos = new int[]{pos[0], pos[1]};
+        this.negated = negated;
+    }
 
     @Override
     public EComponent getEComponent() {
@@ -64,6 +84,8 @@ public class AND implements ElectroComponent {
 
     @Override
     public void placeIcon() {
+
+        ImageComponent and = new ImageComponent("and", null, false,null, pos[0],pos[1], ResourceManager.getInstance().getImage("AND"));
 
     }
 

@@ -1,6 +1,5 @@
 package me.bounser.guitronics.circuits;
 
-import me.bounser.guitronics.GUItronics;
 import me.bounser.guitronics.advancedgui.AGUIInstances;
 import me.bounser.guitronics.components.ElectroComponent;
 import me.bounser.guitronics.components.EComponent;
@@ -13,6 +12,9 @@ import me.leoko.advancedgui.utils.interactions.Interaction;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.Directional;
 
 import java.awt.*;
 import java.util.*;
@@ -24,11 +26,13 @@ public class Circuit {
     // Location of the GUI. The location above the main base, located at the north-west block within the cicuit base.
     final Location LOC;
     
-    /** Sizes of the circuit. 0 = 1x1 1 = 1x2 2 = 2x1 3 = 2x2
+    /**
+     * Sizes of the circuit. 0 = 1x1 1 = 1x2 2 = 2x1 3 = 2x2
      *                                       N
      *      Size 1: oo  Size 2:  o         W X E
      *                           o           S
      */
+
     int size;
 
     int num;
@@ -38,6 +42,7 @@ public class Circuit {
     HashMap<Integer, Object> design;
 
     // All inputs/outputs. Correspond to physical blocks and pixels within the circuit.
+
     /**
      *   INPUT/OUTPUT points are numbered clockwise:
      *   ONE  #    TWO   #   FOUR
@@ -50,10 +55,12 @@ public class Circuit {
      *        |  4 o 2   |
      *        |    3     |
      */
+
+    // Repeaters
     List<Integer> inputs = new ArrayList<>();
     List<Integer> outputs = new ArrayList<>();
 
-    // Outputs of the design. Possible values: 5, 37, 45, 77 (Analogous to 0, 3, 1, 2)
+    // Real outputs/inputs of the design. Possible values: 5, 37, 45, 77 (Analogous to 0, 3, 1, 2)
     List<Integer> signalsIn = new ArrayList<>();
     List<Integer> signalsOut = new ArrayList<>();
     // Temp info.
@@ -64,7 +71,6 @@ public class Circuit {
 
     GuiWallInstance ginstance;
 
-    // State of the circuit.
     Boolean overloaded = false;
 
     public Circuit(Location loc, int size, String uuid, HashMap<Integer, Object> design, int number){
@@ -86,7 +92,7 @@ public class Circuit {
         } else {
             ginstance = AGUIInstances.getInstance().placeGUI(loc,this, true);
         }
-        GUItronics.getInstance().bl.checkCircuitPuts(this);
+        checkCircuitPuts();
 
         if(ginstance.isInArea(Bukkit.getPlayer(UUID.fromString(uuid)).getLocation())){
             ginstance.startInteraction(Bukkit.getPlayer(UUID.fromString(uuid)));
@@ -296,6 +302,75 @@ public class Circuit {
         }
     }
 
+    public void checkCircuitPuts(){
+
+        HashMap<Location, Integer> plocs = getPutsLocations();
+
+        // TODO: FOR CIRCUITS SIZED FROM 1-3
+        for(Location ploc : plocs.keySet()){
+
+            if(ploc.getBlock().getType() == Material.REPEATER){
+
+                Block block = ploc.getBlock();
+                Block blockC = getNearestLoc(ploc, getLocations()).getBlock();
+                Directional repeater = (Directional) block.getBlockData();
+
+                if(blockC.getFace(block) == BlockFace.EAST){
+
+                    if(repeater.getFacing() == BlockFace.EAST){
+                        addInput(plocs.get(ploc));
+                    } else if(repeater.getFacing() == BlockFace.WEST){
+                        addOutput(plocs.get(ploc));
+                    }
+                }
+
+                if(blockC.getFace(block) == BlockFace.WEST){
+
+                    if(repeater.getFacing() == BlockFace.WEST){
+                        addInput(plocs.get(ploc));
+                    } else if(repeater.getFacing() == BlockFace.EAST){
+                        addOutput(plocs.get(ploc));
+                    }
+                }
+
+                if(blockC.getFace(block) == BlockFace.NORTH){
+
+                    if(repeater.getFacing() == BlockFace.NORTH){
+                        addInput(plocs.get(ploc));
+                    } else if(repeater.getFacing() == BlockFace.SOUTH){
+                        addOutput(plocs.get(ploc));
+                    }
+                }
+
+                if(blockC.getFace(block) == BlockFace.SOUTH){
+
+                    if(repeater.getFacing() == BlockFace.SOUTH){
+                        addInput(plocs.get(ploc));
+                    } else if(repeater.getFacing() == BlockFace.NORTH){
+                        addOutput(plocs.get(ploc));
+                    }
+                }
+                updatePuts();
+            }
+        }
+    }
+
+    public Location getNearestLoc(Location loc, List<Location> locs){
+
+        // Indeed, although the name might be misleading without context, it returns one block of the list with distance 1.
+
+        for(Location l : locs){
+
+            Location laux = new Location(l.getWorld(), l.getX(), l.getY(), l.getZ());
+            laux.add(0,-1,0);
+
+            if(laux.distance(loc) < 1.5){
+                return laux;
+            }
+        }
+        return null;
+    }
+
     public void setDesign(boolean updateRender){
 
         for(Interaction i : interactions) {
@@ -408,4 +483,8 @@ public class Circuit {
     public void unsetOverloaded(){ overloaded = false; }
 
     public boolean getOverloaded(){ return overloaded; }
+
+    public void dispose(){
+
+    }
 }

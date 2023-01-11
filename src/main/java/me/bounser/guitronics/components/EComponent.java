@@ -7,8 +7,12 @@ public enum EComponent {
     WIRE,
     DIODE,
     RESISTOR,
-    // Transistor? It would have to be NPN
+    // Transistor? It would have to be NPN or (More probably MOSFET)
     // OpAmp
+    // Multiplexer ?
+    // Binary to decimal
+    // Display
+    //
 
     // LOGIC GATES (Inverter = NOT)
 

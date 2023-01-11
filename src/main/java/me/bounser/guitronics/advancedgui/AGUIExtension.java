@@ -1,5 +1,6 @@
 package me.bounser.guitronics.advancedgui;
 
+import me.bounser.guitronics.Sculktronics;
 import me.bounser.guitronics.circuits.Circuit;
 import me.bounser.guitronics.circuits.CircuitsManager;
 import me.bounser.guitronics.components.EComponent;
@@ -29,12 +30,14 @@ public class AGUIExtension implements LayoutExtension {
 
         for(int i = 0; i < 4 ; i++){
             try {
-                Layout circuit = LayoutManager.getInstance().layoutFromJson("Circuit" + i + ".json");
-                if(!LayoutManager.getInstance().getLayouts().contains(circuit)){
-                    LayoutManager.getInstance().getLayouts().add(circuit);
+                LayoutManager lm = LayoutManager.getInstance();
+                Layout circuit = lm.layoutFromJson("Circuit" + i + ".json");
+                if(!lm.getLayouts().contains(circuit)){
+                    lm.getLayouts().add(circuit);
                     layoutList.add(circuit);
                 }
             } catch (IOException ex) {
+                Sculktronics.getInstance().getLogger().info("Error while reading layout " + i);
                 ex.printStackTrace();
             }
         }
@@ -59,20 +62,16 @@ public class AGUIExtension implements LayoutExtension {
 
         switch (size) {
             case 0:
-                x = 9;
-                y = 9;
+                x = 9; y = 9;
                 break;
             case 1:
-                x = 22;
-                y = 9;
+                x = 22; y = 9;
                 break;
             case 2:
-                x = 9;
-                y = 22;
+                x = 9; y = 22;
                 break;
             case 3:
-                x = 22;
-                y = 22;
+                x = 22; y = 22;
                 break;
         }
 
@@ -125,11 +124,14 @@ public class AGUIExtension implements LayoutExtension {
                                     case ECHO_SHARD:
                                         cir.addElectroComponent(posf, new Wire(cir, pos));
                                         break;
-                                    case COMPARATOR:
-                                        cir.addElectroComponent(posf, new Diode(cir, pos, 0));
+                                    case COMPARATOR: // Temporary, as the comparator should be the OpAmp
+                                        cir.addElectroComponent(posf, new AND(cir, pos, 0, false));
                                         break;
                                     case REDSTONE_TORCH:
                                         cir.addElectroComponent(posf, new NOT(cir, pos, 0, false));
+                                        break;
+                                    case REPEATER:
+                                        cir.addElectroComponent(posf, new Diode(cir, pos, 0));
                                         break;
 
                                         // ...
@@ -174,7 +176,6 @@ public class AGUIExtension implements LayoutExtension {
                 pixel.setClickAction(clickaction);
             }
         }
-
         e.getLayout().getTemplateComponentTree().getComponents().add(back);
     }
 
@@ -183,15 +184,16 @@ public class AGUIExtension implements LayoutExtension {
 
         // If the interaction is with a circuit, it will update the puts locations, remove the lid and render the visuals of the circuit.
 
-        if (!e.getInteraction().getLayout().getName().contains("Circuit")) return;
+        if (e.getInteraction().getLayout().getName().contains("Circuit")){
 
-        Circuit cir = CircuitsManager.getInstance().getCircuitFromGUIInstance(e.getGuiInstance());
+            Circuit cir = CircuitsManager.getInstance().getCircuitFromGUIInstance(e.getGuiInstance());
 
-        cir.getLocation().getBlock().setType(Material.AIR);
+            cir.getLocation().getBlock().setType(Material.AIR);
 
-        cir.addInteraction(e.getInteraction());
+            cir.addInteraction(e.getInteraction());
 
-        cir.updatePuts();
+            cir.updatePuts();
+        }
     }
 
 
@@ -202,11 +204,12 @@ public class AGUIExtension implements LayoutExtension {
 
             Circuit cir = CircuitsManager.getInstance().getCircuitFromGUIInstance(e.getGuiInstance());
 
-            cir.getLocation().getBlock().setType(Material.BLACK_CARPET);
+            cir.getLocation().getBlock().setType(Material.GRAY_CARPET);
 
             cir.removeInteraction(e.getInteraction());
 
             cir.updateCircuit();
         }
     }
+
 }

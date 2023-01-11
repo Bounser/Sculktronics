@@ -1,6 +1,6 @@
 package me.bounser.guitronics.listeners;
 
-import me.bounser.guitronics.GUItronics;
+import me.bounser.guitronics.Sculktronics;
 import me.bounser.guitronics.circuits.Circuit;
 import me.bounser.guitronics.circuits.CircuitsManager;
 import me.bounser.guitronics.tools.Data;
@@ -93,7 +93,7 @@ public class RedstoneListener implements Listener {
                                 circuit.unsetOverloaded();
 
                             }
-                        }.runTaskLater(GUItronics.getInstance(), 50);
+                        }.runTaskLater(Sculktronics.getInstance(), 50);
                         return;
                     }
 
@@ -106,7 +106,7 @@ public class RedstoneListener implements Listener {
                             activeCooldownCircuits.remove(circuit);
 
                         }
-                    }.runTaskLater(GUItronics.getInstance(), data.getTicksPerChange());
+                    }.runTaskLater(Sculktronics.getInstance(), data.getTicksPerChange());
                 }
             }
         }
