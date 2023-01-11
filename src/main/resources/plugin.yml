@@ -1,6 +1,6 @@
-name: GUItronics
+name: Sculktronics
 version: '${project.version}'
-main: me.bounser.guitronics.GUItronics
+main: me.bounser.sculktronics.Sculktronics
 api-version: 1.13
 depend: [ AdvancedGUI ]
 softdepend: [ PlaceholderAPI ]
