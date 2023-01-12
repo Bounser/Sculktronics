@@ -22,6 +22,10 @@ import java.util.List;
 
 public class Circuit {
 
+    // Object. Represents a group of segments and the general characteristics of them.
+
+    List<Segment> segments;
+
     // Persistent info:
     // Location of the GUI. The location above the main base, located at the north-west block within the cicuit base.
     final Location LOC;

@@ -61,7 +61,7 @@
                     <relocations>
                         <relocation>
                             <pattern>de.leonhard.storage</pattern>
-                            <shadedPattern>guitronics.bounser.storage</shadedPattern>
+                            <shadedPattern>sculktronics.bounser.storage</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
