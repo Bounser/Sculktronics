@@ -1,12 +1,12 @@
-package me.bounser.guitronics;
+package me.bounser.sculktronics;
 
 import de.leonhard.storage.util.FileUtils;
-import me.bounser.guitronics.advancedgui.AGUIExtension;
-import me.bounser.guitronics.circuits.CircuitsManager;
-import me.bounser.guitronics.listeners.BlockListener;
-import me.bounser.guitronics.listeners.RedstoneListener;
-import me.bounser.guitronics.tools.Data;
-import me.bounser.guitronics.tools.DebugCommand;
+import me.bounser.sculktronics.advancedgui.AGUIExtension;
+import me.bounser.sculktronics.circuits.CircuitsManager;
+import me.bounser.sculktronics.listeners.BlockListener;
+import me.bounser.sculktronics.listeners.RedstoneListener;
+import me.bounser.sculktronics.tools.Data;
+import me.bounser.sculktronics.tools.DebugCommand;
 import me.leoko.advancedgui.manager.LayoutManager;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -29,7 +29,6 @@ public final class Sculktronics extends JavaPlugin {
      *  - Potential difference gets translated as brightness difference.
      *
      *  - All the components will follow the ideal behavior, meaning no voltage (brightness) drop inside components.
-     *
      *
      *
      *  Technical annotations:

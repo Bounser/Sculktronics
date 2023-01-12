@@ -1,4 +1,4 @@
-package me.bounser.guitronics.components;
+package me.bounser.sculktronics.components;
 
 public enum EComponent {
 
@@ -11,7 +11,7 @@ public enum EComponent {
     // OpAmp
     // Multiplexer ?
     // Binary to decimal
-    // Display
+    // Display (LED with 7 segments ¿?)
     //
 
     // LOGIC GATES (Inverter = NOT)

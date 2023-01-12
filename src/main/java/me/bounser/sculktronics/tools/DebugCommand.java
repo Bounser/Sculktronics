@@ -1,8 +1,8 @@
-package me.bounser.guitronics.tools;
+package me.bounser.sculktronics.tools;
 
-import me.bounser.guitronics.Sculktronics;
-import me.bounser.guitronics.circuits.Circuit;
-import me.bounser.guitronics.circuits.CircuitsManager;
+import me.bounser.sculktronics.Sculktronics;
+import me.bounser.sculktronics.circuits.Circuit;
+import me.bounser.sculktronics.circuits.CircuitsManager;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

@@ -1,4 +1,4 @@
-package me.bounser.guitronics.components;
+package me.bounser.sculktronics.components;
 
 import java.awt.*;
 

@@ -1,26 +1,11 @@
-package me.bounser.guitronics.components.electrocomponents;
+package me.bounser.sculktronics.components.electrocomponents;
 
-import me.bounser.guitronics.components.EComponent;
-import me.bounser.guitronics.components.ElectroComponent;
+import me.bounser.sculktronics.components.EComponent;
+import me.bounser.sculktronics.components.ElectroComponent;
 
 import java.awt.*;
 
-public class XOR implements ElectroComponent {
-
-    boolean negated;
-
-    /*
-    TRUTH TABLE:
-
-    A B | Output
-    0 0 | 0
-    0 1 | 1
-    1 0 | 1
-    1 1 | 0
-
-    */
-
-    public XOR(boolean negated){ this.negated = negated; }
+public class Resistor implements ElectroComponent {
 
     @Override
     public EComponent getEComponent() {

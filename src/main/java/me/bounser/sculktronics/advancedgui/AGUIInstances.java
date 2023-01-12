@@ -1,7 +1,7 @@
-package me.bounser.guitronics.advancedgui;
+package me.bounser.sculktronics.advancedgui;
 
-import me.bounser.guitronics.circuits.Circuit;
-import me.bounser.guitronics.tools.Data;
+import me.bounser.sculktronics.circuits.Circuit;
+import me.bounser.sculktronics.tools.Data;
 import me.leoko.advancedgui.manager.GuiWallManager;
 import me.leoko.advancedgui.manager.LayoutManager;
 import me.leoko.advancedgui.utils.*;

@@ -1,8 +1,8 @@
-package me.bounser.guitronics.circuits;
+package me.bounser.sculktronics.circuits;
 
-import me.bounser.guitronics.components.EComponent;
-import me.bounser.guitronics.components.electrocomponents.Diode;
-import me.bounser.guitronics.components.electrocomponents.Wire;
+import me.bounser.sculktronics.components.EComponent;
+import me.bounser.sculktronics.components.electrocomponents.Diode;
+import me.bounser.sculktronics.components.electrocomponents.Wire;
 import org.bukkit.Location;
 import org.bukkit.block.data.Powerable;
 

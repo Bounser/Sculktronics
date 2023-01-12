@@ -1,7 +1,7 @@
-package me.bounser.guitronics.circuits;
+package me.bounser.sculktronics.circuits;
 
-import me.bounser.guitronics.components.EComponent;
-import me.bounser.guitronics.tools.Data;
+import me.bounser.sculktronics.components.EComponent;
+import me.bounser.sculktronics.tools.Data;
 import me.leoko.advancedgui.utils.GuiInstance;
 import me.leoko.advancedgui.utils.interactions.Interaction;
 import org.bukkit.Location;

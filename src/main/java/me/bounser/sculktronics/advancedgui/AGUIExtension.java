@@ -1,10 +1,10 @@
-package me.bounser.guitronics.advancedgui;
+package me.bounser.sculktronics.advancedgui;
 
-import me.bounser.guitronics.Sculktronics;
-import me.bounser.guitronics.circuits.Circuit;
-import me.bounser.guitronics.circuits.CircuitsManager;
-import me.bounser.guitronics.components.EComponent;
-import me.bounser.guitronics.components.electrocomponents.*;
+import me.bounser.sculktronics.Sculktronics;
+import me.bounser.sculktronics.circuits.Circuit;
+import me.bounser.sculktronics.circuits.CircuitsManager;
+import me.bounser.sculktronics.components.EComponent;
+import me.bounser.sculktronics.components.electrocomponents.*;
 import me.leoko.advancedgui.manager.LayoutManager;
 import me.leoko.advancedgui.utils.Layout;
 import me.leoko.advancedgui.utils.LayoutExtension;

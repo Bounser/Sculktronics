@@ -1,7 +1,7 @@
-package me.bounser.guitronics.components.electrocomponents;
+package me.bounser.sculktronics.components.electrocomponents;
 
-import me.bounser.guitronics.components.EComponent;
-import me.bounser.guitronics.components.ElectroComponent;
+import me.bounser.sculktronics.components.EComponent;
+import me.bounser.sculktronics.components.ElectroComponent;
 
 import java.awt.*;
 
